@@ -15,10 +15,10 @@ body {
   font-family: $font-family-base;
   font-size: $font-size-base;
   line-height: $line-height-base;
-  color: $dark-color;
-  background-color: $light-color;
+  color: $secondary-color;
+  background-color: $secondary-color;
   -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highsecondary-color: rgba(0, 0, 0, 0);
 }
 
 // Estilos globales
@@ -55,7 +55,7 @@ body {
   display: inline-block;
   font-weight: 400;
   line-height: 1.5;
-  color: $dark-color;
+  color: $secondary-color;
   text-align: center;
   text-decoration: none;
   vertical-align: middle;
@@ -74,7 +74,7 @@ body {
   );
 
   &:hover {
-    color: $dark-color;
+    color: $secondary-color;
     text-decoration: none;
   }
 
@@ -92,11 +92,11 @@ body {
 }
 
 .btn-primary {
-  @include button-variant($light-color, $primary-color, $primary-color);
+  @include button-variant($secondary-color, $primary-color, $primary-color);
 }
 
 .btn-secondary {
-  @include button-variant($light-color, $secondary-color, $secondary-color);
+  @include button-variant($secondary-color, $secondary-color, $secondary-color);
 }
 
 // Estilos de formularios
@@ -107,8 +107,8 @@ body {
   font-size: $font-size-base;
   font-weight: 400;
   line-height: $line-height-base;
-  color: $dark-color;
-  background-color: $light-color;
+  color: $secondary-color;
+  background-color: $secondary-color;
   background-clip: padding-box;
   border: $border-width solid $border-color;
   appearance: none;
@@ -119,8 +119,8 @@ body {
   );
 
   &:focus {
-    color: $dark-color;
-    background-color: $light-color;
+    color: $secondary-color;
+    background-color: $secondary-color;
     border-color: color.adjust($primary-color, $lightness: 25%);
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);

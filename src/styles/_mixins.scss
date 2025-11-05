@@ -1,4 +1,3 @@
-// Mixin para flexbox
 @use 'sass:map';
 @use 'sass:list';
 @use 'sass:color';
@@ -20,7 +19,19 @@
   flex-direction: column;
 }
 
-// Mixin para botones
+@mixin transparent {
+  background-color: $transparent-color;
+  backdrop-filter: blur(2px);
+}
+
+@mixin text-iluminate {
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.906);
+}
+
+@mixin icon-iluminate($shadow...) {
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.906));
+}
+
 @mixin button-variant($color, $background, $border) {
   color: $color;
   background-color: $background;

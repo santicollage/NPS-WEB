@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
-import Navbar from './components/Navbar';
+import Navbar from './components/Navbar/Navbar';
 import Background from './components/Background/Background';
 import Home from './pages/Home';
 import About from './pages/About';
