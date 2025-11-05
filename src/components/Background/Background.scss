@@ -4,9 +4,17 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('../../../public/images/background.jpeg');
+  background-image: url('../../../public/images/background/background-2000px.jpeg');
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat;
   z-index: -1;
+
+  @media (max-width: 1440px) {
+    background-image: url('../../../public/images/background/background-1440px.jpeg');
+  }
+
+  @media (max-width: 500px) {
+    background-image: url('../../../public/images/background/background-500px.jpeg');
+  }
 }
