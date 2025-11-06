@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectIsAuthenticated } from '../../store/slices/userSelectors';
@@ -7,6 +7,7 @@ import logo from '../../../public/images/logo-nps.png';
 import LoginIcon from '../../../public/iconos/LoginIcon';
 import ProfileIcon from '../../../public/iconos/ProfileIcon';
 import CartIcon from '../../../public/iconos/CartIcon';
+import HamburgerMenuIcon from '../../../public/iconos/HamburgerMenuIcon';
 import Cart from '../Cart/Cart';
 import './Navbar.scss';
 
@@ -14,6 +15,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <>
@@ -21,9 +23,20 @@ const Navbar = () => {
         <Link to="/">
           <img src={logo} alt="logo NPS" className="logo" />
         </Link>
-        <ul className="nav-links">
+        <button
+          className="hamburger-menu"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          <HamburgerMenuIcon />
+        </button>
+        <ul className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
           <li>
-            <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
+            <Link
+              to="/"
+              className={location.pathname === '/' ? 'active' : ''}
+              onClick={() => setIsMenuOpen(false)}
+            >
               Inicio
             </Link>
           </li>
@@ -31,6 +44,7 @@ const Navbar = () => {
             <Link
               to="/products"
               className={location.pathname === '/products' ? 'active' : ''}
+              onClick={() => setIsMenuOpen(false)}
             >
               Productos
             </Link>
@@ -39,6 +53,7 @@ const Navbar = () => {
             <Link
               to="/about"
               className={location.pathname === '/about' ? 'active' : ''}
+              onClick={() => setIsMenuOpen(false)}
             >
               Nosotros
             </Link>
@@ -47,12 +62,16 @@ const Navbar = () => {
             <Link
               to={isAuthenticated ? '/profile' : '/login'}
               className={`icon-link ${location.pathname === (isAuthenticated ? '/profile' : '/login') ? 'active' : ''}`}
+              onClick={() => setIsMenuOpen(false)}
             >
               {isAuthenticated ? <ProfileIcon /> : <LoginIcon />}
             </Link>
             <button
               className="icon-link"
-              onClick={() => dispatch(openCartModal())}
+              onClick={() => {
+                dispatch(openCartModal());
+                setIsMenuOpen(false);
+              }}
             >
               <CartIcon />
             </button>

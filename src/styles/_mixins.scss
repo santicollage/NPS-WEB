@@ -21,7 +21,7 @@
 
 @mixin transparent {
   background-color: $transparent-color;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(3px);
 }
 
 @mixin text-iluminate {
