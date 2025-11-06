@@ -221,6 +221,7 @@ const cartSlice = createSlice({
     loading: false,
     error: null,
     success: null,
+    isCartModalOpen: false,
   },
   reducers: {
     clearStatus: (state) => {
@@ -235,6 +236,12 @@ const cartSlice = createSlice({
       if (state.guestCart) {
         state.guestCart.guest_id = action.payload;
       }
+    },
+    openCartModal: (state) => {
+      state.isCartModalOpen = true;
+    },
+    closeCartModal: (state) => {
+      state.isCartModalOpen = false;
     },
   },
 
@@ -463,5 +470,11 @@ const cartSlice = createSlice({
 });
 
 // Exportar acciones y reducer
-export const { clearStatus, clearCart, setGuestId } = cartSlice.actions;
+export const {
+  clearStatus,
+  clearCart,
+  setGuestId,
+  openCartModal,
+  closeCartModal,
+} = cartSlice.actions;
 export default cartSlice.reducer;
