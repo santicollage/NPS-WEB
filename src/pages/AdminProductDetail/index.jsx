@@ -1,4 +1,5 @@
 import React from 'react';
+import './AdminProductDetail.scss';
 
 const AdminProductDetail = ({ modal }) => {
   return (

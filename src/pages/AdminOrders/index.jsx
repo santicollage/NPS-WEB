@@ -1,4 +1,5 @@
 import React from 'react';
+import './AdminOrders.scss';
 
 const AdminOrders = () => {
   return (

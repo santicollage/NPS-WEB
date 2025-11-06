@@ -1,4 +1,5 @@
 import React from 'react';
+import './AdminProducts.scss';
 
 const AdminProducts = () => {
   return (

@@ -1,9 +1,11 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import {
   selectIsAuthenticated,
   selectIsAdmin,
-} from '../store/slices/userSelectors';
+} from '../../store/slices/userSelectors';
+import './ProtectedRoute.scss';
 
 const ProtectedRoute = ({
   children,

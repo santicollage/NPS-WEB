@@ -8,7 +8,7 @@ import {
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
 import Navbar from './components/Navbar/Navbar';
-import Background from './components/Background/Background';
+import Background from './components/Background';
 import Home from './pages/Home';
 import About from './pages/About';
 import Products from './pages/Products';

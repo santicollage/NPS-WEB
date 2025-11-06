@@ -1,4 +1,5 @@
 import React from 'react';
+import './Unauthorized.scss';
 
 const Unauthorized = () => {
   return (
