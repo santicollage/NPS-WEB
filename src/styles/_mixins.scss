@@ -32,6 +32,41 @@
   filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.906));
 }
 
+@mixin card-style {
+  background-color: $quaternary-color;
+  color: white;
+  border-radius: 10px;
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+}
+
+@mixin line-glow {
+  background: linear-gradient(
+    90deg,
+    #52505100 0%,
+    #52505179 15%,
+    #f8f8f8 40%,
+    #61616380 75%,
+    #61616300 100%
+  );
+  border-radius: 10px;
+  position: absolute;
+  .glow {
+    background-size: cover;
+    background-position: center;
+    width: 80px;
+    height: 80px;
+    transform-origin: center;
+    transform: rotate(45deg) translate(0%, -70%);
+    position: absolute;
+    top: 50%;
+    left: 10%;
+  }
+}
+
 @mixin button-variant($color, $background, $border) {
   color: $color;
   background-color: $background;

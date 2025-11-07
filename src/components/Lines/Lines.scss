@@ -1,0 +1,53 @@
+@import '../../styles/_variables.scss';
+@import '../../styles/_mixins.scss';
+
+.lines-container {
+  position: relative;
+  width: 110%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  border: solid 2px $secondary-color;
+  border-radius: 5px;
+
+  @media (max-width: 768px) {
+    padding: 5px;
+    width: 105%;
+  }
+  .title {
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+    font-family: 'Archivo Black', sans-serif;
+  }
+  .lines {
+    display: flex;
+    justify-content: space-between;
+    .line {
+      width: 23%;
+      .logo {
+        width: 100%;
+        height: 50px;
+        object-fit: contain;
+        object-position: center;
+      }
+      .line-text {
+        font-size: 0.5rem;
+        @media (max-width: 768px) {
+          font-size: 0.5rem;
+        }
+      }
+    }
+  }
+  .glow {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 0;
+    left: 30px;
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    background-image: url('../../assets/Icons/Icons-UI/glow.png');
+    background-size: cover;
+    background-position: center;
+  }
+}
