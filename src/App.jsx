@@ -8,6 +8,7 @@ import {
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
 import Navbar from './components/Navbar/Navbar';
+import Footer from './components/Footer';
 import Background from './components/Background';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -156,6 +157,7 @@ function App() {
       <Background />
       <Navbar />
       <ModalRoutes />
+      <Footer />
     </Router>
   );
 }

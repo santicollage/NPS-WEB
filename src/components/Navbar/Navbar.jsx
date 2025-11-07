@@ -3,11 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectIsAuthenticated } from '../../store/slices/userSelectors';
 import { openCartModal } from '../../store/slices/cartSlice';
-import logo from '../../../public/images/logo-nps.png';
-import LoginIcon from '../../../public/iconos/LoginIcon';
-import ProfileIcon from '../../../public/iconos/ProfileIcon';
-import CartIcon from '../../../public/iconos/CartIcon';
-import HamburgerMenuIcon from '../../../public/iconos/HamburgerMenuIcon';
+import logo from '../../assets/images/logo-nps.png';
+import LoginIcon from '../../assets/icons/LoginIcon';
+import ProfileIcon from '../../assets/icons/ProfileIcon';
+import CartIcon from '../../assets/icons/CartIcon';
+import HamburgerMenuIcon from '../../assets/icons/HamburgerMenuIcon';
 import Cart from '../Cart/Cart';
 import './Navbar.scss';
 

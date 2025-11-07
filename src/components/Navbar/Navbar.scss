@@ -144,16 +144,16 @@
       .icons-li {
         justify-content: center;
         margin-top: 1rem;
+        gap: 20px;
       }
 
       .icon-link {
         height: 50px;
-        width: 50px;
         margin: 0 0.5rem;
 
         svg {
-          width: 24px;
-          height: 24px;
+          width: 40px;
+          height: 40px;
         }
       }
     }

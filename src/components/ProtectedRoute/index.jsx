@@ -5,7 +5,6 @@ import {
   selectIsAuthenticated,
   selectIsAdmin,
 } from '../../store/slices/userSelectors';
-import './ProtectedRoute.scss';
 
 const ProtectedRoute = ({
   children,

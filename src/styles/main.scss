@@ -1,9 +1,9 @@
-// Importar variables y mixins
+// Import variables and mixins
 @use 'variables' as *;
 @use 'mixins' as *;
 @use 'sass:color';
 
-// Reset y base
+// Reset and base
 *,
 *::before,
 *::after {
@@ -11,6 +11,7 @@
 }
 
 body {
+  overflow-x: hidden;
   margin: 0;
   font-family: $font-family-base;
   font-size: $font-size-base;
@@ -21,7 +22,7 @@ body {
   -webkit-tap-highsecondary-color: rgba(0, 0, 0, 0);
 }
 
-// Estilos globales
+// Global styles
 .container {
   width: 100%;
   padding-right: 15px;
@@ -50,7 +51,7 @@ body {
   }
 }
 
-// Estilos de botones
+// Button styles
 .btn {
   display: inline-block;
   font-weight: 400;
@@ -99,7 +100,7 @@ body {
   @include button-variant($secondary-color, $secondary-color, $secondary-color);
 }
 
-// Estilos de formularios
+// Form styles
 .form-control {
   display: block;
   width: 100%;
@@ -127,7 +128,7 @@ body {
   }
 }
 
-// Utilidades
+// Utilities
 .text-center {
   text-align: center;
 }
@@ -150,4 +151,34 @@ body {
 
 .mt-3 {
   margin-top: 1rem;
+}
+
+// Global scrollbar styles
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+// For Firefox
+* {
+  scrollbar-width: thin;
+  scrollbar-color: white transparent;
+}
+
+// For old IE/Edge
+* {
+  -ms-overflow-style: -ms-autohiding-scrollbar;
 }

@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { selectIsAuthenticated } from '../../store/slices/userSelectors';
-import './PublicRoute.scss';
 
 const PublicRoute = ({ children, redirectTo = '/' }) => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
