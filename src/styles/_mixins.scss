@@ -44,26 +44,44 @@
 }
 
 @mixin line-glow {
-  background: linear-gradient(
-    90deg,
-    #52505100 0%,
-    #52505179 15%,
-    #f8f8f8 40%,
-    #61616380 75%,
-    #61616300 100%
-  );
   border-radius: 10px;
-  position: absolute;
+  position: relative;
+  margin: 20px;
+
+  &.horizontal {
+    background: linear-gradient(
+      90deg,
+      #52505100 0%,
+      #52505179 15%,
+      #f8f8f8 30%,
+      #61616380 75%,
+      #61616300 100%
+    );
+  }
+
+  &.vertical {
+    background: linear-gradient(
+      0deg,
+      #52505100 0%,
+      #52505179 15%,
+      #f8f8f8 30%,
+      #61616380 75%,
+      #61616300 100%
+    );
+  }
+
   .glow {
+    background-image: url('../assets/images/glow.png');
     background-size: cover;
     background-position: center;
     width: 80px;
     height: 80px;
-    transform-origin: center;
-    transform: rotate(45deg) translate(0%, -70%);
     position: absolute;
-    top: 50%;
-    left: 10%;
+
+    @media (max-width: 768px) {
+      width: 60px;
+      height: 60px;
+    }
   }
 }
 

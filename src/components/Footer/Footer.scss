@@ -27,7 +27,9 @@ footer {
 
     .footer-contact {
       display: flex;
+      flex: 1;
       flex-direction: column;
+      min-width: 180px;
       justify-content: center;
       align-items: center;
       margin: 5px 50px;
@@ -46,6 +48,7 @@ footer {
       .footer-text {
         font-size: 1rem;
         margin-bottom: 0;
+        text-align: center;
       }
     }
   }

@@ -9,6 +9,8 @@ import piston2 from '../../assets/Images/Slider/pistons2.svg';
 import piston3 from '../../assets/Images/Slider/pistons3.svg';
 import caja from '../../assets/Images/Slider/caja.png';
 import suspension from '../../assets/Images/Slider/suspension.png';
+import ArrowIcon from '../../assets/icons/ArrowIcon';
+import LineGlow from '../../components/LineGlow';
 
 function Slider() {
   const [position, setPosition] = useState(1);
@@ -43,13 +45,17 @@ function Slider() {
           setPosition((prev) => (prev <= 1 ? (prev = numberSliders) : prev - 1))
         }
         className="slider-button button-left"
-      ></button>
+      >
+        <ArrowIcon className="arrow-icon" />
+      </button>
       <button
         onClick={() =>
           setPosition((prev) => (prev >= numberSliders ? (prev = 1) : prev + 1))
         }
         className="slider-button button-right"
-      ></button>
+      >
+        <ArrowIcon className="arrow-icon" />
+      </button>
 
       <div
         className="slider-card"
@@ -78,10 +84,8 @@ function Slider() {
             Ofrecemos nuestros servicios como proveedores de repuestos Diesel
             nuevos para su flota de vehículos
           </p>
-          <div className="line-glow">
-            <div className="glow"></div>
-          </div>
         </div>
+        <LineGlow orientation="vertical" width="80%" />
       </div>
 
       <div

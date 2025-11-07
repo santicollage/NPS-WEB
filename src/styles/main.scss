@@ -10,8 +10,14 @@
   box-sizing: border-box;
 }
 
+html,
 body {
+  min-height: 100vh;
+  min-width: 360px;
   overflow-x: hidden;
+}
+
+body {
   margin: 0;
   font-family: $font-family-base;
   font-size: $font-size-base;
@@ -20,6 +26,13 @@ body {
   background-color: $secondary-color;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highsecondary-color: rgba(0, 0, 0, 0);
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 // Global styles
@@ -62,6 +75,17 @@ section {
   @media (max-width: 768px) {
     padding: 30px 10vw;
   }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
 }
 
 // Button styles

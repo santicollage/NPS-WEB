@@ -295,7 +295,7 @@ function Footer() {
                 </li>
                 <li>Teléfono: 3229713519</li>
                 <li>
-                  Horario de atención: Lunes a viernes de 8:00 am a 6:00 pm
+                  Horario de atención: Lunes a viernes de 8:00 am a 5:00 pm
                 </li>
               </ul>
             </div>
