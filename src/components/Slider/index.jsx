@@ -85,7 +85,9 @@ function Slider() {
             nuevos para su flota de vehículos
           </p>
         </div>
-        <LineGlow orientation="vertical" width="80%" />
+        <div className="vertical-line">
+          <LineGlow orientation="vertical" width="80%" />
+        </div>
       </div>
 
       <div
