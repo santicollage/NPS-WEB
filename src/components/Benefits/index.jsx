@@ -53,6 +53,7 @@ function Benefits() {
           return (
             <div
               className={`benefits-subgrid ${index % 2 === 0 ? 'even' : 'odd'}`}
+              key={benefit.id}
             >
               <div className="benefit-image">
                 <img src={benefit.image} alt={benefit.title} />
