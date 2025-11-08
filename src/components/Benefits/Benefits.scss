@@ -22,11 +22,6 @@
       max-height: 180px;
       gap: 20px;
 
-      @media (max-width: 768px) {
-        flex-wrap: wrap;
-        max-height: none;
-      }
-
       &.even {
         flex-direction: row-reverse;
       }
@@ -40,11 +35,6 @@
         height: 100%;
         object-fit: cover;
         border-radius: 8px;
-
-        @media (max-width: 768px) {
-          width: 100%;
-          height: 200px;
-        }
       }
     }
 
@@ -58,10 +48,6 @@
       transition:
         transform 0.3s ease,
         box-shadow 0.3s ease;
-
-      @media (max-width: 768px) {
-        min-width: 100%;
-      }
 
       &:hover {
         transform: translateY(-5px);
@@ -105,16 +91,23 @@
     .benefits-grid {
       grid-template-columns: 1fr;
 
+      .benefits-subgrid {
+        flex-wrap: wrap;
+        max-height: none;
+      }
+
+      .benefit-image img {
+        width: 100%;
+        height: 200px;
+      }
+
       .benefit-card {
+        min-width: 100%;
         padding: 20px 15px;
 
         .benefit-icon svg {
           width: 30px;
           height: 30px;
-        }
-
-        .benefit-image img {
-          height: 100px;
         }
 
         .benefit-title {
