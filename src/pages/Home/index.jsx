@@ -2,6 +2,7 @@ import React from 'react';
 import './Home.scss';
 import Slider from '../../components/Slider';
 import LineGlow from '../../components/LineGlow';
+import Benefits from '../../components/Benefits';
 
 const Home = () => {
   return (
@@ -10,7 +11,9 @@ const Home = () => {
         <Slider />
       </section>
       <LineGlow orientation="horizontal" width="90%" />
-      <section></section>
+      <section>
+        <Benefits />
+      </section>
     </>
   );
 };
