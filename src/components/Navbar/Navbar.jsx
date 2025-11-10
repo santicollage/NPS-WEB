@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectIsAuthenticated } from '../../store/slices/userSelectors';
@@ -16,10 +16,36 @@ const Navbar = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [navbarStyle, setNavbarStyle] = useState({
+    opacity: 0,
+    transform: 'translateY(-100%)',
+  });
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+
+      if (location.pathname === '/') {
+        if (scrollY >= windowHeight) {
+          setNavbarStyle({ opacity: 1, transform: 'translateY(0)' });
+        } else {
+          setNavbarStyle({ opacity: 0, transform: 'translateY(-100%)' });
+        }
+      } else {
+        setNavbarStyle({ opacity: 1, transform: 'translateY(0)' });
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [location.pathname]);
 
   return (
     <>
-      <nav className="navbar">
+      <nav className="navbar" style={navbarStyle}>
         <Link to="/">
           <img src={logo} alt="logo NPS" className="logo" />
         </Link>
