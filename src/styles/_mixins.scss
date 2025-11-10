@@ -28,6 +28,10 @@
   text-shadow: 0 0 6px rgba(255, 255, 255, 0.906);
 }
 
+@mixin text-iluminate-soft {
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.4);
+}
+
 @mixin icon-iluminate($shadow...) {
   filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.906));
 }

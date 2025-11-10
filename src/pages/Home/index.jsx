@@ -4,10 +4,14 @@ import Slider from '../../components/Slider';
 import LineGlow from '../../components/LineGlow';
 import Benefits from '../../components/Benefits';
 import MapNps from '../../components/MapNps';
+import Parallax from '../../components/Parallax';
 
 const Home = () => {
   return (
     <>
+      <section className="section-parallax">
+        <Parallax />
+      </section>
       <section>
         <Slider />
       </section>
