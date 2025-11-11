@@ -25,6 +25,7 @@ import AdminOrders from './pages/AdminOrders';
 import AdminOrderDetail from './pages/AdminOrderDetail';
 import Unauthorized from './pages/Unauthorized';
 import NotFound from './pages/NotFound';
+import ContactButton from './components/ContactButton';
 
 // Modal Routes Component
 const ModalRoutes = () => {
@@ -156,6 +157,7 @@ function App() {
     <Router>
       <Background />
       <Navbar />
+      <ContactButton />
       <ModalRoutes />
       <Footer />
     </Router>
