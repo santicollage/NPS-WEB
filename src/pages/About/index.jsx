@@ -1,12 +1,24 @@
-import React from 'react';
 import './About.scss';
+import Objectives from '../../components/Objectives';
+import History from '../../components/History';
+import MapNps from '../../components/MapNps';
 
-const About = () => {
+function About() {
   return (
-    <div>
-      <h1>About Us Page</h1>
-    </div>
+    <>
+      <h1 className="us-title">NOSOTROS</h1>
+
+      <section>
+        <Objectives />
+      </section>
+      <section>
+        <History />
+      </section>
+      <section>
+        <MapNps />
+      </section>
+    </>
   );
-};
+}
 
 export default About;
