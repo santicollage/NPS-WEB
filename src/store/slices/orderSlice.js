@@ -29,13 +29,18 @@ export const fetchOrders = createAsyncThunk(
   async (params = {}, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('token');
-      const queryParams = new URLSearchParams();
-      Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== '') {
-          queryParams.append(key, value);
-        }
-      });
-      const url = `${BASE_URL}/orders${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const queryParams = Object.entries(params)
+        .filter(
+          ([, value]) => value !== undefined && value !== null && value !== ''
+        )
+        .map(([key, value]) => {
+          const encodedValue =
+            typeof value === 'string' ? encodeURIComponent(value) : value;
+          return `${key}=${encodedValue}`;
+        })
+        .join('&');
+
+      const url = `${BASE_URL}/orders${queryParams ? `?${queryParams}` : ''}`;
       const { data } = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });

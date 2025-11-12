@@ -1,1 +1,43 @@
-// Products page styles
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.products-page {
+  min-height: 100vh;
+  margin-top: 4rem;
+
+  h1 {
+    max-width: 90%;
+    margin: 0 auto;
+    @include text-iluminate-soft;
+    text-align: center;
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .products-page {
+    padding: 1rem 0;
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .filters-section,
+    .products-section {
+      padding: 0 1rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .products-page {
+    h1 {
+      font-size: 1.8rem;
+    }
+  }
+}

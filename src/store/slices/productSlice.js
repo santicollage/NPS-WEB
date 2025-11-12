@@ -12,13 +12,18 @@ export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async (params = {}, { rejectWithValue }) => {
     try {
-      const queryParams = new URLSearchParams();
-      Object.entries(params).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== '') {
-          queryParams.append(key, value);
-        }
-      });
-      const url = `${BASE_URL}/products${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const queryParams = Object.entries(params)
+        .filter(
+          ([, value]) => value !== undefined && value !== null && value !== ''
+        )
+        .map(([key, value]) => {
+          const encodedValue =
+            typeof value === 'string' ? encodeURIComponent(value) : value;
+          return `${key}=${encodedValue}`;
+        })
+        .join('&');
+
+      const url = `${BASE_URL}/products${queryParams ? `?${queryParams}` : ''}`;
       const { data } = await axios.get(url);
       return data;
     } catch (err) {
