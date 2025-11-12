@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { GoogleLogin } from '@react-oauth/google';
 import {
   loginUser,
@@ -134,171 +134,177 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <motion.div className="login-card" layout>
-        <AnimatePresence mode="wait">
-          {isLogin ? (
-            <motion.div
-              key="login"
-              initial={{ x: -300, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: 300, opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              className="form-wrapper"
-            >
-              <h2>Iniciar Sesión</h2>
-              <form onSubmit={handleSubmit}>
-                <div className="input-group">
-                  <div className="input-container">
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="Correo electrónico"
-                      value={formData.email}
-                      onChange={handleChange}
-                    />
+      <div className="login-card">
+        <motion.div
+          animate={{ rotateY: isLogin ? 0 : 180 }}
+          transition={{ duration: 0.6 }}
+          className="flip-card"
+        >
+          <div className="flip-card-front">
+            <div className="login-content">
+              <div className="form-section">
+                <h2>Iniciar Sesión</h2>
+                <form onSubmit={handleSubmit}>
+                  <div className="input-group">
+                    <div className="input-container">
+                      <input
+                        type="email"
+                        name="email"
+                        placeholder="Correo electrónico"
+                        value={formData.email}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    {errors.email && (
+                      <span className="error">{errors.email}</span>
+                    )}
                   </div>
-                  {errors.email && (
-                    <span className="error">{errors.email}</span>
-                  )}
-                </div>
-                <div className="input-group">
-                  <div className="input-container">
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      name="password"
-                      placeholder="Contraseña"
-                      value={formData.password}
-                      onChange={handleChange}
-                    />
-                    <button
-                      type="button"
-                      className="toggle-password"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <EyeIcon /> : <EyeOffIcon />}
-                    </button>
+                  <div className="input-group">
+                    <div className="input-container">
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        name="password"
+                        placeholder="Contraseña"
+                        value={formData.password}
+                        onChange={handleChange}
+                      />
+                      <button
+                        type="button"
+                        className="toggle-password"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeIcon /> : <EyeOffIcon />}
+                      </button>
+                    </div>
+                    {errors.password && (
+                      <span className="error">{errors.password}</span>
+                    )}
                   </div>
-                  {errors.password && (
-                    <span className="error">{errors.password}</span>
-                  )}
-                </div>
-                <button type="submit" disabled={loading || !isFormValid}>
-                  {loading ? 'Cargando...' : 'Iniciar sesión'}
-                </button>
-                <GoogleLogin
-                  onSuccess={handleGoogleSuccess}
-                  onError={handleGoogleError}
-                  className="google-btn-container"
+                  <button type="submit" disabled={loading || !isFormValid}>
+                    {loading ? 'Cargando...' : 'Iniciar sesión'}
+                  </button>
+                  <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={handleGoogleError}
+                    className="google-btn-container"
+                  />
+                </form>
+                <p>
+                  ¿No tienes cuenta?{' '}
+                  <a href="#" onClick={handleToggle}>
+                    Regístrate aquí
+                  </a>
+                </p>
+              </div>
+              <div className="image-section">
+                <img src="/src/assets/images/login/Login.png" alt="Login" />
+              </div>
+            </div>
+          </div>
+          <div className="flip-card-back">
+            <div className="login-content">
+              <div className="form-section">
+                <h2>Crear Cuenta</h2>
+                <form onSubmit={handleSubmit}>
+                  <div className="input-group">
+                    <div className="input-container">
+                      <input
+                        type="text"
+                        name="name"
+                        placeholder="Nombre completo"
+                        value={formData.name}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    {errors.name && (
+                      <span className="error">{errors.name}</span>
+                    )}
+                  </div>
+                  <div className="input-group">
+                    <div className="input-container">
+                      <input
+                        type="email"
+                        name="email"
+                        placeholder="Correo electrónico"
+                        value={formData.email}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    {errors.email && (
+                      <span className="error">{errors.email}</span>
+                    )}
+                  </div>
+                  <div className="input-group">
+                    <div className="input-container">
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        name="password"
+                        placeholder="Contraseña"
+                        value={formData.password}
+                        onChange={handleChange}
+                      />
+                      <button
+                        type="button"
+                        className="toggle-password"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeIcon /> : <EyeOffIcon />}
+                      </button>
+                    </div>
+                    {errors.password && (
+                      <span className="error">{errors.password}</span>
+                    )}
+                  </div>
+                  <div className="input-group">
+                    <div className="input-container">
+                      <input
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        name="confirmPassword"
+                        placeholder="Confirmar contraseña"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                      />
+                      <button
+                        type="button"
+                        className="toggle-password"
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                      >
+                        {showConfirmPassword ? <EyeIcon /> : <EyeOffIcon />}
+                      </button>
+                    </div>
+                    {errors.confirmPassword && (
+                      <span className="error">{errors.confirmPassword}</span>
+                    )}
+                  </div>
+                  <button type="submit" disabled={loading || !isFormValid}>
+                    {loading ? 'Cargando...' : 'Crear cuenta'}
+                  </button>
+                  <GoogleLogin
+                    onSuccess={handleGoogleSuccess}
+                    onError={handleGoogleError}
+                    className="google-btn-container"
+                  />
+                </form>
+                <p>
+                  ¿Ya tienes cuenta?{' '}
+                  <a href="#" onClick={handleToggle}>
+                    Inicia sesión aquí
+                  </a>
+                </p>
+              </div>
+              <div className="image-section">
+                <img
+                  src="/src/assets/images/login/register.png"
+                  alt="Register"
                 />
-              </form>
-              <p>
-                ¿No tienes cuenta?{' '}
-                <a href="#" onClick={handleToggle}>
-                  Regístrate aquí
-                </a>
-              </p>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="register"
-              initial={{ x: 300, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: -300, opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              className="form-wrapper"
-            >
-              <h2>Crear Cuenta</h2>
-              <form onSubmit={handleSubmit}>
-                <div className="input-group">
-                  <div className="input-container">
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="Nombre completo"
-                      value={formData.name}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  {errors.name && <span className="error">{errors.name}</span>}
-                </div>
-                <div className="input-group">
-                  <div className="input-container">
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="Correo electrónico"
-                      value={formData.email}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  {errors.email && (
-                    <span className="error">{errors.email}</span>
-                  )}
-                </div>
-                <div className="input-group">
-                  <div className="input-container">
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      name="password"
-                      placeholder="Contraseña"
-                      value={formData.password}
-                      onChange={handleChange}
-                    />
-                    <button
-                      type="button"
-                      className="toggle-password"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <EyeIcon /> : <EyeOffIcon />}
-                    </button>
-                  </div>
-                  {errors.password && (
-                    <span className="error">{errors.password}</span>
-                  )}
-                </div>
-                <div className="input-group">
-                  <div className="input-container">
-                    <input
-                      type={showConfirmPassword ? 'text' : 'password'}
-                      name="confirmPassword"
-                      placeholder="Confirmar contraseña"
-                      value={formData.confirmPassword}
-                      onChange={handleChange}
-                    />
-                    <button
-                      type="button"
-                      className="toggle-password"
-                      onClick={() =>
-                        setShowConfirmPassword(!showConfirmPassword)
-                      }
-                    >
-                      {showConfirmPassword ? <EyeIcon /> : <EyeOffIcon />}
-                    </button>
-                  </div>
-                  {errors.confirmPassword && (
-                    <span className="error">{errors.confirmPassword}</span>
-                  )}
-                </div>
-                <button type="submit" disabled={loading || !isFormValid}>
-                  {loading ? 'Cargando...' : 'Crear cuenta'}
-                </button>
-                <GoogleLogin
-                  onSuccess={handleGoogleSuccess}
-                  onError={handleGoogleError}
-                  className="google-btn-container"
-                />
-              </form>
-              <p>
-                ¿Ya tienes cuenta?{' '}
-                <a href="#" onClick={handleToggle}>
-                  Inicia sesión aquí
-                </a>
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              </div>
+            </div>
+          </div>
+        </motion.div>
         {error && <div className="global-error">{error}</div>}
-      </motion.div>
+      </div>
     </div>
   );
 };
