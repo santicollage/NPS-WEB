@@ -123,6 +123,10 @@ button {
   @include button-variant(#007bff, #0056b3);
 }
 
+.btn-quartertiary {
+  @include button-variant(#25d366, #128c65);
+}
+
 // Form styles
 .form-control {
   display: block;

@@ -1,5 +1,7 @@
 import React from 'react';
 import './ProductCard.scss';
+import ContactIcon from '../../assets/icons/ContactIcon';
+import CartIcon from '../../assets/icons/CartIcon';
 
 const ProductCard = ({ product }) => {
   const formatPrice = (price) => {
@@ -8,6 +10,13 @@ const ProductCard = ({ product }) => {
       currency: 'COP',
       minimumFractionDigits: 0,
     }).format(price);
+  };
+
+  const handleContactClick = () => {
+    const phoneNumber = '573229713519';
+    const message = `Hola, estoy interesado en más información sobre el producto ${product.name} = ${product.reference}.`;
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
   };
 
   return (
@@ -50,11 +59,21 @@ const ProductCard = ({ product }) => {
       </div>
 
       <div className="product-actions">
-        <button className="btn-secondary">Ver Detalles</button>
+        <div className="action-buttons-row">
+          <button className="btn-secondary">Ver Detalles</button>
+          <button
+            className="contact-btn btn-quartertiary"
+            onClick={handleContactClick}
+          >
+            <ContactIcon />
+            Consultar
+          </button>
+        </div>
         <button
           className="btn-tertiary"
           disabled={product.stock_quantity === 0}
         >
+          {product.stock_quantity === 0 ? '' : <CartIcon />}
           {product.stock_quantity === 0 ? 'Agotado' : 'Agregar al Carrito'}
         </button>
       </div>
