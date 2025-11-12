@@ -1,13 +1,17 @@
+@import '../../styles/_variables.scss';
+@import '../../styles/_mixins.scss';
+
 .filters {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  width: 100%;
+  @include transparent;
   border-radius: 12px;
-  padding: 2rem;
+  padding: 1rem 2rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
 
   h3 {
     color: #ffffff;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.8rem;
     font-size: 1.5rem;
     font-weight: 600;
     text-align: center;
@@ -21,8 +25,6 @@
     max-width: 1400px;
 
     .filter-group {
-      margin-bottom: 1.5rem;
-
       label {
         display: block;
         color: #e0e0e0;
@@ -42,14 +44,19 @@
         font-size: 0.9rem;
         transition: all 0.3s ease;
 
+        option {
+          background-color: #2d2d2d;
+          border: none;
+        }
+
         &::placeholder {
           color: rgba(255, 255, 255, 0.5);
         }
 
         &:focus {
           outline: none;
-          border-color: #007bff;
-          box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+          border-color: $secondary-color;
+          box-shadow: 0 0 0 2px rgba(237, 246, 255, 0.25);
           background: rgba(255, 255, 255, 0.1);
         }
 
@@ -85,40 +92,10 @@
   .filter-actions {
     display: flex;
     gap: 1rem;
+    margin-top: 1.5rem;
 
     button {
       flex: 1;
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-
-      &.apply-btn {
-        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-        color: white;
-
-        &:hover {
-          background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
-        }
-      }
-
-      &.clear-btn {
-        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
-        color: white;
-
-        &:hover {
-          background: linear-gradient(135deg, #495057 0%, #343a40 100%);
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
-        }
-      }
 
       &:active {
         transform: translateY(0);
@@ -130,7 +107,6 @@
 @media (max-width: 768px) {
   .filters {
     padding: 1.5rem;
-    margin-bottom: 1.5rem;
 
     h3 {
       font-size: 1.3rem;

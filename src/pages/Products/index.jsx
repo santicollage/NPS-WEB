@@ -7,12 +7,12 @@ import LineGlow from '../../components/LineGlow';
 const Products = () => {
   return (
     <div className="products-page">
-      <section>
+      <section className="section-filters">
         <Filters />
       </section>
       <h1>Componentes de alto desempeño para transporte pesado!</h1>
       <LineGlow width="95%" />
-      <section>
+      <section className="section-products">
         <ProductsList />
       </section>
     </div>

@@ -157,7 +157,10 @@ const Filters = () => {
         <button onClick={handleApplyFilters} className="apply-btn">
           Aplicar Filtros
         </button>
-        <button onClick={handleClearFilters} className="clear-btn">
+        <button
+          onClick={handleClearFilters}
+          className="clear-btn btn-secondary"
+        >
           Limpiar Filtros
         </button>
       </div>
