@@ -1,1 +1,127 @@
 // Login page styles
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.login-container {
+  @include flex-center;
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    $primary-color 0%,
+    $primary-color-light 100%
+  );
+  padding: 1rem;
+}
+
+.login-card {
+  background: white;
+  @include border-radius($border-radius-lg);
+  @include box-shadow($box-shadow-lg);
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.form-wrapper {
+  h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: $primary-color;
+    font-family: $font-family-secondary;
+    font-size: 1.5rem;
+  }
+
+  form {
+    @include flex-column;
+    gap: 1rem;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+
+    .input-container {
+      position: relative;
+
+      input {
+        padding: 0.75rem;
+        padding-right: 3rem; // Space for the button
+        border: $border-width solid $border-color;
+        border-radius: $border-radius;
+        font-size: $font-size-base;
+        font-family: $font-family-base;
+        @include transition(border-color);
+        width: 100%;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+        }
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: $tertiary-color;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        width: 1.5rem;
+        height: 1.5rem;
+
+        &:hover {
+          color: $primary-color;
+        }
+
+        svg {
+          width: 1.25rem;
+          height: 1.25rem;
+        }
+      }
+    }
+
+    .error {
+      color: #dc3545;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+  }
+
+  .google-btn-container {
+    margin-top: 0.5rem;
+  }
+
+  p {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+
+    a {
+      color: $primary-color;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.global-error {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 0.75rem;
+  border-radius: $border-radius;
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+}

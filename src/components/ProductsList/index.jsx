@@ -19,9 +19,6 @@ const ProductList = () => {
   const filters = useSelector(selectProductsFilters);
   const pagination = useSelector(selectProductsPagination);
 
-  console.log(products);
-  console.log(filters);
-
   useEffect(() => {
     dispatch(fetchProducts(filters));
   }, [dispatch, filters]);
