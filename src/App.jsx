@@ -155,12 +155,24 @@ const ModalRoutes = () => {
 function App() {
   return (
     <Router>
+      <AppContent />
+    </Router>
+  );
+}
+
+function AppContent() {
+  const location = useLocation();
+  const hideFooterRoutes = ['/login'];
+  const showFooter = !hideFooterRoutes.includes(location.pathname);
+
+  return (
+    <>
       <Background />
       <Navbar />
       <ContactButton />
       <ModalRoutes />
-      <Footer />
-    </Router>
+      {showFooter && <Footer />}
+    </>
   );
 }
 

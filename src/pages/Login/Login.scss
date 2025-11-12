@@ -83,6 +83,7 @@
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 8px;
         background: rgba(255, 255, 255, 0.05);
+        color: white;
         font-size: $font-size-base;
         font-family: $font-family-base;
         width: 100%;
@@ -91,6 +92,14 @@
           outline: none;
           border-color: $primary-color;
           box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+        }
+
+        &:-webkit-autofill {
+          background-color: rgba(255, 255, 255, 0.05) !important;
+          color: white !important;
+          -webkit-text-fill-color: white !important;
+          box-shadow: 0 0 0px 1000px #56565626 inset !important;
+          transition: background-color 5000s ease-in-out 0s;
         }
       }
 
