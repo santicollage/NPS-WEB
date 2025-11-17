@@ -1,0 +1,57 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  border-radius: 5px;
+  padding: 1rem 2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 90%;
+  @include transparent;
+
+  h3 {
+    margin-top: 0;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    margin-bottom: 1rem;
+  }
+
+  input {
+    &[type='file']::file-selector-button {
+      background: $secondary-color;
+      color: $primary-color;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  }
+
+  .buttons-group {
+    display: flex;
+    gap: 10px;
+    button {
+      flex: 1;
+    }
+  }
+}

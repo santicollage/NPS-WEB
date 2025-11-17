@@ -1,1 +1,17 @@
 // Profile page styles
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.profile-page {
+  margin-top: 7rem;
+  max-width: 90%;
+
+  h1 {
+    margin-bottom: 1rem;
+    @include text-iluminate;
+
+    @media (max-width: 768px) {
+      text-align: center;
+    }
+  }
+}
