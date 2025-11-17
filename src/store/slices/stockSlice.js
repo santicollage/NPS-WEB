@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const BASE_URL = import.meta.env.VITE_API_URL;
+import api from '../api';
 
 // ==============================
 // 1️⃣ THUNKS (acciones asincrónicas)
@@ -12,7 +10,6 @@ export const fetchStockMovements = createAsyncThunk(
   'stock/fetchStockMovements',
   async (params = {}, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
       const queryParams = Object.entries(params)
         .filter(
           ([, value]) => value !== undefined && value !== null && value !== ''
@@ -24,10 +21,8 @@ export const fetchStockMovements = createAsyncThunk(
         })
         .join('&');
 
-      const url = `${BASE_URL}/stock/movements${queryParams ? `?${queryParams}` : ''}`;
-      const { data } = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const url = `/stock/movements${queryParams ? `?${queryParams}` : ''}`;
+      const { data } = await api.get(url);
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -42,14 +37,7 @@ export const createStockMovement = createAsyncThunk(
   'stock/createStockMovement',
   async (movementData, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.post(
-        `${BASE_URL}/stock/movements`,
-        movementData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const { data } = await api.post(`/stock/movements`, movementData);
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -64,14 +52,7 @@ export const cleanupExpiredReservations = createAsyncThunk(
   'stock/cleanupExpiredReservations',
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.post(
-        `${BASE_URL}/stock/cleanup`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const { data } = await api.post(`/stock/cleanup`, {});
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -86,10 +67,7 @@ export const fetchActiveReservations = createAsyncThunk(
   'stock/fetchActiveReservations',
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.get(`${BASE_URL}/stock/reservations`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const { data } = await api.get(`/stock/reservations`);
       return data;
     } catch (err) {
       return rejectWithValue(

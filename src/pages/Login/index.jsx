@@ -303,7 +303,13 @@ const Login = () => {
             </div>
           </div>
         </motion.div>
-        {error && <div className="global-error">{error}</div>}
+        {error && (
+          <div className="global-error">
+            {typeof error === 'object'
+              ? error.message || JSON.stringify(error)
+              : error}
+          </div>
+        )}
       </div>
     </div>
   );

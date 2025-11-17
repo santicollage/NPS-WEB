@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const BASE_URL = import.meta.env.VITE_API_URL;
+import api from '../api';
 
 // ==============================
 // 1️⃣ THUNKS (acciones asincrónicas)
@@ -12,10 +10,7 @@ export const createOrder = createAsyncThunk(
   'orders/createOrder',
   async (orderData, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.post(`${BASE_URL}/orders`, orderData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const { data } = await api.post(`/orders`, orderData);
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error al crear orden');
@@ -28,7 +23,6 @@ export const fetchOrders = createAsyncThunk(
   'orders/fetchOrders',
   async (params = {}, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
       const queryParams = Object.entries(params)
         .filter(
           ([, value]) => value !== undefined && value !== null && value !== ''
@@ -40,10 +34,8 @@ export const fetchOrders = createAsyncThunk(
         })
         .join('&');
 
-      const url = `${BASE_URL}/orders${queryParams ? `?${queryParams}` : ''}`;
-      const { data } = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const url = `/orders${queryParams ? `?${queryParams}` : ''}`;
+      const { data } = await api.get(url);
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error al cargar órdenes');
@@ -56,10 +48,7 @@ export const fetchOrderById = createAsyncThunk(
   'orders/fetchOrderById',
   async (orderId, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.get(`${BASE_URL}/orders/${orderId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const { data } = await api.get(`/orders/${orderId}`);
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error al cargar orden');
@@ -72,14 +61,7 @@ export const updateOrderStatus = createAsyncThunk(
   'orders/updateOrderStatus',
   async ({ orderId, status }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.patch(
-        `${BASE_URL}/orders/${orderId}/status`,
-        { status },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const { data } = await api.patch(`/orders/${orderId}/status`, { status });
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -98,7 +80,7 @@ export const createGuestOrder = createAsyncThunk(
   'orders/createGuestOrder',
   async (orderData, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(`${BASE_URL}/orders/guest`, orderData);
+      const { data } = await api.post(`/orders/guest`, orderData);
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -113,9 +95,7 @@ export const fetchGuestOrder = createAsyncThunk(
   'orders/fetchGuestOrder',
   async (orderToken, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(
-        `${BASE_URL}/orders/guest/${orderToken}`
-      );
+      const { data } = await api.get(`/orders/guest/${orderToken}`);
       return data;
     } catch (err) {
       return rejectWithValue(

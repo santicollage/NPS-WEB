@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const BASE_URL = import.meta.env.VITE_API_URL;
+import api from '../api';
 
 // ==============================
 // 1️⃣ THUNKS (acciones asincrónicas)
@@ -12,7 +10,7 @@ export const fetchCategories = createAsyncThunk(
   'categories/fetchCategories',
   async (_, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${BASE_URL}/categories`);
+      const { data } = await api.get('/categories');
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -27,14 +25,7 @@ export const createCategory = createAsyncThunk(
   'categories/createCategory',
   async (categoryData, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.post(
-        `${BASE_URL}/categories`,
-        categoryData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const { data } = await api.post('/categories', categoryData);
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error al crear categoría');
@@ -47,14 +38,7 @@ export const updateCategory = createAsyncThunk(
   'categories/updateCategory',
   async ({ categoryId, updateData }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.patch(
-        `${BASE_URL}/categories/${categoryId}`,
-        updateData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const { data } = await api.patch(`/categories/${categoryId}`, updateData);
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -69,10 +53,7 @@ export const deleteCategory = createAsyncThunk(
   'categories/deleteCategory',
   async (categoryId, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`${BASE_URL}/categories/${categoryId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.delete(`/categories/${categoryId}`);
       return categoryId;
     } catch (err) {
       return rejectWithValue(

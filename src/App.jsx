@@ -5,6 +5,9 @@ import {
   Navigate,
   useLocation,
 } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { refreshSession, fetchCurrentUser } from './store/slices/userSlice';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
 import Navbar from './components/Navbar/Navbar';
@@ -161,9 +164,25 @@ function App() {
 }
 
 function AppContent() {
+  const dispatch = useDispatch();
   const location = useLocation();
   const hideFooterRoutes = ['/login'];
   const showFooter = !hideFooterRoutes.includes(location.pathname);
+
+  useEffect(() => {
+    const initializeAuth = async () => {
+      try {
+        await dispatch(refreshSession()).unwrap();
+        // Si refresh fue exitoso, obtener datos del usuario
+        dispatch(fetchCurrentUser());
+      } catch {
+        // Refresh falló, usuario no está autenticado
+        console.log('No hay sesión activa');
+      }
+    };
+
+    initializeAuth();
+  }, [dispatch]);
 
   return (
     <>

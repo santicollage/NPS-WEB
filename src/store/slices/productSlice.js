@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const BASE_URL = import.meta.env.VITE_API_URL;
+import api from '../api';
 
 // ==============================
 // 1️⃣ THUNKS (acciones asincrónicas)
@@ -23,8 +21,8 @@ export const fetchProducts = createAsyncThunk(
         })
         .join('&');
 
-      const url = `${BASE_URL}/products${queryParams ? `?${queryParams}` : ''}`;
-      const { data } = await axios.get(url);
+      const url = `/products${queryParams ? `?${queryParams}` : ''}`;
+      const { data } = await api.get(url);
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error al cargar productos');
@@ -37,7 +35,7 @@ export const fetchProductById = createAsyncThunk(
   'products/fetchProductById',
   async (productId, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${BASE_URL}/products/${productId}`);
+      const { data } = await api.get(`/products/${productId}`);
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error al cargar producto');
@@ -50,10 +48,7 @@ export const createProduct = createAsyncThunk(
   'products/createProduct',
   async (productData, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.post(`${BASE_URL}/products`, productData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const { data } = await api.post('/products', productData);
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error al crear producto');
@@ -66,14 +61,7 @@ export const updateProduct = createAsyncThunk(
   'products/updateProduct',
   async ({ productId, updateData }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.patch(
-        `${BASE_URL}/products/${productId}`,
-        updateData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const { data } = await api.patch(`/products/${productId}`, updateData);
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -88,10 +76,7 @@ export const deleteProduct = createAsyncThunk(
   'products/deleteProduct',
   async (productId, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`${BASE_URL}/products/${productId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.delete(`/products/${productId}`);
       return productId;
     } catch (err) {
       return rejectWithValue(

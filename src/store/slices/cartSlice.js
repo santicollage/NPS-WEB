@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const BASE_URL = import.meta.env.VITE_API_URL;
+import api from '../api';
 
 // ==============================
 // 1️⃣ THUNKS (acciones asincrónicas)
@@ -12,10 +10,7 @@ export const fetchCart = createAsyncThunk(
   'cart/fetchCart',
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.get(`${BASE_URL}/cart`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const { data } = await api.get('/cart');
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error al cargar carrito');
@@ -28,10 +23,7 @@ export const addToCart = createAsyncThunk(
   'cart/addToCart',
   async (itemData, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.post(`${BASE_URL}/cart/items`, itemData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const { data } = await api.post('/cart/items', itemData);
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -46,14 +38,9 @@ export const updateCartItem = createAsyncThunk(
   'cart/updateCartItem',
   async ({ cartItemId, quantity }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.patch(
-        `${BASE_URL}/cart/items/${cartItemId}`,
-        { quantity },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const { data } = await api.patch(`/cart/items/${cartItemId}`, {
+        quantity,
+      });
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -68,10 +55,7 @@ export const removeFromCart = createAsyncThunk(
   'cart/removeFromCart',
   async (cartItemId, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`${BASE_URL}/cart/items/${cartItemId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.delete(`/cart/items/${cartItemId}`);
       return cartItemId;
     } catch (err) {
       return rejectWithValue(
@@ -86,14 +70,7 @@ export const abandonCart = createAsyncThunk(
   'cart/abandonCart',
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.post(
-        `${BASE_URL}/cart/abandon`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const { data } = await api.post('/cart/abandon', {});
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -112,7 +89,7 @@ export const createGuestCart = createAsyncThunk(
   'cart/createGuestCart',
   async (guestId, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(`${BASE_URL}/cart/guest`, {
+      const { data } = await api.post('/cart/guest', {
         guest_id: guestId,
       });
       return data;
@@ -129,7 +106,7 @@ export const fetchGuestCart = createAsyncThunk(
   'cart/fetchGuestCart',
   async (guestId, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${BASE_URL}/cart/guest/${guestId}`);
+      const { data } = await api.get(`/cart/guest/${guestId}`);
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -144,10 +121,7 @@ export const addToGuestCart = createAsyncThunk(
   'cart/addToGuestCart',
   async ({ guestId, itemData }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(
-        `${BASE_URL}/cart/guest/${guestId}/items`,
-        itemData
-      );
+      const { data } = await api.post(`/cart/guest/${guestId}/items`, itemData);
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -162,8 +136,8 @@ export const updateGuestCartItem = createAsyncThunk(
   'cart/updateGuestCartItem',
   async ({ guestId, cartItemId, quantity }, { rejectWithValue }) => {
     try {
-      const { data } = await axios.patch(
-        `${BASE_URL}/cart/guest/${guestId}/items/${cartItemId}`,
+      const { data } = await api.patch(
+        `/cart/guest/${guestId}/items/${cartItemId}`,
         { quantity }
       );
       return data;
@@ -180,9 +154,7 @@ export const removeFromGuestCart = createAsyncThunk(
   'cart/removeFromGuestCart',
   async ({ guestId, cartItemId }, { rejectWithValue }) => {
     try {
-      await axios.delete(
-        `${BASE_URL}/cart/guest/${guestId}/items/${cartItemId}`
-      );
+      await api.delete(`/cart/guest/${guestId}/items/${cartItemId}`);
       return cartItemId;
     } catch (err) {
       return rejectWithValue(
@@ -197,10 +169,7 @@ export const abandonGuestCart = createAsyncThunk(
   'cart/abandonGuestCart',
   async (guestId, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(
-        `${BASE_URL}/cart/guest/${guestId}/abandon`,
-        {}
-      );
+      const { data } = await api.post(`/cart/guest/${guestId}/abandon`, {});
       return data;
     } catch (err) {
       return rejectWithValue(

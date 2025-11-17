@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const BASE_URL = import.meta.env.VITE_API_URL;
+import api from '../api';
 
 // ==============================
 // 1️⃣ THUNKS (async actions)
@@ -12,7 +10,7 @@ export const registerUser = createAsyncThunk(
   'user/registerUser',
   async (userData, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(`${BASE_URL}/users`, userData);
+      const { data } = await api.post('/users', userData);
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error registering user');
@@ -25,7 +23,7 @@ export const loginUser = createAsyncThunk(
   'user/loginUser',
   async (credentials, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(`${BASE_URL}/auth/login`, credentials);
+      const { data } = await api.post('/auth/login', credentials);
       // Save token to localStorage
       localStorage.setItem('token', data.token);
       return data;
@@ -40,7 +38,7 @@ export const loginWithGoogle = createAsyncThunk(
   'user/loginWithGoogle',
   async (tokenData, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(`${BASE_URL}/auth/google`, tokenData);
+      const { data } = await api.post('/auth/google', tokenData);
       // Save token to localStorage
       localStorage.setItem('token', data.token);
       return data;
@@ -57,10 +55,7 @@ export const fetchCurrentUser = createAsyncThunk(
   'user/fetchCurrentUser',
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.get(`${BASE_URL}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const { data } = await api.get('/auth/me');
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error fetching user data');
@@ -73,10 +68,7 @@ export const fetchUserById = createAsyncThunk(
   'user/fetchUserById',
   async (userId, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.get(`${BASE_URL}/users/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const { data } = await api.get(`/users/${userId}`);
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error fetching user');
@@ -89,14 +81,7 @@ export const updateUser = createAsyncThunk(
   'user/updateUser',
   async ({ userId, updateData }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.patch(
-        `${BASE_URL}/users/${userId}`,
-        updateData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const { data } = await api.patch(`/users/${userId}`, updateData);
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error updating user');
@@ -109,13 +94,25 @@ export const deleteUser = createAsyncThunk(
   'user/deleteUser',
   async (userId, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`${BASE_URL}/users/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.delete(`/users/${userId}`);
       return userId;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error deleting user');
+    }
+  }
+);
+
+// POST - Refresh session
+export const refreshSession = createAsyncThunk(
+  'user/refreshSession',
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await api.post('/auth/refresh');
+      // Save new token to localStorage
+      localStorage.setItem('token', data.token);
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || 'Error refreshing session');
     }
   }
 );
@@ -125,14 +122,7 @@ export const logoutUser = createAsyncThunk(
   'user/logoutUser',
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      await axios.post(
-        `${BASE_URL}/auth/logout`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await api.post('/auth/logout', {});
       localStorage.removeItem('token');
       return null;
     } catch (err) {
@@ -303,6 +293,25 @@ const userSlice = createSlice({
       .addCase(deleteUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      });
+
+    // REFRESH SESSION
+    builder
+      .addCase(refreshSession.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(refreshSession.fulfilled, (state) => {
+        state.loading = false;
+        state.success = 'Session refreshed successfully';
+      })
+      .addCase(refreshSession.rejected, (state) => {
+        state.loading = false;
+        state.error = false;
+        state.currentUser = null;
+        state.isAuthenticated = false;
+        state.isAdmin = false;
+        localStorage.removeItem('token');
       });
 
     // LOGOUT

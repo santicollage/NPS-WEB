@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const BASE_URL = import.meta.env.VITE_API_URL;
+import api from '../api';
 
 // ==============================
 // 1️⃣ THUNKS (acciones asincrónicas)
@@ -12,14 +10,7 @@ export const createPayment = createAsyncThunk(
   'payments/createPayment',
   async (paymentData, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
-      const { data } = await axios.post(
-        `${BASE_URL}/payments/create`,
-        paymentData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const { data } = await api.post(`/payments/create`, paymentData);
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error al crear pago');
@@ -32,7 +23,7 @@ export const checkPaymentStatus = createAsyncThunk(
   'payments/checkPaymentStatus',
   async (orderId, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${BASE_URL}/payments/${orderId}`);
+      const { data } = await api.get(`/payments/${orderId}`);
       return data;
     } catch (err) {
       return rejectWithValue(

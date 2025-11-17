@@ -18,3 +18,6 @@ export const store = configureStore({
     categories: categorySlice,
   },
 });
+
+// Make store available globally for API interceptors
+window.__REDUX_STORE__ = store;
