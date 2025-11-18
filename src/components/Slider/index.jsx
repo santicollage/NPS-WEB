@@ -18,7 +18,7 @@ function Slider() {
   const navigate = useNavigate();
 
   const handleNavigate = (slug) => {
-    navigate(`/products/${slug}`);
+    navigate(`/products/${slug ? slug : ''}`);
   };
 
   const calculatePosition = (index) => {
@@ -109,7 +109,7 @@ function Slider() {
             <h1 className="tittle">MOTOR</h1>
             <Lines />
             <p className="text"></p>
-            <button onClick={() => handleNavigate('motor')} className="button">
+            <button onClick={() => handleNavigate()} className="button">
               <div className="glow"></div>VER MÁS
             </button>
           </div>
@@ -146,7 +146,7 @@ function Slider() {
               Su vehículo merece lo mejor: Más de 30 marcas líderes en
               repuestos, calidad y confianza al alcance de su mano.
             </p>
-            <button onClick={() => handleNavigate('caja')} className="button">
+            <button onClick={() => handleNavigate()} className="button">
               {' '}
               <div className="glow"></div>VER MÁS
             </button>
@@ -166,10 +166,7 @@ function Slider() {
               Visítenos en nuestra sede principal, ubicada en la zona comercial
               de mayor cobertura, Estanzuel, Los Martires, Bogota.
             </p>
-            <button
-              onClick={() => handleNavigate('suspension')}
-              className="button"
-            >
+            <button onClick={() => handleNavigate()} className="button">
               {' '}
               <div className="glow"></div>VER MÁS
             </button>

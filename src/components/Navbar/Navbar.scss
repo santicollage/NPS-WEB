@@ -82,6 +82,7 @@
       &.active {
         border: none;
         @include icon-iluminate;
+        box-shadow: none;
       }
 
       svg {
