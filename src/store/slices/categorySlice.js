@@ -70,7 +70,7 @@ const categorySlice = createSlice({
   name: 'categories',
   initialState: {
     items: [],
-    loading: false,
+
     error: null,
     success: null,
   },
@@ -88,42 +88,42 @@ const categorySlice = createSlice({
     // FETCH CATEGORIES
     builder
       .addCase(fetchCategories.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.items = action.payload;
       })
       .addCase(fetchCategories.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // CREATE CATEGORY
     builder
       .addCase(createCategory.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(createCategory.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.items.push(action.payload);
         state.success = 'Categoría creada con éxito';
       })
       .addCase(createCategory.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // UPDATE CATEGORY
     builder
       .addCase(updateCategory.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(updateCategory.fulfilled, (state, action) => {
-        state.loading = false;
+
         const index = state.items.findIndex(
           (cat) => cat.category_id === action.payload.category_id
         );
@@ -133,25 +133,25 @@ const categorySlice = createSlice({
         state.success = 'Categoría actualizada con éxito';
       })
       .addCase(updateCategory.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // DELETE CATEGORY
     builder
       .addCase(deleteCategory.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(deleteCategory.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.items = state.items.filter(
           (cat) => cat.category_id !== action.payload
         );
         state.success = 'Categoría eliminada con éxito';
       })
       .addCase(deleteCategory.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
   },

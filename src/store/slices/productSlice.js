@@ -94,7 +94,7 @@ const productSlice = createSlice({
   initialState: {
     items: [],
     currentProduct: null,
-    loading: false,
+
     error: null,
     success: null,
     filters: {
@@ -153,11 +153,11 @@ const productSlice = createSlice({
     // FETCH PRODUCTS
     builder
       .addCase(fetchProducts.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.items = action.payload;
         // Assuming the API returns pagination info in the response
         if (action.payload.total !== undefined) {
@@ -168,49 +168,49 @@ const productSlice = createSlice({
         }
       })
       .addCase(fetchProducts.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // FETCH PRODUCT BY ID
     builder
       .addCase(fetchProductById.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(fetchProductById.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.currentProduct = action.payload;
       })
       .addCase(fetchProductById.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // CREATE PRODUCT
     builder
       .addCase(createProduct.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(createProduct.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.items.push(action.payload);
         state.success = 'Producto creado con éxito';
       })
       .addCase(createProduct.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // UPDATE PRODUCT
     builder
       .addCase(updateProduct.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(updateProduct.fulfilled, (state, action) => {
-        state.loading = false;
+
         const index = state.items.findIndex(
           (p) => p.product_id === action.payload.product_id
         );
@@ -223,18 +223,18 @@ const productSlice = createSlice({
         state.success = 'Producto actualizado con éxito';
       })
       .addCase(updateProduct.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // DELETE PRODUCT
     builder
       .addCase(deleteProduct.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.items = state.items.filter(
           (p) => p.product_id !== action.payload
         );
@@ -244,7 +244,7 @@ const productSlice = createSlice({
         state.success = 'Producto eliminado con éxito';
       })
       .addCase(deleteProduct.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
   },

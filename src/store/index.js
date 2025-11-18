@@ -6,6 +6,7 @@ import stockSlice from './slices/stockSlice';
 import orderSlice from './slices/orderSlice';
 import paymentSlice from './slices/paymentSlice';
 import categorySlice from './slices/categorySlice';
+import loadingSlice from './slices/loadingSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     orders: orderSlice,
     payments: paymentSlice,
     categories: categorySlice,
+    loading: loadingSlice,
   },
 });
 

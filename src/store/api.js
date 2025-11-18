@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { refreshSession } from './slices/userSlice';
+import { startLoading, stopLoading } from './slices/loadingSlice';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -26,22 +27,46 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
-// Request interceptor: Add auth token
+// Request interceptor: Add auth token and start loading
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    // Start loading for API requests
+    const store = window.__REDUX_STORE__;
+    if (store) {
+      store.dispatch(startLoading());
+    }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    // Stop loading on request error
+    const store = window.__REDUX_STORE__;
+    if (store) {
+      store.dispatch(stopLoading());
+    }
+    return Promise.reject(error);
+  }
 );
 
-// Response interceptor: Handle 401 and refresh token
+// Response interceptor: Handle 401 and refresh token, stop loading
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Stop loading on successful response
+    const store = window.__REDUX_STORE__;
+    if (store) {
+      store.dispatch(stopLoading());
+    }
+    return response;
+  },
   (error) => {
+    // Stop loading on error response
+    const store = window.__REDUX_STORE__;
+    if (store) {
+      store.dispatch(stopLoading());
+    }
     const originalRequest = error.config;
 
     if (error.response?.status === 401 && !originalRequest._retry) {

@@ -142,7 +142,7 @@ const userSlice = createSlice({
     currentUser: null,
     isAuthenticated: false,
     isAdmin: false,
-    loading: false,
+
     error: null,
     success: null,
   },
@@ -159,7 +159,7 @@ const userSlice = createSlice({
       state.currentUser = null;
       state.isAuthenticated = false;
       state.isAdmin = false;
-      state.loading = false;
+
       state.error = null;
       state.success = null;
       localStorage.removeItem('token');
@@ -173,71 +173,71 @@ const userSlice = createSlice({
     // REGISTER
     builder
       .addCase(registerUser.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.currentUser = action.payload;
         state.isAuthenticated = true;
         state.isAdmin = action.payload.role === 'admin';
         state.success = 'User registered successfully';
       })
       .addCase(registerUser.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // LOGIN
     builder
       .addCase(loginUser.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.currentUser = action.payload.user;
         state.isAuthenticated = true;
         state.isAdmin = action.payload.user.role === 'admin';
         state.success = 'Login successful';
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // GOOGLE LOGIN
     builder
       .addCase(loginWithGoogle.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(loginWithGoogle.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.currentUser = action.payload.user;
         state.isAuthenticated = true;
         state.isAdmin = action.payload.user.role === 'admin';
         state.success = 'Google login successful';
       })
       .addCase(loginWithGoogle.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // FETCH CURRENT USER
     builder
       .addCase(fetchCurrentUser.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(fetchCurrentUser.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.currentUser = action.payload;
         state.isAuthenticated = true;
         state.isAdmin = action.payload.role === 'admin';
       })
       .addCase(fetchCurrentUser.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
         state.isAuthenticated = false;
         state.isAdmin = false;
@@ -247,66 +247,66 @@ const userSlice = createSlice({
     // FETCH USER BY ID
     builder
       .addCase(fetchUserById.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(fetchUserById.fulfilled, (state) => {
-        state.loading = false;
+
         // Assuming this is for admin purposes, not updating currentUser
         state.success = 'User fetched successfully';
       })
       .addCase(fetchUserById.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // UPDATE USER
     builder
       .addCase(updateUser.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.currentUser = action.payload;
         state.isAdmin = action.payload.role === 'admin';
         state.success = 'User updated successfully';
       })
       .addCase(updateUser.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // DELETE USER
     builder
       .addCase(deleteUser.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(deleteUser.fulfilled, (state) => {
-        state.loading = false;
+
         state.currentUser = null;
         state.isAuthenticated = false;
         state.isAdmin = false;
         state.success = 'User deleted successfully';
       })
       .addCase(deleteUser.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // REFRESH SESSION
     builder
       .addCase(refreshSession.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(refreshSession.fulfilled, (state) => {
-        state.loading = false;
+
         state.success = 'Session refreshed successfully';
       })
       .addCase(refreshSession.rejected, (state) => {
-        state.loading = false;
+
         state.error = false;
         state.currentUser = null;
         state.isAuthenticated = false;
@@ -317,18 +317,18 @@ const userSlice = createSlice({
     // LOGOUT
     builder
       .addCase(logoutUser.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(logoutUser.fulfilled, (state) => {
-        state.loading = false;
+
         state.currentUser = null;
         state.isAuthenticated = false;
         state.isAdmin = false;
         state.success = 'Logged out successfully';
       })
       .addCase(logoutUser.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
         // Still logout even if server fails
         state.currentUser = null;

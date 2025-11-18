@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useWindowWidth } from '../../hooks/useWindowWidth';
-import {
-  selectCategories,
-  selectCategoriesLoading,
-} from '../../store/slices/categorySelectors';
+import { selectCategories } from '../../store/slices/categorySelectors';
 import { selectProductsFilters } from '../../store/slices/productSelectors';
 import { fetchCategories } from '../../store/slices/categorySlice';
 import { setFilters, clearFilters } from '../../store/slices/productSlice';
@@ -13,7 +10,6 @@ import './Filters.scss';
 const Filters = () => {
   const dispatch = useDispatch();
   const categories = useSelector(selectCategories);
-  const categoriesLoading = useSelector(selectCategoriesLoading);
   const currentFilters = useSelector(selectProductsFilters);
   const windowWidth = useWindowWidth();
 
@@ -29,10 +25,10 @@ const Filters = () => {
   const [isExpanded, setIsExpanded] = useState(windowWidth >= 768);
 
   useEffect(() => {
-    if (categories.length === 0 && !categoriesLoading) {
+    if (categories.length === 0) {
       dispatch(fetchCategories());
     }
-  }, [dispatch, categories.length, categoriesLoading]);
+  }, [dispatch, categories.length]);
 
   useEffect(() => {
     setIsExpanded(windowWidth >= 768);
@@ -110,7 +106,6 @@ const Filters = () => {
                 name="category_id"
                 value={localFilters.category_id}
                 onChange={handleInputChange}
-                disabled={categoriesLoading}
               >
                 <option value="">Todas las categorías</option>
                 {categories.map((category) => (

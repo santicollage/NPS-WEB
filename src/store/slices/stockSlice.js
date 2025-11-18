@@ -86,7 +86,7 @@ const stockSlice = createSlice({
     movements: [],
     activeReservations: [],
     cleanupResult: null,
-    loading: false,
+
     error: null,
     success: null,
     pagination: {
@@ -114,11 +114,11 @@ const stockSlice = createSlice({
     // FETCH STOCK MOVEMENTS
     builder
       .addCase(fetchStockMovements.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(fetchStockMovements.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.movements = action.payload;
         // Assuming the API returns pagination info
         if (action.payload.total !== undefined) {
@@ -129,54 +129,54 @@ const stockSlice = createSlice({
         }
       })
       .addCase(fetchStockMovements.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // CREATE STOCK MOVEMENT
     builder
       .addCase(createStockMovement.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(createStockMovement.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.movements.unshift(action.payload); // Add to beginning of array
         state.success = 'Movimiento de stock creado con éxito';
       })
       .addCase(createStockMovement.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // CLEANUP EXPIRED RESERVATIONS
     builder
       .addCase(cleanupExpiredReservations.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(cleanupExpiredReservations.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.cleanupResult = action.payload;
         state.success = 'Limpieza de reservas completada';
       })
       .addCase(cleanupExpiredReservations.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // FETCH ACTIVE RESERVATIONS
     builder
       .addCase(fetchActiveReservations.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(fetchActiveReservations.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.activeReservations = action.payload;
       })
       .addCase(fetchActiveReservations.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
   },

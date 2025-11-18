@@ -187,7 +187,7 @@ const cartSlice = createSlice({
   initialState: {
     cart: null,
     guestCart: null,
-    loading: false,
+
     error: null,
     success: null,
     isCartModalOpen: false,
@@ -221,26 +221,26 @@ const cartSlice = createSlice({
     // FETCH CART
     builder
       .addCase(fetchCart.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(fetchCart.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.cart = action.payload;
       })
       .addCase(fetchCart.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // ADD TO CART
     builder
       .addCase(addToCart.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(addToCart.fulfilled, (state, action) => {
-        state.loading = false;
+
         if (state.cart) {
           const existingItem = state.cart.items.find(
             (item) => item.cart_item_id === action.payload.cart_item_id
@@ -254,18 +254,18 @@ const cartSlice = createSlice({
         state.success = 'Producto agregado al carrito';
       })
       .addCase(addToCart.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // UPDATE CART ITEM
     builder
       .addCase(updateCartItem.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(updateCartItem.fulfilled, (state, action) => {
-        state.loading = false;
+
         if (state.cart) {
           const index = state.cart.items.findIndex(
             (item) => item.cart_item_id === action.payload.cart_item_id
@@ -277,18 +277,18 @@ const cartSlice = createSlice({
         state.success = 'Cantidad actualizada';
       })
       .addCase(updateCartItem.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // REMOVE FROM CART
     builder
       .addCase(removeFromCart.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(removeFromCart.fulfilled, (state, action) => {
-        state.loading = false;
+
         if (state.cart) {
           state.cart.items = state.cart.items.filter(
             (item) => item.cart_item_id !== action.payload
@@ -297,67 +297,67 @@ const cartSlice = createSlice({
         state.success = 'Producto removido del carrito';
       })
       .addCase(removeFromCart.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // ABANDON CART
     builder
       .addCase(abandonCart.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(abandonCart.fulfilled, (state) => {
-        state.loading = false;
+
         if (state.cart) {
           state.cart.status = 'abandoned';
         }
         state.success = 'Carrito abandonado';
       })
       .addCase(abandonCart.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // CREATE GUEST CART
     builder
       .addCase(createGuestCart.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(createGuestCart.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.guestCart = action.payload.cart;
         state.success = 'Carrito de invitado creado';
       })
       .addCase(createGuestCart.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // FETCH GUEST CART
     builder
       .addCase(fetchGuestCart.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(fetchGuestCart.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.guestCart = action.payload;
       })
       .addCase(fetchGuestCart.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // ADD TO GUEST CART
     builder
       .addCase(addToGuestCart.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(addToGuestCart.fulfilled, (state, action) => {
-        state.loading = false;
+
         if (state.guestCart) {
           const existingItem = state.guestCart.items.find(
             (item) => item.cart_item_id === action.payload.cart_item_id
@@ -371,18 +371,18 @@ const cartSlice = createSlice({
         state.success = 'Producto agregado al carrito de invitado';
       })
       .addCase(addToGuestCart.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // UPDATE GUEST CART ITEM
     builder
       .addCase(updateGuestCartItem.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(updateGuestCartItem.fulfilled, (state, action) => {
-        state.loading = false;
+
         if (state.guestCart) {
           const index = state.guestCart.items.findIndex(
             (item) => item.cart_item_id === action.payload.cart_item_id
@@ -394,18 +394,18 @@ const cartSlice = createSlice({
         state.success = 'Cantidad actualizada en carrito de invitado';
       })
       .addCase(updateGuestCartItem.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // REMOVE FROM GUEST CART
     builder
       .addCase(removeFromGuestCart.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(removeFromGuestCart.fulfilled, (state, action) => {
-        state.loading = false;
+
         if (state.guestCart) {
           state.guestCart.items = state.guestCart.items.filter(
             (item) => item.cart_item_id !== action.payload
@@ -414,25 +414,25 @@ const cartSlice = createSlice({
         state.success = 'Producto removido del carrito de invitado';
       })
       .addCase(removeFromGuestCart.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // ABANDON GUEST CART
     builder
       .addCase(abandonGuestCart.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(abandonGuestCart.fulfilled, (state) => {
-        state.loading = false;
+
         if (state.guestCart) {
           state.guestCart.status = 'abandoned';
         }
         state.success = 'Carrito de invitado abandonado';
       })
       .addCase(abandonGuestCart.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
   },

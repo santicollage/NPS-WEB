@@ -41,7 +41,7 @@ const paymentSlice = createSlice({
   initialState: {
     currentPayment: null,
     paymentStatus: null,
-    loading: false,
+
     error: null,
     success: null,
   },
@@ -65,31 +65,31 @@ const paymentSlice = createSlice({
     // CREATE PAYMENT
     builder
       .addCase(createPayment.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(createPayment.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.currentPayment = action.payload;
         state.success = 'Pago creado con éxito';
       })
       .addCase(createPayment.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // CHECK PAYMENT STATUS
     builder
       .addCase(checkPaymentStatus.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(checkPaymentStatus.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.paymentStatus = action.payload;
       })
       .addCase(checkPaymentStatus.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
   },

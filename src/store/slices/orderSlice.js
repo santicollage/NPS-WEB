@@ -114,7 +114,7 @@ const orderSlice = createSlice({
     orders: [],
     currentOrder: null,
     guestOrder: null,
-    loading: false,
+
     error: null,
     success: null,
     filters: {
@@ -158,27 +158,27 @@ const orderSlice = createSlice({
     // CREATE ORDER
     builder
       .addCase(createOrder.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(createOrder.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.currentOrder = action.payload;
         state.success = 'Orden creada con éxito';
       })
       .addCase(createOrder.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // FETCH ORDERS
     builder
       .addCase(fetchOrders.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.orders = action.payload;
         // Assuming the API returns pagination info
         if (action.payload.total !== undefined) {
@@ -189,69 +189,69 @@ const orderSlice = createSlice({
         }
       })
       .addCase(fetchOrders.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // FETCH ORDER BY ID
     builder
       .addCase(fetchOrderById.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(fetchOrderById.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.currentOrder = action.payload;
       })
       .addCase(fetchOrderById.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // UPDATE ORDER STATUS
     builder
       .addCase(updateOrderStatus.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(updateOrderStatus.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.currentOrder = action.payload;
         state.success = 'Estado de orden actualizado';
       })
       .addCase(updateOrderStatus.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // CREATE GUEST ORDER
     builder
       .addCase(createGuestOrder.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(createGuestOrder.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.guestOrder = action.payload;
         state.success = 'Orden de invitado creada con éxito';
       })
       .addCase(createGuestOrder.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
 
     // FETCH GUEST ORDER
     builder
       .addCase(fetchGuestOrder.pending, (state) => {
-        state.loading = true;
+
         state.error = null;
       })
       .addCase(fetchGuestOrder.fulfilled, (state, action) => {
-        state.loading = false;
+
         state.guestOrder = action.payload;
       })
       .addCase(fetchGuestOrder.rejected, (state, action) => {
-        state.loading = false;
+
         state.error = action.payload;
       });
   },

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   selectProducts,
-  selectProductsLoading,
   selectProductsError,
   selectProductsFilters,
   selectProductsPagination,
@@ -14,7 +13,6 @@ import './ProductsList.scss';
 const ProductList = () => {
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
-  const loading = useSelector(selectProductsLoading);
   const error = useSelector(selectProductsError);
   const filters = useSelector(selectProductsFilters);
   const pagination = useSelector(selectProductsPagination);
@@ -26,17 +24,6 @@ const ProductList = () => {
   const handlePageChange = (newPage) => {
     dispatch(setPagination({ page: newPage }));
   };
-
-  if (loading) {
-    return (
-      <div className="product-list">
-        <div className="loading">
-          <div className="spinner"></div>
-          <p>Cargando productos...</p>
-        </div>
-      </div>
-    );
-  }
 
   if (error) {
     const errorMessage =

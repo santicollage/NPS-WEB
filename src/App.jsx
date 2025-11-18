@@ -6,13 +6,16 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { refreshSession, fetchCurrentUser } from './store/slices/userSlice';
+import { selectIsLoading } from './store/slices/loadingSelectors';
+import { startLoading, stopLoading } from './store/slices/loadingSlice';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer';
 import Background from './components/Background';
+import LoadingScreen from './components/LoadingScreen';
 import Home from './pages/Home';
 import About from './pages/About';
 import Products from './pages/Products';
@@ -166,18 +169,22 @@ function App() {
 function AppContent() {
   const dispatch = useDispatch();
   const location = useLocation();
+  const isLoading = useSelector(selectIsLoading);
   const hideFooterRoutes = ['/login'];
   const showFooter = !hideFooterRoutes.includes(location.pathname);
 
   useEffect(() => {
     const initializeAuth = async () => {
+      dispatch(startLoading()); // Activar loading durante inicialización
       try {
         await dispatch(refreshSession()).unwrap();
         // Si refresh fue exitoso, obtener datos del usuario
-        dispatch(fetchCurrentUser());
+        await dispatch(fetchCurrentUser()).unwrap();
       } catch {
         // Refresh falló, usuario no está autenticado
         console.log('No hay sesión activa');
+      } finally {
+        dispatch(stopLoading()); // Desactivar loading después de inicialización
       }
     };
 
@@ -191,6 +198,7 @@ function AppContent() {
       <ContactButton />
       <ModalRoutes />
       {showFooter && <Footer />}
+      {isLoading && <LoadingScreen />}
     </>
   );
 }
