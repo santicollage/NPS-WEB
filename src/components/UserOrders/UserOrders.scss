@@ -1,32 +1,106 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
 .user-orders {
   margin-bottom: 2rem;
-  padding: 1rem;
-  border: 1px solid #ddd;
   border-radius: 8px;
-  background-color: #f9f9f9;
 
   h2 {
     margin-bottom: 1rem;
-    color: #333;
+    color: $secondary-color;
   }
 
-  ul {
-    list-style: none;
-    padding: 0;
+  .orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    @include transparent;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-    li {
-      margin-bottom: 1rem;
-      padding: 1rem;
-      border: 1px solid #eee;
-      border-radius: 4px;
-      background-color: #fff;
+    th,
+    td {
+      padding: 0.75rem;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
 
-      p {
-        margin: 0.25rem 0;
-        font-size: 0.9rem;
+    th {
+      background-color: $primary-color;
+      color: white;
+      font-weight: bold;
+    }
 
-        strong {
-          color: #555;
+    tbody tr:hover {
+      background-color: $primary-color-light;
+    }
+
+    .details-button {
+      padding: 0.6rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .orders-table {
+      background-color: transparent;
+      backdrop-filter: none;
+      thead {
+        display: none;
+      }
+
+      tbody {
+        tr {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 5px;
+          margin-bottom: 1rem;
+          border-radius: 8px;
+          padding: 1rem 2rem;
+          font-size: 1.3rem;
+          @include transparent;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        td {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          border: none;
+          padding: 0;
+          text-align: left;
+
+          &:first-child::before {
+            content: 'ID del Pedido: ';
+            font-weight: bold;
+            color: $secondary-color;
+          }
+
+          &:nth-child(2)::before {
+            content: 'Estado: ';
+            font-weight: bold;
+            color: $secondary-color;
+          }
+
+          &:nth-child(3)::before {
+            content: 'Total: ';
+            font-weight: bold;
+            color: $secondary-color;
+          }
+
+          &:nth-child(4)::before {
+            content: 'Fecha: ';
+            font-weight: bold;
+            color: $secondary-color;
+          }
+
+          &:nth-child(5) {
+            justify-content: center;
+            text-align: center;
+            margin-top: 0.5rem;
+          }
         }
       }
     }

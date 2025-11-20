@@ -1,12 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectOrders } from '../../store/slices/orderSelectors';
+import {
+  selectOrders,
+  selectOrdersError,
+} from '../../store/slices/orderSelectors';
 import { fetchOrders } from '../../store/slices/orderSlice';
+import OrderDetailsModal from './OrderDetailsModal';
 import './UserOrders.scss';
 
 const UserOrders = () => {
   const dispatch = useDispatch();
   const orders = useSelector(selectOrders);
+  const error = useSelector(selectOrdersError);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
+  console.log(orders);
 
   useEffect(() => {
     dispatch(fetchOrders());
@@ -15,32 +24,49 @@ const UserOrders = () => {
   return (
     <div className="user-orders">
       <h2>Mis Pedidos</h2>
-      {!Array.isArray(orders) ? (
-        <p>Error al cargar pedidos.</p>
-      ) : orders.length === 0 ? (
+      {error ? (
+        <p>Error: {error}</p>
+      ) : !orders || orders.length === 0 ? (
         <p>No tienes pedidos aún.</p>
       ) : (
-        <ul>
-          {orders.map((order) => (
-            <li key={order.id}>
-              <p>
-                <strong>ID del Pedido:</strong> {order.id}
-              </p>
-              <p>
-                <strong>Estado:</strong> {order.status}
-              </p>
-              <p>
-                <strong>Total:</strong> ${order.total}
-              </p>
-              <p>
-                <strong>Fecha:</strong>{' '}
-                {new Date(order.createdAt).toLocaleDateString()}
-              </p>
-              {/* Agregar más detalles según sea necesario */}
-            </li>
-          ))}
-        </ul>
+        <table className="orders-table">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Estado</th>
+              <th>Total</th>
+              <th>Fecha</th>
+              <th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map((order) => (
+              <tr key={order.order_id}>
+                <td>{order.order_id}</td>
+                <td>{order.status}</td>
+                <td>${order.total_amount}</td>
+                <td>{new Date(order.created_at).toLocaleDateString()}</td>
+                <td>
+                  <button
+                    onClick={() => {
+                      setSelectedOrder(order);
+                      setModalOpen(true);
+                    }}
+                    className="details-button"
+                  >
+                    Ver Detalles
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
+      <OrderDetailsModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        order={selectedOrder}
+      />
     </div>
   );
 };

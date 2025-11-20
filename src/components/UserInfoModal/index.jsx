@@ -79,7 +79,7 @@ const UserInfoModal = ({ isOpen, onClose, user, onUpdateUser }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="user-modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h3>Editar Perfil</h3>
         <form onSubmit={handleSubmit}>
