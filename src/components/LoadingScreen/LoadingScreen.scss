@@ -12,7 +12,8 @@
 
 /* === CONTAINER === */
 .gears {
-  position: relative;
+  position: absolute;
+  left: 50%;
   display: flex;
   align-items: center;
 }

@@ -1,19 +1,25 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
 .cart-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
   z-index: 1000;
-  padding-top: 60px; // Ajustar según la altura del navbar
+  padding-top: 92px;
 }
 
 .cart-modal {
-  background: white;
+  @include transparent;
+  position: absolute;
+  top: 93px;
+  right: 45px;
   width: 400px;
   max-width: 90vw;
   max-height: 80vh;
@@ -34,24 +40,24 @@
   h2 {
     margin: 0;
     font-size: 1.5rem;
-    color: #333;
+    color: $secondary-color;
   }
 
   .close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
     background: none;
     border: none;
     font-size: 2rem;
     cursor: pointer;
-    color: #666;
     padding: 0;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    color: $secondary-color;
 
     &:hover {
-      color: #333;
+      color: white;
+      transform: scale(1.1);
+      box-shadow: none;
     }
   }
 }
@@ -195,10 +201,11 @@
   }
 
   .cart-modal {
-    width: 100vw;
+    right: 50%;
+    transform: translateX(50%);
+    width: 90vw;
     max-width: none;
-    max-height: 100vh;
-    border-radius: 0;
+    max-height: 80vh;
   }
 
   .cart-header,
