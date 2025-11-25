@@ -39,11 +39,11 @@ const Cart = () => {
     });
   };
 
-  console.log(currentCart);
-
   const debounceRef = useRef(null);
   const localQuantitiesRef = useRef({});
   const [localQuantities, setLocalQuantities] = useState({});
+  const [editingItemId, setEditingItemId] = useState(null);
+  const [editingQuantity, setEditingQuantity] = useState('');
 
   const updateLocalQuantity = (cartItemId, quantity) => {
     localQuantitiesRef.current[cartItemId] = quantity;
@@ -53,6 +53,7 @@ const Cart = () => {
   useEffect(() => {
     if (isOpen) {
       setLocalQuantities({});
+      setEditingItemId(null);
       if (isAuthenticated) {
         dispatch(fetchCart());
       } else {
@@ -65,8 +66,11 @@ const Cart = () => {
   }, [isOpen, isAuthenticated, dispatch]);
 
   const handleUpdateQuantity = useCallback(
-    (cartItemId, newQuantity) => {
+    async (cartItemId, newQuantity) => {
       if (newQuantity <= 0) return;
+
+      const previousQuantity =
+        items.find((item) => item.cart_item_id === cartItemId)?.quantity ?? 1;
 
       updateLocalQuantity(cartItemId, newQuantity);
 
@@ -74,24 +78,29 @@ const Cart = () => {
         clearTimeout(debounceRef.current);
       }
 
-      debounceRef.current = setTimeout(() => {
+      debounceRef.current = setTimeout(async () => {
         const quantity = localQuantitiesRef.current[cartItemId];
         if (quantity !== undefined) {
-          if (isAuthenticated) {
-            dispatch(updateCartItem({ cartItemId, quantity }));
-          } else {
-            dispatch(
-              updateGuestCartItem({
-                guestId: guestCart.guest_id,
-                cartItemId,
-                quantity,
-              })
-            );
+          try {
+            if (isAuthenticated) {
+              await dispatch(updateCartItem({ cartItemId, quantity })).unwrap();
+            } else {
+              await dispatch(
+                updateGuestCartItem({
+                  guestId: guestCart.guest_id,
+                  cartItemId,
+                  quantity,
+                })
+              ).unwrap();
+            }
+          } catch (error) {
+            updateLocalQuantity(cartItemId, previousQuantity);
+            alert(error.error.message || 'Error al actualizar cantidad');
           }
         }
       }, 1000);
     },
-    [isAuthenticated, guestCart, dispatch]
+    [isAuthenticated, guestCart, dispatch, items]
   );
 
   const handleRemoveItem = (cartItemId) => {
@@ -102,6 +111,47 @@ const Cart = () => {
         removeFromGuestCart({ guestId: guestCart.guest_id, cartItemId })
       );
     }
+  };
+
+  const handleStartEditing = (cartItemId) => {
+    const currentQuantity =
+      localQuantities[cartItemId] ??
+      items.find((item) => item.cart_item_id === cartItemId)?.quantity ??
+      1;
+    setEditingItemId(cartItemId);
+    setEditingQuantity(currentQuantity.toString());
+  };
+
+  const handleConfirmQuantity = async () => {
+    const quantity = parseInt(editingQuantity, 10);
+    if (quantity > 0) {
+      const previousQuantity =
+        items.find((item) => item.cart_item_id === editingItemId)?.quantity ??
+        1;
+
+      updateLocalQuantity(editingItemId, quantity);
+
+      try {
+        if (isAuthenticated) {
+          await dispatch(
+            updateCartItem({ cartItemId: editingItemId, quantity })
+          ).unwrap();
+        } else {
+          await dispatch(
+            updateGuestCartItem({
+              guestId: guestCart.guest_id,
+              cartItemId: editingItemId,
+              quantity,
+            })
+          ).unwrap();
+        }
+      } catch (error) {
+        updateLocalQuantity(editingItemId, previousQuantity);
+        alert(error.error.message || 'Error al actualizar cantidad');
+      }
+    }
+    setEditingItemId(null);
+    setEditingQuantity('');
   };
 
   const calculateTotal = () => {
@@ -173,10 +223,32 @@ const Cart = () => {
                           >
                             <LessIcon />
                           </button>
-                          <span>
-                            {localQuantities[item.cart_item_id] ??
-                              item.quantity}
-                          </span>
+                          {editingItemId === item.cart_item_id ? (
+                            <input
+                              type="number"
+                              value={editingQuantity}
+                              onChange={(e) =>
+                                setEditingQuantity(e.target.value)
+                              }
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  handleConfirmQuantity();
+                                }
+                              }}
+                              onBlur={handleConfirmQuantity}
+                              autoFocus
+                              min="1"
+                            />
+                          ) : (
+                            <span
+                              onClick={() =>
+                                handleStartEditing(item.cart_item_id)
+                              }
+                            >
+                              {localQuantities[item.cart_item_id] ??
+                                item.quantity}
+                            </span>
+                          )}
                           <button
                             className="add-button"
                             onClick={() =>
