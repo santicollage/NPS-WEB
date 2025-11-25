@@ -2,6 +2,7 @@ import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshSession, fetchCurrentUser } from './store/slices/userSlice';
+import { fetchCart } from './store/slices/cartSlice';
 import { selectIsLoading } from './store/slices/loadingSelectors';
 import { startLoading, stopLoading } from './store/slices/loadingSlice';
 import Navbar from './components/Navbar/Navbar';
@@ -33,6 +34,7 @@ function AppContent() {
       try {
         await dispatch(refreshSession()).unwrap();
         await dispatch(fetchCurrentUser()).unwrap();
+        await dispatch(fetchCart()).unwrap();
       } catch {
         console.log('No hay sesión activa');
       } finally {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectIsAuthenticated } from '../../store/slices/userSelectors';
+import { selectTotalItems } from '../../store/slices/cartSelectors';
 import { openCartModal } from '../../store/slices/cartSlice';
 import logo from '../../assets/images/logo-nps.png';
 import LoginIcon from '../../assets/icons/LoginIcon';
@@ -14,6 +15,7 @@ import './Navbar.scss';
 const Navbar = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const totalItems = useSelector(selectTotalItems);
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [navbarStyle, setNavbarStyle] = useState({
@@ -26,19 +28,30 @@ const Navbar = () => {
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
 
+      let newStyle;
+
       if (location.pathname === '/') {
-        if (scrollY >= windowHeight) {
-          setNavbarStyle({ opacity: 1, transform: 'translateY(0)' });
-        } else {
-          setNavbarStyle({ opacity: 0, transform: 'translateY(-100%)' });
-        }
+        newStyle =
+          scrollY >= windowHeight
+            ? { opacity: 1, transform: 'translateY(0)' }
+            : { opacity: 0, transform: 'translateY(-100%)' };
       } else {
-        setNavbarStyle({ opacity: 1, transform: 'translateY(0)' });
+        newStyle = { opacity: 1, transform: 'translateY(0)' };
       }
+
+      setNavbarStyle((prev) => {
+        if (
+          prev.opacity === newStyle.opacity &&
+          prev.transform === newStyle.transform
+        ) {
+          return prev;
+        }
+        return newStyle;
+      });
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
+    handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, [location.pathname]);
@@ -100,6 +113,9 @@ const Navbar = () => {
               }}
             >
               <CartIcon />
+              {totalItems > 0 && (
+                <span className="cart-count">{totalItems}</span>
+              )}
             </button>
           </li>
         </ul>
