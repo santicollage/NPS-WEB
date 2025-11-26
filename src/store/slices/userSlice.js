@@ -10,7 +10,9 @@ export const registerUser = createAsyncThunk(
   'user/registerUser',
   async (userData, { rejectWithValue }) => {
     try {
-      const { data } = await api.post('/users', userData);
+      const guestId = localStorage.getItem('guest_id');
+      const payload = guestId ? { ...userData, guest_id: guestId } : userData;
+      const { data } = await api.post('/users', payload);
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error registering user');
@@ -23,7 +25,9 @@ export const loginUser = createAsyncThunk(
   'user/loginUser',
   async (credentials, { rejectWithValue }) => {
     try {
-      const { data } = await api.post('/auth/login', credentials);
+      const guestId = localStorage.getItem('guest_id');
+      const payload = guestId ? { ...credentials, guest_id: guestId } : credentials;
+      const { data } = await api.post('/auth/login', payload);
       // Save token to localStorage
       localStorage.setItem('token', data.token);
       return data;
@@ -38,7 +42,9 @@ export const loginWithGoogle = createAsyncThunk(
   'user/loginWithGoogle',
   async (tokenData, { rejectWithValue }) => {
     try {
-      const { data } = await api.post('/auth/google', tokenData);
+      const guestId = localStorage.getItem('guest_id');
+      const payload = guestId ? { ...tokenData, guest_id: guestId } : tokenData;
+      const { data } = await api.post('/auth/google', payload);
       // Save token to localStorage
       localStorage.setItem('token', data.token);
       return data;

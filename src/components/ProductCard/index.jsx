@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import './ProductCard.scss';
 import ContactIcon from '../../assets/icons/ContactIcon';
@@ -14,6 +15,8 @@ import {
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const guestCart = useSelector(selectGuestCart);
 
@@ -64,8 +67,8 @@ const ProductCard = ({ product }) => {
   return (
     <div className="product-card">
       <div className="product-image">
-        {product.image_url ? (
-          <img src={product.image_url} alt={product.name} loading="lazy" />
+        {product.images && product.images.length > 0 ? (
+          <img src={product.images[0]} alt={product.name} loading="lazy" />
         ) : (
           <div className="no-image">
             <span>Sin imagen</span>
@@ -102,7 +105,12 @@ const ProductCard = ({ product }) => {
 
       <div className="product-actions">
         <div className="action-buttons-row">
-          <button className="btn-secondary">Ver Detalles</button>
+          <button 
+            className="btn-secondary"
+            onClick={() => navigate(`/products/${product.product_id}`, { state: { backgroundLocation: location } })}
+          >
+            Ver Detalles
+          </button>
           <button
             className="contact-btn btn-quartertiary"
             onClick={handleContactClick}

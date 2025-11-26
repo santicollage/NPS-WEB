@@ -114,8 +114,6 @@ const AppRoutes = () => {
         <>
           <Routes>
             <Route path="/products/:id" element={<ProductDetail modal />} />
-          </Routes>
-          <Routes>
             <Route
               path="/admin/products/:id"
               element={
@@ -124,8 +122,6 @@ const AppRoutes = () => {
                 </ProtectedRoute>
               }
             />
-          </Routes>
-          <Routes>
             <Route
               path="/admin/orders/:id"
               element={

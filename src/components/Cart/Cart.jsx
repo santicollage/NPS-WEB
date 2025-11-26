@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectIsAuthenticated } from '../../store/slices/userSelectors';
 import {
@@ -24,6 +25,8 @@ import CartIcon2 from '../../assets/icons/CartIcon2';
 
 const Cart = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const isOpen = useSelector(selectIsCartModalOpen);
   const cart = useSelector(selectCartData);
@@ -191,12 +194,20 @@ const Cart = () => {
                 {items.map((item) => (
                   <div key={item.cart_item_id} className="cart-item">
                     <img
-                      src={item.product.image_url}
+                      src={item.product.images?.[0] || ''}
                       alt={item.product.name}
                       className="item-image"
                     />
                     <div className="item-details">
-                      <h3>{item.product.name}</h3>
+                      <h3 
+                        onClick={() => {
+                          dispatch(closeCartModal());
+                          navigate(`/products/${item.product.product_id}`, { state: { backgroundLocation: location } });
+                        }}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        {item.product.name}
+                      </h3>
                       <div className="item-container">
                         <p className="item-price">
                           $

@@ -51,21 +51,32 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
             <ul>
               {order.items.map((item) => (
                 <li key={item.order_item_id}>
-                  <p>
-                    <strong>Producto:</strong> {item.product.name}
-                  </p>
-                  <p>
-                    <strong>Descripción:</strong> {item.product.description}
-                  </p>
-                  <p>
-                    <strong>Cantidad:</strong> {item.quantity}
-                  </p>
-                  <p>
-                    <strong>Precio Unitario:</strong> ${item.unit_price}
-                  </p>
-                  <p>
-                    <strong>Subtotal:</strong> ${item.subtotal}
-                  </p>
+                  {item.product.images && item.product.images.length > 0 ? (
+                    <img
+                      src={item.product.images[0]}
+                      alt={item.product.name}
+                      className="item-image"
+                    />
+                  ) : (
+                    <div className="item-image" style={{ background: '#eee', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem' }}>Sin img</div>
+                  )}
+                  <div className="item-details">
+                    <p>
+                      <strong>Producto:</strong> {item.product.name}
+                    </p>
+                    <p>
+                      <strong>Descripción:</strong> {item.product.description}
+                    </p>
+                    <p>
+                      <strong>Cantidad:</strong> {item.quantity}
+                    </p>
+                    <p>
+                      <strong>Precio Unitario:</strong> ${item.unit_price}
+                    </p>
+                    <p>
+                      <strong>Subtotal:</strong> ${item.subtotal}
+                    </p>
+                  </div>
                 </li>
               ))}
             </ul>
