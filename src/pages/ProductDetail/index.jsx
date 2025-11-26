@@ -178,7 +178,17 @@ const ProductDetail = ({ modal }) => {
 
               <div className="info-row">
                 <span className="label">Categoria</span>
-                <span className="value">{product.category_name || 'General'}</span>
+                <div className="value categories-container">
+                  {product.categories && product.categories.length > 0 ? (
+                    product.categories.map((c) => (
+                      <span key={c.category_id} className="category-tag">
+                        {c.name}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="category-tag">General</span>
+                  )}
+                </div>
               </div>
 
               <div className="price-row">

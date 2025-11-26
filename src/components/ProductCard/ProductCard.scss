@@ -116,7 +116,11 @@
     }
 
     .product-category {
-      span {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      
+      .category-tag {
         background: rgba(0, 123, 255, 0.2);
         color: #60a5fa;
         padding: 0.25rem 0.5rem;

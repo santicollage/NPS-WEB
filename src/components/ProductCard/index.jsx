@@ -83,7 +83,6 @@ const ProductCard = ({ product }) => {
             <span className="product-reference">Ref: {product.reference}</span>
           )}
         </div>
-        <p className="product-description">{product.description}</p>
 
         <div className="product-details">
           <span className="product-price">{formatPrice(product.price)}</span>
@@ -99,7 +98,15 @@ const ProductCard = ({ product }) => {
         </div>
 
         <div className="product-category">
-          <span>{product.category_name || 'Sin categoría'}</span>
+          {product.categories && product.categories.length > 0 ? (
+            product.categories.map((c) => (
+              <span key={c.category_id} className="category-tag">
+                {c.name}
+              </span>
+            ))
+          ) : (
+            <span className="category-tag">Sin categoría</span>
+          )}
         </div>
       </div>
 
