@@ -199,15 +199,20 @@ const Cart = () => {
                       className="item-image"
                     />
                     <div className="item-details">
-                      <h3 
-                        onClick={() => {
-                          dispatch(closeCartModal());
-                          navigate(`/products/${item.product.product_id}`, { state: { backgroundLocation: location } });
-                        }}
-                        style={{ cursor: 'pointer' }}
-                      >
-                        {item.product.name}
-                      </h3>
+                      <div className="item-container">
+                        <h3 
+                          onClick={() => {
+                            dispatch(closeCartModal());
+                            navigate(`/products/${item.product.product_id}`, { state: { backgroundLocation: location } });
+                          }}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          {item.product.name}
+                        </h3>
+                        {item.product.reference && (
+                          <p className="item-reference">Ref: {item.product.reference}</p>
+                        )}
+                      </div>
                       <div className="item-container">
                         <p className="item-price">
                           $

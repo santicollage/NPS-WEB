@@ -20,9 +20,9 @@
   position: absolute;
   top: 93px;
   right: 45px;
-  width: 400px;
+  width: 500px;
   max-width: 90vw;
-  max-height: 80vh;
+  max-height: 85vh;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   display: flex;
@@ -32,9 +32,10 @@
 .cart-header {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 20px;
   padding: 20px;
-  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0;
 
   h2 {
     margin: 0;
@@ -89,7 +90,7 @@
   display: flex;
   align-items: center;
   padding: 15px 10px;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
 
   &:last-child {
     border-bottom: none;
@@ -107,9 +108,16 @@
     flex: 1;
 
     h3 {
-      margin: 0 0 8px 0;
+      margin: 0 0 4px 0;
       font-size: 1rem;
       color: $secondary-color;
+    }
+
+    .item-reference {
+      margin: 0 0 8px 0;
+      font-size: 0.85rem;
+      color: #888;
+      font-style: italic;
     }
 
     .item-container {
@@ -120,7 +128,7 @@
       .item-price {
         margin: 0;
         font-weight: bold;
-        color: #007bff;
+        color: #4ade80;
       }
 
       .quantity-controls {
@@ -177,7 +185,7 @@
   .remove-button {
     position: absolute;
     top: 8px;
-    left: 0;
+    left: 4px;
     background: none;
     border: none;
     cursor: pointer;
@@ -206,7 +214,7 @@
 }
 
 .cart-footer {
-  border: 2px solid #e0e0e0;
+  border: 1px solid #e0e0e0;
   border-radius: 5px;
   padding: 20px;
 
@@ -236,7 +244,7 @@
     transform: translateX(50%);
     width: 90vw;
     max-width: none;
-    max-height: 80vh;
+    max-height: 90vh;
   }
 
   .cart-header,
