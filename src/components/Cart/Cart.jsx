@@ -157,7 +157,7 @@ const Cart = () => {
     setEditingQuantity('');
   };
 
-  const calculateTotal = () => {
+  const calculateSubtotal = () => {
     return items.reduce(
       (total, item) =>
         total +
@@ -165,6 +165,10 @@ const Cart = () => {
           (localQuantities[item.cart_item_id] ?? item.quantity),
       0
     );
+  };
+
+  const calculateTotal = () => {
+    return calculateSubtotal() + (parseFloat(currentCart?.shipping_cost) || 0);
   };
 
   if (!isOpen) return null;
@@ -205,7 +209,6 @@ const Cart = () => {
                             dispatch(closeCartModal());
                             navigate(`/products/${item.product.product_id}`, { state: { backgroundLocation: location } });
                           }}
-                          style={{ cursor: 'pointer' }}
                         >
                           {item.product.name}
                         </h3>
@@ -291,6 +294,14 @@ const Cart = () => {
               </div>
               <div className="cart-footer">
                 <div className="total">
+                  <span className="subtotal">
+                    Subtotal: ${formatPrice(calculateSubtotal())}
+                  </span>
+                  {(parseFloat(currentCart?.shipping_cost) || 0) > 0 && (
+                    <span className="shipping-cost">
+                      Envío: ${formatPrice(parseFloat(currentCart.shipping_cost))}
+                    </span>
+                  )}
                   <strong>Total: ${formatPrice(calculateTotal())}</strong>
                 </div>
                 <button className="checkout-button">Pagar ahora</button>

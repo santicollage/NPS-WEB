@@ -36,11 +36,12 @@ export const addToCart = createAsyncThunk(
 // PATCH - Actualizar cantidad de item en carrito
 export const updateCartItem = createAsyncThunk(
   'cart/updateCartItem',
-  async ({ cartItemId, quantity }, { rejectWithValue }) => {
+  async ({ cartItemId, quantity }, { dispatch, rejectWithValue }) => {
     try {
       const { data } = await api.patch(`/cart/items/${cartItemId}`, {
         quantity,
       });
+      dispatch(fetchCart());
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -53,9 +54,10 @@ export const updateCartItem = createAsyncThunk(
 // DELETE - Remover item del carrito
 export const removeFromCart = createAsyncThunk(
   'cart/removeFromCart',
-  async (cartItemId, { rejectWithValue }) => {
+  async (cartItemId, { dispatch, rejectWithValue }) => {
     try {
       await api.delete(`/cart/items/${cartItemId}`);
+      dispatch(fetchCart());
       return cartItemId;
     } catch (err) {
       return rejectWithValue(
@@ -134,12 +136,13 @@ export const addToGuestCart = createAsyncThunk(
 // PATCH - Actualizar cantidad de item en carrito de invitado
 export const updateGuestCartItem = createAsyncThunk(
   'cart/updateGuestCartItem',
-  async ({ guestId, cartItemId, quantity }, { rejectWithValue }) => {
+  async ({ guestId, cartItemId, quantity }, { dispatch, rejectWithValue }) => {
     try {
       const { data } = await api.patch(
         `/cart/guest/${guestId}/items/${cartItemId}`,
         { quantity }
       );
+      dispatch(fetchGuestCart(guestId));
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -152,9 +155,10 @@ export const updateGuestCartItem = createAsyncThunk(
 // DELETE - Remover item del carrito de invitado
 export const removeFromGuestCart = createAsyncThunk(
   'cart/removeFromGuestCart',
-  async ({ guestId, cartItemId }, { rejectWithValue }) => {
+  async ({ guestId, cartItemId }, { dispatch, rejectWithValue }) => {
     try {
       await api.delete(`/cart/guest/${guestId}/items/${cartItemId}`);
+      dispatch(fetchGuestCart(guestId));
       return cartItemId;
     } catch (err) {
       return rejectWithValue(
