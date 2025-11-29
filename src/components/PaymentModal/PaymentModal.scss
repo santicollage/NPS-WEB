@@ -1,0 +1,129 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.confirmation-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.confirmation-modal {
+  @include transparent;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2.5rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  color: #fff;
+
+  h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color: #fff;
+  }
+
+  .modal-content {
+    margin-bottom: 2rem;
+    backdrop-filter: blur(5px);
+    padding: 0.5rem;
+
+    p {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      color: #ccc;
+
+      img {
+        height: 25px;
+        margin-left: 0.5rem;
+      }
+    }
+
+    .payment-methods {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+
+      .nequi {
+        height: 45px;
+      }
+
+      .pse {
+        height: 35px;
+      }
+
+      .visa {
+        height: 25px;
+      }
+
+      .bancolombia {
+        margin-left: -1rem;
+        height: 35px;
+      }
+    }
+
+    .amount-to-pay {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #53e639;
+      margin: 1.5rem 0;
+    }
+  }
+
+  .modal-actions {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+
+    button {
+      flex: 1;
+      padding: 0.8rem 2rem;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &.confirm-button {
+        background-color: #e63946;
+        color: white;
+        border: none;
+
+        &:hover {
+          background-color: #ff4d5a;
+        }
+
+        &:disabled {
+          background-color: #552b30;
+          cursor: not-allowed;
+        }
+      }
+
+      &.cancel-button {
+        background-color: transparent;
+        border: 1px solid #555;
+        color: #ccc;
+
+        &:hover {
+          border-color: #fff;
+          color: #fff;
+        }
+      }
+    }
+  }
+}

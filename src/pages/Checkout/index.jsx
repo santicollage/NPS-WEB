@@ -12,10 +12,10 @@ import {
   clearStatus as clearOrderStatus,
 } from '../../store/slices/orderSlice';
 import {
-  createPayment,
   clearStatus as clearPaymentStatus,
 } from '../../store/slices/paymentSlice';
 import './Checkout.scss';
+import PaymentModal from '../../components/PaymentModal';
 
 import colombiaData from '../../data/colombia.json';
 
@@ -245,37 +245,6 @@ const Checkout = () => {
     }
   };
 
-  const handleConfirmPayment = async () => {
-    if (!createdOrder) return;
-    setIsProcessing(true);
-    dispatch(clearPaymentStatus());
-
-    try {
-      const paymentPayload = {
-        order_id: createdOrder.order_id,
-        ...(isAuthenticated ? {} : { guest_id: guestCart?.guest_id }),
-      };
-
-      const resultAction = await dispatch(createPayment(paymentPayload));
-
-      if (createPayment.fulfilled.match(resultAction)) {
-        const { payu_checkout_url } = resultAction.payload;
-        if (payu_checkout_url) {
-          window.location.href = payu_checkout_url;
-        } else {
-          alert('No se recibió la URL de pago');
-        }
-      } else {
-        alert(resultAction.payload?.error || 'Error al iniciar el pago');
-      }
-    } catch (error) {
-      console.error('Error initiating payment:', error);
-      alert('Ocurrió un error al procesar el pago');
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
   return (
     <div className="checkout-page">
       <h1>Checkout</h1>
@@ -487,37 +456,14 @@ const Checkout = () => {
         </button>
       </div>
 
-      {isModalOpen && (
-        <div className="confirmation-modal-overlay">
-          <div className="confirmation-modal">
-            <h2>Confirmar Pago</h2>
-            <div className="modal-content">
-              <p>Su orden ha sido creada exitosamente.</p>
-              <p>Valor a pagar:</p>
-              <div className="amount-to-pay">
-                ${formatPrice(createdOrder?.total_amount || 0)}
-              </div>
-              <p>¿Desea proceder al pago?</p>
-            </div>
-            <div className="modal-actions">
-              <button 
-                className="cancel-button"
-                onClick={() => setIsModalOpen(false)}
-                disabled={isProcessing}
-              >
-                Cancelar
-              </button>
-              <button 
-                className="confirm-button"
-                onClick={handleConfirmPayment}
-                disabled={isProcessing}
-              >
-                {isProcessing ? 'Redirigiendo...' : 'Pagar'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <PaymentModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          navigate('/profile');
+        }}
+        order={createdOrder}
+      />
     </div>
   );
 };

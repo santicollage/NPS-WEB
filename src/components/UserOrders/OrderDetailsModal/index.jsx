@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PaymentModal from '../../PaymentModal';
 import './OrderDetailsModal.scss';
 
 const OrderDetailsModal = ({ isOpen, onClose, order }) => {
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+
   if (!isOpen || !order) return null;
 
   return (
@@ -12,6 +15,16 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
         </button>
         <h3>Detalles del Pedido #{order.order_id}</h3>
         <div className="modal-content">
+          {order.status === 'pending' && (
+            <div className="modal-actions">
+              <button 
+                className="pay-button"
+                onClick={() => setIsPaymentModalOpen(true)}
+              >
+                Pagar Orden
+              </button>
+            </div>
+          )}
           <div className="order-info">
             <p>
               <strong>Cliente:</strong> {order.customer_name || 'N/A'}
@@ -96,8 +109,16 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
               <p>No hay pagos registrados.</p>
             )}
           </div>
+          
+          
         </div>
       </div>
+      
+      <PaymentModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        order={order}
+      />
     </div>
   );
 };
