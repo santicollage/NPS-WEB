@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './UserInfoModal.scss';
+import colombiaData from '../../data/colombia.json';
 
 const UserInfoModal = ({ isOpen, onClose, user, onUpdateUser }) => {
   const [formData, setFormData] = useState({
@@ -104,24 +105,42 @@ const UserInfoModal = ({ isOpen, onClose, user, onUpdateUser }) => {
             />
           </label>
           <label>
+            Departamento:
+            <select
+              value={formData.department}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  department: e.target.value,
+                  city: '', // Reset city when department changes
+                })
+              }
+            >
+              <option value="">Seleccione un departamento</option>
+              {Object.keys(colombiaData).map((dept) => (
+                <option key={dept} value={dept}>
+                  {dept}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
             Ciudad:
-            <input
-              type="text"
+            <select
               value={formData.city}
               onChange={(e) =>
                 setFormData({ ...formData, city: e.target.value })
               }
-            />
-          </label>
-          <label>
-            Departamento:
-            <input
-              type="text"
-              value={formData.department}
-              onChange={(e) =>
-                setFormData({ ...formData, department: e.target.value })
-              }
-            />
+              disabled={!formData.department}
+            >
+              <option value="">Seleccione una ciudad</option>
+              {formData.department &&
+                colombiaData[formData.department]?.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+            </select>
           </label>
           <label>
             Dirección:

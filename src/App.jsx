@@ -25,8 +25,12 @@ function AppContent() {
   const dispatch = useDispatch();
   const location = useLocation();
   const isLoading = useSelector(selectIsLoading);
-  const hideFooterRoutes = ['/login'];
+  const hideFooterRoutes = ['/login', '/checkout', '/order-success'];
+  const hideNavbarRoutes = ['/checkout', '/order-success'];
+  const hideContactButtonRoutes = ['/checkout', '/order-success'];
   const showFooter = !hideFooterRoutes.includes(location.pathname);
+  const showNavbar = !hideNavbarRoutes.includes(location.pathname);
+  const showContactButton = !hideContactButtonRoutes.includes(location.pathname);
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -48,8 +52,8 @@ function AppContent() {
   return (
     <>
       <Background />
-      <Navbar />
-      <ContactButton />
+      {showNavbar && <Navbar />}
+      {showContactButton && <ContactButton />}
       <AppRoutes />
       <ScrollRestoration />
       {showFooter && <Footer />}

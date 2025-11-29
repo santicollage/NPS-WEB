@@ -304,7 +304,15 @@ const Cart = () => {
                   )}
                   <strong>Total: ${formatPrice(calculateTotal())}</strong>
                 </div>
-                <button className="checkout-button">Pagar ahora</button>
+                <button 
+                  className="checkout-button"
+                  onClick={() => {
+                    dispatch(closeCartModal());
+                    navigate('/checkout');
+                  }}
+                >
+                  Pagar ahora
+                </button>
               </div>
             </>
           )}
