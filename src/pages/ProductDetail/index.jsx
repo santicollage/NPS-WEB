@@ -191,11 +191,7 @@ const ProductDetail = ({ modal }) => {
                 </div>
               </div>
 
-              <div className="price-row">
-                <span className="price">{formatPrice(product.price)}</span>
-              </div>
-
-              <div className="actions-section">
+              <div className="group-row">
                 <div className="quantity-selector">
                   <span className="label">Cantidad</span>
                   <div className="controls">
@@ -214,7 +210,10 @@ const ProductDetail = ({ modal }) => {
                     </button>
                   </div>
                 </div>
+                <span className="price">{formatPrice(product.price)}</span>
+              </div>
 
+              <div className="actions-section">
                 <div className="buttons">
                   <button 
                     className="btn-primary buy-now" 

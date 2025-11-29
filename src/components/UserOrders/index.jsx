@@ -6,6 +6,7 @@ import {
 } from '../../store/slices/orderSelectors';
 import { fetchOrders } from '../../store/slices/orderSlice';
 import OrderDetailsModal from './OrderDetailsModal';
+import PaymentModal from '../PaymentModal';
 import './UserOrders.scss';
 
 const UserOrders = () => {
@@ -14,6 +15,9 @@ const UserOrders = () => {
   const error = useSelector(selectOrdersError);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [orderToPay, setOrderToPay] = useState(null);
 
   console.log(orders);
 
@@ -47,15 +51,28 @@ const UserOrders = () => {
                 <td>${order.total_amount}</td>
                 <td>{new Date(order.created_at).toLocaleDateString()}</td>
                 <td>
-                  <button
-                    onClick={() => {
-                      setSelectedOrder(order);
-                      setModalOpen(true);
-                    }}
-                    className="details-button"
-                  >
-                    Ver Detalles
-                  </button>
+                  <div className="action-buttons">
+                    <button
+                      onClick={() => {
+                        setSelectedOrder(order);
+                        setModalOpen(true);
+                      }}
+                      className="details-button"
+                    >
+                      Ver Detalles
+                    </button>
+                    {order.status === 'pending' && (
+                      <button
+                        onClick={() => {
+                          setOrderToPay(order);
+                          setIsPaymentModalOpen(true);
+                        }}
+                        className="pay-button"
+                      >
+                        Pagar
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}
@@ -66,6 +83,11 @@ const UserOrders = () => {
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         order={selectedOrder}
+      />
+      <PaymentModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        order={orderToPay}
       />
     </div>
   );
