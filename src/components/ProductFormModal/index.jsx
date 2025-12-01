@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createProduct, updateProduct } from '../../store/slices/productSlice';
+import { fetchCategories } from '../../store/slices/categorySlice';
+import { selectCategories } from '../../store/slices/categorySelectors';
 import './ProductFormModal.scss';
 
 const sizeSpecs = {
@@ -13,6 +15,12 @@ const sizeSpecs = {
 
 const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
   const dispatch = useDispatch();
+  const categories = useSelector(selectCategories);
+  const [errors, setErrors] = useState({});
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [touched, setTouched] = useState({});
+  const [serverError, setServerError] = useState(null);
+
   const [formData, setFormData] = useState({
     name: '',
     reference: '',
@@ -24,6 +32,24 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
     visible: true,
     size: '',
   });
+
+  // Validation Logic
+  useEffect(() => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = 'El nombre es obligatorio';
+    if (!formData.price || Number(formData.price) <= 0) newErrors.price = 'El precio debe ser mayor a 0';
+    if (!formData.stock_quantity || Number(formData.stock_quantity) < 0) newErrors.stock_quantity = 'El stock no puede ser negativo';
+    
+    const validImages = formData.images.filter(img => img.trim() !== '');
+    if (validImages.length === 0) newErrors.images = 'Debe agregar al menos una imagen';
+
+    setErrors(newErrors);
+    setIsFormValid(Object.keys(newErrors).length === 0);
+  }, [formData]);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   useEffect(() => {
     if (productToEdit) {
@@ -53,12 +79,26 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
     }
   }, [productToEdit, isOpen]);
 
+  // Clear errors and touched fields when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setServerError(null);
+      setErrors({});
+      setTouched({});
+    }
+  }, [isOpen]);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
     }));
+  };
+
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
   };
 
   const handleImageChange = (index, value) => {
@@ -84,7 +124,7 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
       price: Number(formData.price),
       stock_quantity: Number(formData.stock_quantity),
       description: formData.description,
-      category_ids: [Number(formData.category_id)],
+      category_ids: formData.category_id ? [Number(formData.category_id)] : [],
       image_urls: formData.images.filter((img) => img.trim() !== ''),
       size: formData.size,
       visible: formData.visible,
@@ -104,7 +144,9 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
       onClose();
     } catch (error) {
       console.error('Error saving product:', error);
-      // Handle error (show toast, etc.)
+      // Extract error message from the response
+      const errorMessage = error?.error?.message || error?.message || 'Error al guardar el producto';
+      setServerError(errorMessage);
     }
   };
 
@@ -120,6 +162,20 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
           </button>
         </div>
 
+        {serverError && (
+          <div className="server-error-alert">
+            <span className="error-icon">⚠️</span>
+            <span className="error-message">{serverError}</span>
+            <button 
+              className="close-error-btn" 
+              onClick={() => setServerError(null)}
+              type="button"
+            >
+              ×
+            </button>
+          </div>
+        )}
+
         <div className="modal-content">
           <form onSubmit={handleSubmit}>
             <div className="form-group">
@@ -129,8 +185,10 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 required
               />
+              {touched.name && errors.name && <span className="error-text">{errors.name}</span>}
             </div>
 
             <div className="form-group">
@@ -150,9 +208,11 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
                 name="price"
                 value={formData.price}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 required
                 min="0"
               />
+              {touched.price && errors.price && <span className="error-text">{errors.price}</span>}
             </div>
 
             <div className="form-group">
@@ -185,20 +245,28 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
                 name="stock_quantity"
                 value={formData.stock_quantity}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 required
                 min="0"
               />
+              {touched.stock_quantity && errors.stock_quantity && <span className="error-text">{errors.stock_quantity}</span>}
             </div>
 
             <div className="form-group">
-              <label>Categoría (ID)</label>
-              <input
-                type="number"
+              <label>Categoría</label>
+              <select
                 name="category_id"
                 value={formData.category_id}
                 onChange={handleChange}
                 required
-              />
+              >
+                <option value="">Seleccione una categoría</option>
+                {categories.map((cat) => (
+                  <option key={cat.category_id} value={cat.category_id}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="form-group full-width">
@@ -211,20 +279,8 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
               />
             </div>
 
-            <div className="form-group full-width">
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  name="visible"
-                  checked={formData.visible}
-                  onChange={handleChange}
-                />
-                Visible en tienda
-              </label>
-            </div>
-
             <div className="images-section">
-              <h3>Imágenes (URLs)</h3>
+              <h3>Imágenes (URLs) {errors.images && <span className="error-text" style={{fontSize: '0.8rem', marginLeft: '10px'}}>{errors.images}</span>}</h3>
               <div className="image-inputs">
                 {formData.images.map((img, index) => (
                   <div key={index} className="image-input-row">
@@ -260,7 +316,13 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
           <button type="button" className="cancel-btn" onClick={onClose}>
             Cancelar
           </button>
-          <button type="submit" className="submit-btn" onClick={handleSubmit}>
+          <button 
+            type="submit" 
+            className="submit-btn" 
+            onClick={handleSubmit}
+            disabled={!isFormValid}
+            style={{ opacity: !isFormValid ? 0.5 : 1, cursor: !isFormValid ? 'not-allowed' : 'pointer' }}
+          >
             {productToEdit ? 'Guardar Cambios' : 'Crear Producto'}
           </button>
         </div>

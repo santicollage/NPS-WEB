@@ -231,8 +231,8 @@ const productSlice = createSlice({
         state.success = 'Producto creado con éxito';
       })
       .addCase(createProduct.rejected, (state, action) => {
-
-        state.error = action.payload;
+        // Error is handled in the modal component, not in global state
+        // state.error = action.payload; // REMOVED to prevent showing in product list
       });
 
     // UPDATE PRODUCT
@@ -255,8 +255,8 @@ const productSlice = createSlice({
         state.success = 'Producto actualizado con éxito';
       })
       .addCase(updateProduct.rejected, (state, action) => {
-
-        state.error = action.payload;
+        // Error is handled in the modal component, not in global state
+        // state.error = action.payload; // REMOVED to prevent showing in product list
       });
 
     // DELETE PRODUCT
