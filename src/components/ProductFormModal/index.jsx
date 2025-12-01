@@ -5,6 +5,8 @@ import { fetchCategories } from '../../store/slices/categorySlice';
 import { selectCategories } from '../../store/slices/categorySelectors';
 import './ProductFormModal.scss';
 import CloseIcon from '../../assets/icons/CloseIcon';
+import CategoryFormModal from '../CategoryFormModal';
+import AddIcon from '../../assets/icons/AddProductIcon';
 
 const sizeSpecs = {
   extra_small: { width: 5, height: 5, length: 5, weight: 0.2 },
@@ -21,6 +23,7 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [touched, setTouched] = useState({});
   const [serverError, setServerError] = useState(null);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -28,7 +31,7 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
     price: '',
     stock_quantity: '',
     description: '',
-    category_id: '',
+    category_ids: [],
     images: [''],
     visible: true,
     size: '',
@@ -43,6 +46,8 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
     
     const validImages = formData.images.filter(img => img.trim() !== '');
     if (validImages.length === 0) newErrors.images = 'Debe agregar al menos una imagen';
+    
+    if (formData.category_ids.length === 0) newErrors.categories = 'Debe seleccionar al menos una categoría';
 
     setErrors(newErrors);
     setIsFormValid(Object.keys(newErrors).length === 0);
@@ -54,13 +59,14 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
 
   useEffect(() => {
     if (productToEdit) {
+      const categoryIds = productToEdit.categories?.map(cat => cat.category_id) || [];
       setFormData({
         name: productToEdit.name || '',
         reference: productToEdit.reference || '',
         price: productToEdit.price || '',
         stock_quantity: productToEdit.stock_quantity || '',
         description: productToEdit.description || '',
-        category_id: productToEdit.categories?.[0]?.category_id || '',
+        category_ids: categoryIds,
         images: productToEdit.images?.length ? productToEdit.images : [''],
         visible: productToEdit.visible ?? true,
         size: productToEdit.size || 'extra_small',
@@ -72,7 +78,7 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
         price: '',
         stock_quantity: '',
         description: '',
-        category_id: '',
+        category_ids: [],
         images: [''],
         visible: true,
         size: 'extra_small',
@@ -117,6 +123,28 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
     setFormData((prev) => ({ ...prev, images: newImages }));
   };
 
+  const handleCategoryToggle = (categoryId) => {
+    setFormData((prev) => {
+      const isSelected = prev.category_ids.includes(categoryId);
+      return {
+        ...prev,
+        category_ids: isSelected
+          ? prev.category_ids.filter(id => id !== categoryId)
+          : [...prev.category_ids, categoryId]
+      };
+    });
+  };
+
+  const handleCategoryCreated = (newCategory) => {
+    // Refresh categories
+    dispatch(fetchCategories());
+    // Auto-select the newly created category
+    setFormData((prev) => ({
+      ...prev,
+      category_ids: [...prev.category_ids, newCategory.category_id]
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = {
@@ -125,7 +153,7 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
       price: Number(formData.price),
       stock_quantity: Number(formData.stock_quantity),
       description: formData.description,
-      category_ids: formData.category_id ? [Number(formData.category_id)] : [],
+      category_ids: formData.category_ids.map(id => Number(id)),
       image_urls: formData.images.filter((img) => img.trim() !== ''),
       size: formData.size,
       visible: formData.visible,
@@ -180,7 +208,7 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
         <div className="modal-content">
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>Nombre</label>
+              <label>Nombre *</label>
               <input
                 type="text"
                 name="name"
@@ -203,7 +231,7 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
             </div>
 
             <div className="form-group">
-              <label>Precio</label>
+              <label>Precio *</label>
               <input
                 type="number"
                 name="price"
@@ -217,7 +245,7 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
             </div>
 
             <div className="form-group">
-              <label>Tamaño del producto</label>
+              <label>Tamaño del producto *</label>
               <select
                 name="size"
                 value={formData.size}
@@ -240,7 +268,7 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
             </div>
 
             <div className="form-group">
-              <label>Stock</label>
+              <label>Stock *</label>
               <input
                 type="number"
                 name="stock_quantity"
@@ -253,21 +281,30 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
               {touched.stock_quantity && errors.stock_quantity && <span className="error-text">{errors.stock_quantity}</span>}
             </div>
 
-            <div className="form-group">
-              <label>Categoría</label>
-              <select
-                name="category_id"
-                value={formData.category_id}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Seleccione una categoría</option>
+            <div className="form-group full-width">
+              <div className="category-header">
+                <label>Categorías *</label>
+                <button
+                  type="button"
+                  className="btn-create-category"
+                  onClick={() => setIsCategoryModalOpen(true)}
+                >
+                  <AddIcon /> Crear Categoría
+                </button>
+              </div>
+              <div className="category-checkboxes">
                 {categories.map((cat) => (
-                  <option key={cat.category_id} value={cat.category_id}>
-                    {cat.name}
-                  </option>
+                  <label key={cat.category_id} className="category-checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={formData.category_ids.includes(cat.category_id)}
+                      onChange={() => handleCategoryToggle(cat.category_id)}
+                    />
+                    <span>{cat.name}</span>
+                  </label>
                 ))}
-              </select>
+              </div>
+              {errors.categories && <span className="error-text">{errors.categories}</span>}
             </div>
 
             <div className="form-group full-width">
@@ -328,6 +365,12 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
           </button>
         </div>
       </div>
+
+      <CategoryFormModal
+        isOpen={isCategoryModalOpen}
+        onClose={() => setIsCategoryModalOpen(false)}
+        onCategoryCreated={handleCategoryCreated}
+      />
     </div>
   );
 };

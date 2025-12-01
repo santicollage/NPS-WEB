@@ -88,6 +88,11 @@ const ProductList = () => {
     setIsModalOpen(true);
   };
 
+  const handleEditProduct = (product) => {
+    setProductToEdit(product);
+    setIsModalOpen(true);
+  };
+
   if (error) {
     const errorMessage =
       typeof error === 'object'
@@ -174,6 +179,7 @@ const ProductList = () => {
               isSelected={selectedProductIds.includes(product.product_id)}
               onToggleSelect={handleSelectProduct}
               isAdmin={isAdmin}
+              onEdit={handleEditProduct}
             />
           ))}
         </div>

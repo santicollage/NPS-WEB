@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './ProductCard.scss';
 import ContactIcon from '../../assets/icons/ContactIcon';
 import CartIcon from '../../assets/icons/CartIcon';
+import EditIcon from '../../assets/icons/EditIcon';
 import { selectIsAuthenticated } from '../../store/slices/userSelectors';
 import { selectGuestCart } from '../../store/slices/cartSelectors';
 import {
@@ -18,6 +19,7 @@ const ProductCard = ({
   isSelected = false,
   onToggleSelect,
   isAdmin = false,
+  onEdit,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -72,13 +74,25 @@ const ProductCard = ({
   return (
     <div className={`product-card ${isSelected ? 'selected' : ''}`}>
       {isAdmin && (
-        <input
-          type="checkbox"
-          className="product-selection-checkbox"
-          checked={isSelected}
-          onChange={() => onToggleSelect(product.product_id)}
-          onClick={(e) => e.stopPropagation()}
-        />
+        <>
+          <input
+            type="checkbox"
+            className="product-selection-checkbox"
+            checked={isSelected}
+            onChange={() => onToggleSelect(product.product_id)}
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            className="product-edit-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit(product);
+            }}
+            title="Editar producto"
+          >
+            <EditIcon />
+          </button>
+        </>
       )}
       <div className="product-image">
         {product.images && product.images.length > 0 ? (

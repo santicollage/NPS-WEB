@@ -66,6 +66,40 @@
     }
   }
 
+  .product-edit-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 10;
+    padding: 0;
+    margin: 3px;
+    background-color: rgba(135, 193, 255);
+    border: none;
+    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    svg {
+      width: 22px;
+      height: 22px;
+      color: white;
+    }
+
+    &:hover {
+      background-color: rgb(112, 181, 255);
+      transform: scale(1.05);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
   .product-image {
     height: 200px;
     overflow: hidden;
