@@ -107,7 +107,7 @@ const ProductCard = ({
             <RemoveIcon />
           </button>
           <button
-            className="product-visibility-btn"
+            className={`product-visibility-btn ${product.visible ? '' : 'product-visible'}`}
             onClick={(e) => {
               e.stopPropagation();
               dispatch(

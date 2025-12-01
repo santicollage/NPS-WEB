@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createProduct, updateProduct } from '../../store/slices/productSlice';
-import { fetchCategories } from '../../store/slices/categorySlice';
+import {
+  fetchCategories,
+  deleteCategory,
+} from '../../store/slices/categorySlice';
 import { selectCategories } from '../../store/slices/categorySelectors';
 import './ProductFormModal.scss';
 import CloseIcon from '../../assets/icons/CloseIcon';
 import CategoryFormModal from '../CategoryFormModal';
 import AddIcon from '../../assets/icons/AddProductIcon';
+import RemoveIcon from '../../assets/icons/RemoveIcon';
 
 const sizeSpecs = {
   extra_small: { width: 5, height: 5, length: 5, weight: 0.2 },
@@ -41,13 +45,17 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
   useEffect(() => {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = 'El nombre es obligatorio';
-    if (!formData.price || Number(formData.price) <= 0) newErrors.price = 'El precio debe ser mayor a 0';
-    if (!formData.stock_quantity || Number(formData.stock_quantity) < 0) newErrors.stock_quantity = 'El stock no puede ser negativo';
-    
-    const validImages = formData.images.filter(img => img.trim() !== '');
-    if (validImages.length === 0) newErrors.images = 'Debe agregar al menos una imagen';
-    
-    if (formData.category_ids.length === 0) newErrors.categories = 'Debe seleccionar al menos una categoría';
+    if (!formData.price || Number(formData.price) <= 0)
+      newErrors.price = 'El precio debe ser mayor a 0';
+    if (!formData.stock_quantity || Number(formData.stock_quantity) < 0)
+      newErrors.stock_quantity = 'El stock no puede ser negativo';
+
+    const validImages = formData.images.filter((img) => img.trim() !== '');
+    if (validImages.length === 0)
+      newErrors.images = 'Debe agregar al menos una imagen';
+
+    if (formData.category_ids.length === 0)
+      newErrors.categories = 'Debe seleccionar al menos una categoría';
 
     setErrors(newErrors);
     setIsFormValid(Object.keys(newErrors).length === 0);
@@ -59,7 +67,8 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
 
   useEffect(() => {
     if (productToEdit) {
-      const categoryIds = productToEdit.categories?.map(cat => cat.category_id) || [];
+      const categoryIds =
+        productToEdit.categories?.map((cat) => cat.category_id) || [];
       setFormData({
         name: productToEdit.name || '',
         reference: productToEdit.reference || '',
@@ -129,10 +138,20 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
       return {
         ...prev,
         category_ids: isSelected
-          ? prev.category_ids.filter(id => id !== categoryId)
-          : [...prev.category_ids, categoryId]
+          ? prev.category_ids.filter((id) => id !== categoryId)
+          : [...prev.category_ids, categoryId],
       };
     });
+  };
+
+  const handleDeleteCategory = (categoryId) => {
+    // Remove from formData if selected
+    setFormData((prev) => ({
+      ...prev,
+      category_ids: prev.category_ids.filter((id) => id !== categoryId),
+    }));
+    // Dispatch delete action
+    dispatch(deleteCategory(categoryId));
   };
 
   const handleCategoryCreated = (newCategory) => {
@@ -141,7 +160,7 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
     // Auto-select the newly created category
     setFormData((prev) => ({
       ...prev,
-      category_ids: [...prev.category_ids, newCategory.category_id]
+      category_ids: [...prev.category_ids, newCategory.category_id],
     }));
   };
 
@@ -153,7 +172,7 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
       price: Number(formData.price),
       stock_quantity: Number(formData.stock_quantity),
       description: formData.description,
-      category_ids: formData.category_ids.map(id => Number(id)),
+      category_ids: formData.category_ids.map((id) => Number(id)),
       image_urls: formData.images.filter((img) => img.trim() !== ''),
       size: formData.size,
       visible: formData.visible,
@@ -174,7 +193,10 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
     } catch (error) {
       console.error('Error saving product:', error);
       // Extract error message from the response
-      const errorMessage = error?.error?.message || error?.message || 'Error al guardar el producto';
+      const errorMessage =
+        error?.error?.message ||
+        error?.message ||
+        'Error al guardar el producto';
       setServerError(errorMessage);
     }
   };
@@ -195,8 +217,8 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
           <div className="server-error-alert">
             <span className="error-icon">⚠️</span>
             <span className="error-message">{serverError}</span>
-            <button 
-              className="close-error-btn" 
+            <button
+              className="close-error-btn"
               onClick={() => setServerError(null)}
               type="button"
             >
@@ -217,7 +239,9 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
                 onBlur={handleBlur}
                 required
               />
-              {touched.name && errors.name && <span className="error-text">{errors.name}</span>}
+              {touched.name && errors.name && (
+                <span className="error-text">{errors.name}</span>
+              )}
             </div>
 
             <div className="form-group">
@@ -241,7 +265,9 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
                 required
                 min="0"
               />
-              {touched.price && errors.price && <span className="error-text">{errors.price}</span>}
+              {touched.price && errors.price && (
+                <span className="error-text">{errors.price}</span>
+              )}
             </div>
 
             <div className="form-group">
@@ -278,7 +304,9 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
                 required
                 min="0"
               />
-              {touched.stock_quantity && errors.stock_quantity && <span className="error-text">{errors.stock_quantity}</span>}
+              {touched.stock_quantity && errors.stock_quantity && (
+                <span className="error-text">{errors.stock_quantity}</span>
+              )}
             </div>
 
             <div className="form-group full-width">
@@ -294,17 +322,34 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
               </div>
               <div className="category-checkboxes">
                 {categories.map((cat) => (
-                  <label key={cat.category_id} className="category-checkbox-label">
-                    <input
-                      type="checkbox"
-                      checked={formData.category_ids.includes(cat.category_id)}
-                      onChange={() => handleCategoryToggle(cat.category_id)}
-                    />
-                    <span>{cat.name}</span>
+                  <label
+                    key={cat.category_id}
+                    className="category-checkbox-label"
+                  >
+                    <div className="category-left">
+                      <input
+                        type="checkbox"
+                        checked={formData.category_ids.includes(
+                          cat.category_id
+                        )}
+                        onChange={() => handleCategoryToggle(cat.category_id)}
+                      />
+                      <span>{cat.name}</span>
+                    </div>
+                    <button
+                      type="button"
+                      className="category-delete-btn"
+                      onClick={() => handleDeleteCategory(cat.category_id)}
+                      title="Eliminar categoría"
+                    >
+                      <RemoveIcon />
+                    </button>
                   </label>
                 ))}
               </div>
-              {errors.categories && <span className="error-text">{errors.categories}</span>}
+              {errors.categories && (
+                <span className="error-text">{errors.categories}</span>
+              )}
             </div>
 
             <div className="form-group full-width">
@@ -318,7 +363,17 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
             </div>
 
             <div className="images-section">
-              <h3>Imágenes (URLs) {errors.images && <span className="error-text" style={{fontSize: '0.8rem', marginLeft: '10px'}}>{errors.images}</span>}</h3>
+              <h3>
+                Imágenes (URLs){' '}
+                {errors.images && (
+                  <span
+                    className="error-text"
+                    style={{ fontSize: '0.8rem', marginLeft: '10px' }}
+                  >
+                    {errors.images}
+                  </span>
+                )}
+              </h3>
               <div className="image-inputs">
                 {formData.images.map((img, index) => (
                   <div key={index} className="image-input-row">
@@ -351,15 +406,22 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
         </div>
 
         <div className="modal-footer">
-          <button type="button" className="cancel-btn btn-secondary" onClick={onClose}>
+          <button
+            type="button"
+            className="cancel-btn btn-secondary"
+            onClick={onClose}
+          >
             Cancelar
           </button>
-          <button 
-            type="submit" 
-            className="submit-btn" 
+          <button
+            type="submit"
+            className="submit-btn"
             onClick={handleSubmit}
             disabled={!isFormValid}
-            style={{ opacity: !isFormValid ? 0.5 : 1, cursor: !isFormValid ? 'not-allowed' : 'pointer' }}
+            style={{
+              opacity: !isFormValid ? 0.5 : 1,
+              cursor: !isFormValid ? 'not-allowed' : 'pointer',
+            }}
           >
             {productToEdit ? 'Guardar Cambios' : 'Crear Producto'}
           </button>
