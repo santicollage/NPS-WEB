@@ -86,6 +86,39 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
+// DELETE - Bulk Delete Products (admin)
+export const bulkDeleteProducts = createAsyncThunk(
+  'products/bulkDeleteProducts',
+  async (productIds, { rejectWithValue }) => {
+    try {
+      await api.delete('/products/bulk', { data: { product_ids: productIds } });
+      return productIds;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data || 'Error al eliminar productos masivamente'
+      );
+    }
+  }
+);
+
+// PATCH - Bulk Update Visibility (admin)
+export const bulkUpdateVisibility = createAsyncThunk(
+  'products/bulkUpdateVisibility',
+  async ({ productIds, visible }, { rejectWithValue }) => {
+    try {
+      await api.patch('/products/bulk/visibility', {
+        product_ids: productIds,
+        visible,
+      });
+      return { productIds, visible };
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data || 'Error al actualizar visibilidad masivamente'
+      );
+    }
+  }
+);
+
 // ==============================
 // 2️⃣ SLICE
 // ==============================
@@ -157,8 +190,13 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-
-        state.items = action.payload;
+        // Handle both array response and object response with products key
+        const products = Array.isArray(action.payload) 
+          ? action.payload 
+          : action.payload.products || [];
+          
+        state.items = products;
+        
         // Assuming the API returns pagination info in the response
         if (action.payload.total !== undefined) {
           state.pagination.total = action.payload.total;
@@ -168,34 +206,28 @@ const productSlice = createSlice({
         }
       })
       .addCase(fetchProducts.rejected, (state, action) => {
-
         state.error = action.payload;
       });
 
     // FETCH PRODUCT BY ID
     builder
       .addCase(fetchProductById.pending, (state) => {
-
         state.error = null;
       })
       .addCase(fetchProductById.fulfilled, (state, action) => {
-
         state.currentProduct = action.payload;
       })
       .addCase(fetchProductById.rejected, (state, action) => {
-
         state.error = action.payload;
       });
 
     // CREATE PRODUCT
     builder
       .addCase(createProduct.pending, (state) => {
-
         state.error = null;
       })
       .addCase(createProduct.fulfilled, (state, action) => {
-
-        state.items.push(action.payload);
+        state.items.unshift(action.payload);
         state.success = 'Producto creado con éxito';
       })
       .addCase(createProduct.rejected, (state, action) => {
@@ -245,6 +277,35 @@ const productSlice = createSlice({
       })
       .addCase(deleteProduct.rejected, (state, action) => {
 
+        state.error = action.payload;
+      })
+
+      // BULK DELETE PRODUCTS
+      .addCase(bulkDeleteProducts.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(bulkDeleteProducts.fulfilled, (state, action) => {
+        state.items = state.items.filter(
+          (p) => !action.payload.includes(p.product_id)
+        );
+        state.success = 'Productos eliminados con éxito';
+      })
+      .addCase(bulkDeleteProducts.rejected, (state, action) => {
+        state.error = action.payload;
+      })
+
+      // BULK UPDATE VISIBILITY
+      .addCase(bulkUpdateVisibility.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(bulkUpdateVisibility.fulfilled, (state, action) => {
+        const { productIds, visible } = action.payload;
+        state.items = state.items.map((p) =>
+          productIds.includes(p.product_id) ? { ...p, visible } : p
+        );
+        state.success = 'Visibilidad actualizada con éxito';
+      })
+      .addCase(bulkUpdateVisibility.rejected, (state, action) => {
         state.error = action.payload;
       });
   },

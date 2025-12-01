@@ -13,7 +13,12 @@ import {
   openCartModal,
 } from '../../store/slices/cartSlice';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({
+  product,
+  isSelected = false,
+  onToggleSelect,
+  isAdmin = false,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -65,7 +70,16 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="product-card">
+    <div className={`product-card ${isSelected ? 'selected' : ''}`}>
+      {isAdmin && (
+        <input
+          type="checkbox"
+          className="product-selection-checkbox"
+          checked={isSelected}
+          onChange={() => onToggleSelect(product.product_id)}
+          onClick={(e) => e.stopPropagation()}
+        />
+      )}
       <div className="product-image">
         {product.images && product.images.length > 0 ? (
           <img src={product.images[0]} alt={product.name} loading="lazy" />
@@ -112,9 +126,13 @@ const ProductCard = ({ product }) => {
 
       <div className="product-actions">
         <div className="action-buttons-row">
-          <button 
+          <button
             className="btn-secondary"
-            onClick={() => navigate(`/products/${product.product_id}`, { state: { backgroundLocation: location } })}
+            onClick={() =>
+              navigate(`/products/${product.product_id}`, {
+                state: { backgroundLocation: location },
+              })
+            }
           >
             Ver Detalles
           </button>
