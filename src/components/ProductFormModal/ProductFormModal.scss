@@ -1,4 +1,5 @@
 @import '../../styles/variables';
+@import '../../styles/mixins';
 
 .product-form-modal-overlay {
   .error-text {
@@ -12,7 +13,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,7 +22,7 @@
 }
 
 .product-form-modal {
-  background-color: $primary-color-hard;
+  @include transparent;
   border-radius: 16px;
   width: 90%;
   max-width: 800px;
@@ -58,21 +59,19 @@
     }
 
     .close-btn {
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      cursor: pointer;
       background: none;
       border: none;
       color: $secondary-color;
       font-size: 1.5rem;
-      cursor: pointer;
-      padding: 0.5rem;
-      border-radius: 50%;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 0;
 
-      &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        color: $secondary-color;
+      svg {
+        width: 40px;
+        height: 40px;
       }
     }
   }
@@ -264,41 +263,5 @@
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
-
-    button {
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: none;
-
-      &.cancel-btn {
-        background-color: transparent;
-        color: $secondary-color;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-
-        &:hover {
-          background-color: rgba(255, 255, 255, 0.05);
-          color: $secondary-color;
-        }
-      }
-
-      &.submit-btn {
-        background-color: $primary-color;
-        color: white;
-
-        &:hover {
-          background-color: darken($primary-color, 10%);
-          transform: translateY(-1px);
-        }
-
-        &:disabled {
-          opacity: 0.7;
-          cursor: not-allowed;
-          transform: none;
-        }
-      }
-    }
   }
 }

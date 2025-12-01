@@ -4,6 +4,7 @@ import { createProduct, updateProduct } from '../../store/slices/productSlice';
 import { fetchCategories } from '../../store/slices/categorySlice';
 import { selectCategories } from '../../store/slices/categorySelectors';
 import './ProductFormModal.scss';
+import CloseIcon from '../../assets/icons/CloseIcon';
 
 const sizeSpecs = {
   extra_small: { width: 5, height: 5, length: 5, weight: 0.2 },
@@ -158,7 +159,7 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
         <div className="modal-header">
           <h2>{productToEdit ? 'Editar Producto' : 'Agregar Producto'}</h2>
           <button className="close-btn" onClick={onClose}>
-            &times;
+            <CloseIcon />
           </button>
         </div>
 
@@ -313,7 +314,7 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
         </div>
 
         <div className="modal-footer">
-          <button type="button" className="cancel-btn" onClick={onClose}>
+          <button type="button" className="cancel-btn btn-secondary" onClick={onClose}>
             Cancelar
           </button>
           <button 
