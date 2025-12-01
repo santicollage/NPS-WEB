@@ -2,10 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductById } from '../../store/slices/productSlice';
-import { selectCurrentProduct, selectProductsError } from '../../store/slices/productSelectors';
-import { addToCart, addToGuestCart, createGuestCart, openCartModal } from '../../store/slices/cartSlice';
+import {
+  selectCurrentProduct,
+  selectProductsError,
+} from '../../store/slices/productSelectors';
+import {
+  addToCart,
+  addToGuestCart,
+  createGuestCart,
+  openCartModal,
+} from '../../store/slices/cartSlice';
 import { selectIsAuthenticated } from '../../store/slices/userSelectors';
 import { selectGuestCart } from '../../store/slices/cartSelectors';
+import { selectIsAdmin } from '../../store/slices/userSelectors';
 import './ProductDetail.scss';
 import CloseIcon from '../../assets/icons/CloseIcon';
 import LessIcon from '../../assets/icons/LessIcon';
@@ -22,6 +31,7 @@ const ProductDetail = ({ modal }) => {
   const error = useSelector(selectProductsError);
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const guestCart = useSelector(selectGuestCart);
+  const isAdmin = useSelector(selectIsAdmin);
 
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -124,8 +134,14 @@ const ProductDetail = ({ modal }) => {
   }
 
   return (
-    <div className={`product-detail-container ${modal ? 'modal-mode' : ''}`} onClick={handleClose}>
-      <div className="product-detail-content" onClick={(e) => e.stopPropagation()}>
+    <div
+      className={`product-detail-container ${modal ? 'modal-mode' : ''}`}
+      onClick={handleClose}
+    >
+      <div
+        className="product-detail-content"
+        onClick={(e) => e.stopPropagation()}
+      >
         <button className="close-btn" onClick={handleClose}>
           <CloseIcon />
         </button>
@@ -195,14 +211,14 @@ const ProductDetail = ({ modal }) => {
                 <div className="quantity-selector">
                   <span className="label">Cantidad</span>
                   <div className="controls">
-                    <button 
-                      onClick={() => handleQuantityChange(-1)} 
+                    <button
+                      onClick={() => handleQuantityChange(-1)}
                       disabled={quantity <= 1}
                     >
                       <LessIcon />
                     </button>
                     <span className="qty">{quantity}</span>
-                    <button 
+                    <button
                       onClick={() => handleQuantityChange(1)}
                       disabled={quantity >= product.stock_quantity}
                     >
@@ -215,17 +231,17 @@ const ProductDetail = ({ modal }) => {
 
               <div className="actions-section">
                 <div className="buttons">
-                  <button 
-                    className="btn-primary buy-now" 
+                  <button
+                    className="btn-primary buy-now"
                     onClick={handleBuyNow}
-                    disabled={product.stock_quantity === 0}
+                    disabled={product.stock_quantity === 0 || isAdmin}
                   >
                     Comprar ahora
                   </button>
-                  <button 
-                    className="btn-secondary add-cart" 
+                  <button
+                    className="btn-secondary add-cart"
                     onClick={() => handleAddToCart(true)}
-                    disabled={product.stock_quantity === 0}
+                    disabled={product.stock_quantity === 0 || isAdmin}
                   >
                     Añadir <CartIcon />
                   </button>

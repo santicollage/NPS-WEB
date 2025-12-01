@@ -131,12 +131,13 @@ const ProductList = () => {
                 {selectedProductIds.length} Productos seleccionados
               </span>
             )}
-            
+
             <div className="bulk-buttons">
               <button
                 className="btn-delete"
                 onClick={handleBulkDelete}
                 disabled={selectedProductIds.length === 0}
+                title="Eliminar productos seleccionados"
               >
                 <RemoveIcon />
               </button>
@@ -144,6 +145,7 @@ const ProductList = () => {
                 className="btn-visible"
                 onClick={() => handleBulkVisibility(true)}
                 disabled={selectedProductIds.length === 0}
+                title="Mostrar productos seleccionados"
               >
                 <EyeIcon />
               </button>
@@ -151,6 +153,7 @@ const ProductList = () => {
                 className="btn-hidden"
                 onClick={() => handleBulkVisibility(false)}
                 disabled={selectedProductIds.length === 0}
+                title="Ocultar productos seleccionados"
               >
                 <EyeOffIcon />
               </button>
@@ -158,7 +161,11 @@ const ProductList = () => {
           </div>
 
           <div className="bulk-actions">
-            <button className="add-product-btn" onClick={handleAddProduct}>
+            <button
+              className="add-product-btn"
+              onClick={handleAddProduct}
+              title="Crear producto"
+            >
               <AddProductIcon /> Agregar Producto
             </button>
           </div>

@@ -186,17 +186,16 @@ const productSlice = createSlice({
     // FETCH PRODUCTS
     builder
       .addCase(fetchProducts.pending, (state) => {
-
         state.error = null;
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         // Handle both array response and object response with products key
-        const products = Array.isArray(action.payload) 
-          ? action.payload 
+        const products = Array.isArray(action.payload)
+          ? action.payload
           : action.payload.products || [];
-          
+
         state.items = products;
-        
+
         // Assuming the API returns pagination info in the response
         if (action.payload.total !== undefined) {
           state.pagination.total = action.payload.total;
@@ -230,7 +229,7 @@ const productSlice = createSlice({
         state.items.unshift(action.payload);
         state.success = 'Producto creado con éxito';
       })
-      .addCase(createProduct.rejected, (state, action) => {
+      .addCase(createProduct.rejected, () => {
         // Error is handled in the modal component, not in global state
         // state.error = action.payload; // REMOVED to prevent showing in product list
       });
@@ -238,11 +237,9 @@ const productSlice = createSlice({
     // UPDATE PRODUCT
     builder
       .addCase(updateProduct.pending, (state) => {
-
         state.error = null;
       })
       .addCase(updateProduct.fulfilled, (state, action) => {
-
         const index = state.items.findIndex(
           (p) => p.product_id === action.payload.product_id
         );
@@ -254,7 +251,7 @@ const productSlice = createSlice({
         }
         state.success = 'Producto actualizado con éxito';
       })
-      .addCase(updateProduct.rejected, (state, action) => {
+      .addCase(updateProduct.rejected, () => {
         // Error is handled in the modal component, not in global state
         // state.error = action.payload; // REMOVED to prevent showing in product list
       });
@@ -262,11 +259,9 @@ const productSlice = createSlice({
     // DELETE PRODUCT
     builder
       .addCase(deleteProduct.pending, (state) => {
-
         state.error = null;
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
-
         state.items = state.items.filter(
           (p) => p.product_id !== action.payload
         );
@@ -276,7 +271,6 @@ const productSlice = createSlice({
         state.success = 'Producto eliminado con éxito';
       })
       .addCase(deleteProduct.rejected, (state, action) => {
-
         state.error = action.payload;
       })
 

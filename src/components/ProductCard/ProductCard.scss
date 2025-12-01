@@ -18,7 +18,7 @@
     border-color: rgba(255, 255, 255, 0.3);
   }
 
-  input[type="checkbox"] {
+  input[type='checkbox'] {
     position: absolute;
     top: 5px;
     left: 5px;
@@ -46,7 +46,7 @@
     }
 
     &::before {
-      content: "";
+      content: '';
       width: 20px;
       height: 20px;
       transform: scale(0);
@@ -88,10 +88,82 @@
       width: 22px;
       height: 22px;
       color: white;
+
+      path {
+        fill: white;
+      }
     }
 
     &:hover {
       background-color: rgb(112, 181, 255);
+      transform: scale(1.05);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  .product-delete-btn {
+    position: absolute;
+    top: 42px;
+    right: 5px;
+    z-index: 10;
+    padding: 0;
+    margin: 3px;
+    background-color: rgba(255, 107, 107, 0.8);
+    border: none;
+    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    svg {
+      width: 22px;
+      height: 22px;
+      color: white;
+    }
+
+    &:hover {
+      background-color: rgba(255, 77, 77, 0.9);
+      transform: scale(1.05);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  .product-visibility-btn {
+    position: absolute;
+    top: 79px;
+    right: 5px;
+    z-index: 10;
+    padding: 0;
+    margin: 3px;
+    background-color: rgba(255, 193, 7, 0.8);
+    border: none;
+    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    svg {
+      width: 22px;
+      height: 22px;
+      color: white;
+    }
+
+    &:hover {
+      background-color: rgba(255, 173, 7, 0.9);
       transform: scale(1.05);
     }
 
@@ -201,7 +273,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      
+
       .category-tag {
         background: rgba(0, 123, 255, 0.2);
         color: #60a5fa;

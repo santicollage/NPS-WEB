@@ -5,6 +5,9 @@ import './ProductCard.scss';
 import ContactIcon from '../../assets/icons/ContactIcon';
 import CartIcon from '../../assets/icons/CartIcon';
 import EditIcon from '../../assets/icons/EditIcon';
+import RemoveIcon from '../../assets/icons/RemoveIcon';
+import EyeIcon from '../../assets/icons/EyeIcon';
+import EyeOffIcon from '../../assets/icons/EyeOffIcon';
 import { selectIsAuthenticated } from '../../store/slices/userSelectors';
 import { selectGuestCart } from '../../store/slices/cartSelectors';
 import {
@@ -13,6 +16,7 @@ import {
   createGuestCart,
   openCartModal,
 } from '../../store/slices/cartSlice';
+import { deleteProduct, updateProduct } from '../../store/slices/productSlice';
 
 const ProductCard = ({
   product,
@@ -92,6 +96,31 @@ const ProductCard = ({
           >
             <EditIcon />
           </button>
+          <button
+            className="product-delete-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              dispatch(deleteProduct(product.product_id));
+            }}
+            title="Eliminar producto"
+          >
+            <RemoveIcon />
+          </button>
+          <button
+            className="product-visibility-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              dispatch(
+                updateProduct({
+                  productId: product.product_id,
+                  updateData: { visible: !product.visible },
+                })
+              );
+            }}
+            title={product.visible ? 'Ocultar producto' : 'Mostrar producto'}
+          >
+            {product.visible ? <EyeOffIcon /> : <EyeIcon />}
+          </button>
         </>
       )}
       <div className="product-image">
@@ -160,7 +189,7 @@ const ProductCard = ({
         </div>
         <button
           className="btn-tertiary"
-          disabled={product.stock_quantity === 0}
+          disabled={product.stock_quantity === 0 || isAdmin}
           onClick={handleAddToCart}
         >
           {product.stock_quantity === 0 ? '' : <CartIcon />}

@@ -39,7 +39,7 @@
         font-weight: 500;
         cursor: pointer;
 
-        input[type="checkbox"] {
+        input[type='checkbox'] {
           appearance: none;
           padding: 0;
           -webkit-appearance: none;
@@ -63,7 +63,7 @@
           }
 
           &::before {
-            content: "";
+            content: '';
             width: 20px;
             height: 20px;
             transform: scale(0);
@@ -161,14 +161,13 @@
         svg {
           width: 30px;
           height: 30px;
-  
+
           path {
-            fill: $primary-color;
+            fill: $primary-color-light;
           }
         }
       }
     }
-
   }
 
   .products-grid {
@@ -212,17 +211,18 @@
     }
   }
 
-  .error, .no-products {
+  .error,
+  .no-products {
     text-align: center;
     padding: 4rem 2rem;
     background-color: $quaternary-color;
     border-radius: 12px;
-    
+
     h3 {
       color: $secondary-color;
       margin-bottom: 1rem;
     }
-    
+
     p {
       color: $secondary-color;
     }
