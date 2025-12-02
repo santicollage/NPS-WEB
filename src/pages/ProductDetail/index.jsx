@@ -21,6 +21,8 @@ import LessIcon from '../../assets/icons/LessIcon';
 import AddIcon from '../../assets/icons/AddIcon';
 import CartIcon from '../../assets/icons/CartIcon';
 
+import SEO from '../../components/SEO/SEO';
+
 const ProductDetail = ({ modal }) => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -133,11 +135,35 @@ const ProductDetail = ({ modal }) => {
     );
   }
 
+  const structuredData = product ? {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": product.name,
+    "image": product.images,
+    "description": product.description,
+    "sku": product.product_id,
+    "offers": {
+      "@type": "Offer",
+      "url": window.location.href,
+      "priceCurrency": "COP",
+      "price": product.price,
+      "availability": product.stock_quantity > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+    }
+  } : null;
+
   return (
     <div
       className={`product-detail-container ${modal ? 'modal-mode' : ''}`}
       onClick={handleClose}
     >
+      <SEO
+        title={product.name}
+        description={product.description}
+        keywords={`${product.name}, ${product.categories?.map(c => c.name).join(', ')}, comprar ${product.name}, repuestos ${product.reference}`}
+        image={product.images && product.images.length > 0 ? product.images[0] : null}
+        url={window.location.pathname}
+        structuredData={structuredData}
+      />
       <div
         className="product-detail-content"
         onClick={(e) => e.stopPropagation()}

@@ -16,6 +16,7 @@ import {
 } from '../../store/slices/paymentSlice';
 import './Checkout.scss';
 import PaymentModal from '../../components/PaymentModal';
+import SEO from '../../components/SEO/SEO';
 
 import colombiaData from '../../data/colombia.json';
 
@@ -247,6 +248,11 @@ const Checkout = () => {
 
   return (
     <div className="checkout-page">
+      <SEO 
+        title="Checkout" 
+        description="Finaliza tu compra de forma segura en NPS ECOMMERCE. Envío rápido y seguro a toda Colombia."
+        keywords="checkout, finalizar compra, pago seguro, envio repuestos"
+      />
       <h1>Checkout</h1>
 
       <div className="checkout-form-container">

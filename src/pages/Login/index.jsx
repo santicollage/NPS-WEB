@@ -11,6 +11,7 @@ import {
 import EyeIcon from '../../assets/icons/EyeIcon';
 import EyeOffIcon from '../../assets/icons/EyeOffIcon';
 import './Login.scss';
+import SEO from '../../components/SEO/SEO';
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -134,6 +135,11 @@ const Login = () => {
 
   return (
     <div className="login-container">
+      <SEO 
+        title={isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'} 
+        description="Inicia sesión o regístrate en NPS ECOMMERCE para gestionar tus pedidos y acceder a ofertas exclusivas."
+        keywords="iniciar sesion, login, registrarse, cuenta nps ecommerce"
+      />
       <div className="login-card">
         <motion.div
           animate={{ rotateY: isLogin ? 0 : 180 }}
