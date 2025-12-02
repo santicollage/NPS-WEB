@@ -121,6 +121,13 @@ const orderSlice = createSlice({
       status: null,
       page: 1,
       limit: 20,
+      search: '',
+      startDate: null,
+      endDate: null,
+      minPrice: '',
+      maxPrice: '',
+      sortBy: 'created_at',
+      sortOrder: 'desc',
     },
     pagination: {
       total: 0,
@@ -179,13 +186,20 @@ const orderSlice = createSlice({
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {
 
-        state.orders = action.payload;
-        // Assuming the API returns pagination info
-        if (action.payload.total !== undefined) {
-          state.pagination.total = action.payload.total;
-          state.pagination.totalPages = Math.ceil(
-            action.payload.total / state.filters.limit
-          );
+        if (Array.isArray(action.payload)) {
+          state.orders = action.payload;
+          state.pagination.total = action.payload.length;
+        } else if (action.payload.orders && Array.isArray(action.payload.orders)) {
+          state.orders = action.payload.orders;
+          if (action.payload.total !== undefined) {
+            state.pagination.total = action.payload.total;
+            state.pagination.totalPages = Math.ceil(
+              action.payload.total / state.filters.limit
+            );
+          }
+        } else {
+          state.orders = [];
+          console.error('Unexpected payload format for fetchOrders:', action.payload);
         }
       })
       .addCase(fetchOrders.rejected, (state, action) => {

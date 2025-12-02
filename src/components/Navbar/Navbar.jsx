@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectIsAuthenticated } from '../../store/slices/userSelectors';
+import { selectIsAuthenticated, selectIsAdmin } from '../../store/slices/userSelectors';
 import { selectTotalItems } from '../../store/slices/cartSelectors';
 import { openCartModal } from '../../store/slices/cartSlice';
 import logo from '../../assets/images/logo-nps.png';
 import LoginIcon from '../../assets/icons/LoginIcon';
 import ProfileIcon from '../../assets/icons/ProfileIcon';
 import CartIcon from '../../assets/icons/CartIcon';
+import OrdersIcon from '../../assets/icons/OrdersIcon';
 import HamburgerMenuIcon from '../../assets/icons/HamburgerMenuIcon';
 import Cart from '../Cart/Cart';
 import './Navbar.scss';
@@ -15,6 +16,7 @@ import './Navbar.scss';
 const Navbar = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isAdmin = useSelector(selectIsAdmin);
   const totalItems = useSelector(selectTotalItems);
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -105,18 +107,28 @@ const Navbar = () => {
             >
               {isAuthenticated ? <ProfileIcon /> : <LoginIcon />}
             </Link>
-            <button
-              className="icon-link"
-              onClick={() => {
-                dispatch(openCartModal());
-                setIsMenuOpen(false);
-              }}
-            >
-              <CartIcon />
-              {totalItems > 0 && (
-                <span className="cart-count">{totalItems}</span>
-              )}
-            </button>
+            {isAdmin ? (
+              <Link
+                to="/admin/orders"
+                className="icon-link"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <OrdersIcon />
+              </Link>
+            ) : (
+              <button
+                className="icon-link"
+                onClick={() => {
+                  dispatch(openCartModal());
+                  setIsMenuOpen(false);
+                }}
+              >
+                <CartIcon />
+                {totalItems > 0 && (
+                  <span className="cart-count">{totalItems}</span>
+                )}
+              </button>
+            )}
           </li>
         </ul>
       </nav>

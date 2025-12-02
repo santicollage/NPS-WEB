@@ -169,6 +169,11 @@
           transition: all 0.2s;
           font-family: inherit;
 
+          option {
+            background-color: #2d2d2d;
+            border: none;
+          }
+
           &:focus {
             outline: none;
             border-color: $primary-color;

@@ -34,6 +34,19 @@ paths:
         - Users
       security:
         - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+          description: Page number
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+          description: Items per page
       responses:
         '200':
           description: List of users
@@ -1420,6 +1433,59 @@ paths:
             type: integer
             default: 20
           example: 20
+        - name: search
+          in: query
+          description: Search by customer name or email
+          schema:
+            type: string
+          example: Juan
+        - name: startDate
+          in: query
+          description: Filter by creation date (start)
+          schema:
+            type: string
+            format: date-time
+          example: '2023-01-01T00:00:00Z'
+        - name: endDate
+          in: query
+          description: Filter by creation date (end)
+          schema:
+            type: string
+            format: date-time
+          example: '2023-12-31T23:59:59Z'
+        - name: minPrice
+          in: query
+          description: Filter by minimum total amount
+          schema:
+            type: number
+          example: 10000
+        - name: maxPrice
+          in: query
+          description: Filter by maximum total amount
+          schema:
+            type: number
+          example: 500000
+        - name: sortBy
+          in: query
+          description: Field to sort by
+          schema:
+            type: string
+            enum:
+              - created_at
+              - price
+              - name
+            default: created_at
+          example: created_at
+        - name: sortOrder
+          in: query
+          description: Sort order
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: desc
+          example: desc
       responses:
         '200':
           description: List of orders
@@ -2066,9 +2132,11 @@ components:
         size:
           type: string
           enum:
+            - extra_small
             - small
             - medium
             - large
+            - extra_large
           example: medium
         stock_quantity:
           type: integer
@@ -2140,12 +2208,7 @@ components:
           format: float
           example: 45000
         size:
-          type: string
-          enum:
-            - small
-            - medium
-            - large
-          example: medium
+          $ref: '#/components/schemas/Product/properties/size'
         stock_quantity:
           type: integer
           example: 100
@@ -2188,12 +2251,7 @@ components:
           format: float
           example: 50000
         size:
-          type: string
-          enum:
-            - small
-            - medium
-            - large
-          example: large
+          $ref: '#/components/schemas/Product/properties/size'
         stock_quantity:
           type: integer
           example: 150
