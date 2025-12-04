@@ -1,35 +1,65 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { refreshSession, fetchCurrentUser } from './store/slices/userSlice';
+import { fetchCart } from './store/slices/cartSlice';
+import { selectIsLoading } from './store/slices/loadingSelectors';
+import { startLoading, stopLoading } from './store/slices/loadingSlice';
+import Navbar from './components/Navbar/Navbar';
+import Footer from './components/Footer';
+import Background from './components/Background';
+import LoadingScreen from './components/LoadingScreen';
+import ContactButton from './components/ContactButton';
+import ScrollRestoration from './components/ScrollRestoration';
+import AppRoutes from './AppRoutes';
 
 function App() {
-  const [count, setCount] = useState(0)
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}
+
+function AppContent() {
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const isLoading = useSelector(selectIsLoading);
+  const hideFooterRoutes = ['/login', '/checkout', '/order-success'];
+  const hideNavbarRoutes = ['/checkout', '/order-success'];
+  const hideContactButtonRoutes = ['/checkout', '/order-success'];
+  const showFooter = !hideFooterRoutes.includes(location.pathname);
+  const showNavbar = !hideNavbarRoutes.includes(location.pathname);
+  const showContactButton = !hideContactButtonRoutes.includes(location.pathname);
+
+  useEffect(() => {
+    const initializeAuth = async () => {
+      dispatch(startLoading());
+      try {
+        await dispatch(refreshSession()).unwrap();
+        await dispatch(fetchCurrentUser()).unwrap();
+        await dispatch(fetchCart()).unwrap();
+      } catch {
+        console.log('No hay sesión activa');
+      } finally {
+        dispatch(stopLoading());
+      }
+    };
+
+    initializeAuth();
+  }, [dispatch]);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Background />
+      {showNavbar && <Navbar />}
+      {showContactButton && <ContactButton />}
+      <AppRoutes />
+      <ScrollRestoration />
+      {showFooter && <Footer />}
+      {isLoading && <LoadingScreen />}
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,28 +1,18 @@
 // Variables de colores
-$primary-color: #007bff;
-$secondary-color: #6c757d;
-$success-color: #28a745;
-$danger-color: #dc3545;
-$warning-color: #ffc107;
-$info-color: #17a2b8;
-$light-color: #f8f9fa;
-$dark-color: #343a40;
+$primary-color: #0d0d0e;
+$primary-color-light: #0d0d0ea7;
+$primary-color-hard: #0d0d0edc;
+$secondary-color: #d9d9d9;
+$tertiary-color: #7f7f7f;
+$quaternary-color: #7f7f7f27;
+$transparent-color: rgba(68, 68, 68, 0.1);
 
 // Variables de tipografía
-$font-family-base: 'Roboto', sans-serif;
+$font-family-base: 'Montserrat', sans-serif;
 $font-size-base: 1rem;
 $line-height-base: 1.5;
-
-// Variables de espaciado
-$spacer: 1rem;
-$spacers: (
-  0: 0,
-  1: $spacer * 0.25,
-  2: $spacer * 0.5,
-  3: $spacer,
-  4: $spacer * 1.5,
-  5: $spacer * 3,
-);
+$font-family-secondary: 'Archivo Black', sans-serif;
+$font-family-terciary: 'Oswald', sans-serif;
 
 // Variables de bordes
 $border-width: 1px;
@@ -35,15 +25,3 @@ $border-radius-lg: 0.5rem;
 $box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 $box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 $box-shadow-lg: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-
-// Variables de transiciones
-$transition-base: all 0.15s ease-in-out;
-
-// Variables de z-index
-$z-index-dropdown: 1000;
-$z-index-sticky: 1020;
-$z-index-fixed: 1030;
-$z-index-modal-backdrop: 1040;
-$z-index-modal: 1050;
-$z-index-popover: 1060;
-$z-index-tooltip: 1070;

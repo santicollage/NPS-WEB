@@ -1,0 +1,230 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.product-list {
+  width: 100%;
+  margin: 0 auto;
+
+  .admin-actions-bar {
+    @include transparent;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    gap: 1rem;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+
+    .selection-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .select-all {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: $secondary-color;
+        font-weight: 500;
+        cursor: pointer;
+
+        input[type='checkbox'] {
+          appearance: none;
+          padding: 0;
+          -webkit-appearance: none;
+          background-color: #ffffff7c;
+          width: 30px;
+          height: 30px;
+          border: 2px solid #555;
+          border-radius: 4px;
+          display: grid;
+          place-content: center;
+          cursor: pointer;
+          transition: all 0.2s ease;
+
+          &:hover {
+            border-color: #ffffff;
+          }
+
+          &:checked {
+            border-color: #5baaff;
+            background-color: #429eff;
+          }
+
+          &::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            transform: scale(0);
+            transition: transform 0.15s ease-in-out;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+          }
+
+          &:checked::before {
+            transform: scale(1);
+          }
+
+          &:focus-visible {
+            outline: 2px solid #007bff;
+            outline-offset: 3px;
+          }
+        }
+      }
+
+      .selection-count {
+        color: $secondary-color;
+        font-size: 0.9rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+      }
+
+      .bulk-buttons {
+        display: flex;
+        gap: 1rem;
+
+        button {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          gap: 0.3rem;
+          padding: 0.6rem 0.6rem;
+          border-radius: 8px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s;
+          border: none;
+          font-size: 0.9rem;
+
+          &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+
+          &.btn-delete {
+            background-color: #d3252589;
+            color: white;
+
+            &:hover:not(:disabled) {
+              background-color: #d3252589;
+            }
+          }
+
+          &.btn-visible {
+            background-color: #25d36689;
+            color: white;
+
+            &:hover:not(:disabled) {
+              background-color: #25d36689;
+            }
+          }
+
+          &.btn-hidden {
+            background-color: #d3cd2589;
+            color: white;
+
+            &:hover:not(:disabled) {
+              background-color: #d3cd2589;
+            }
+          }
+
+          svg {
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+    }
+
+    .bulk-actions {
+      display: flex;
+      align-items: center;
+
+      .add-product-btn {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        gap: 0.5rem;
+
+        svg {
+          width: 30px;
+          height: 30px;
+
+          path {
+            fill: $primary-color-light;
+          }
+        }
+      }
+    }
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+
+    .pagination-btn {
+      background-color: $primary-color-hard;
+      color: $secondary-color;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+
+      &:hover:not(:disabled) {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-color: $primary-color;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    .pagination-info {
+      color: $secondary-color;
+      font-size: 1rem;
+    }
+  }
+
+  .error,
+  .no-products {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: $quaternary-color;
+    border-radius: 12px;
+
+    h3 {
+      color: $secondary-color;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: $secondary-color;
+    }
+  }
+}

@@ -1,13 +1,20 @@
-// Importar variables y mixins
+// Import variables and mixins
 @use 'variables' as *;
 @use 'mixins' as *;
 @use 'sass:color';
 
-// Reset y base
+// Reset and base
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100vh;
+  min-width: 360px;
+  overflow-x: hidden;
 }
 
 body {
@@ -15,13 +22,20 @@ body {
   font-family: $font-family-base;
   font-size: $font-size-base;
   line-height: $line-height-base;
-  color: $dark-color;
-  background-color: $light-color;
+  color: $secondary-color;
+  background-color: $secondary-color;
   -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highsecondary-color: rgba(0, 0, 0, 0);
 }
 
-// Estilos globales
+#root {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+// Global styles
 .container {
   width: 100%;
   padding-right: 15px;
@@ -50,38 +64,47 @@ body {
   }
 }
 
-// Estilos de botones
-.btn {
-  display: inline-block;
-  font-weight: 400;
-  line-height: 1.5;
-  color: $dark-color;
-  text-align: center;
-  text-decoration: none;
-  vertical-align: middle;
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  padding: 40px 10vw;
+
+  @media (max-width: 768px) {
+    padding: 30px 5vw;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+// Button styles
+button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
-  user-select: none;
-  background-color: transparent;
-  border: $border-width solid transparent;
-  padding: 0.375rem 0.75rem;
-  font-size: $font-size-base;
-  border-radius: $border-radius;
-  @include transition(
-    color 0.15s ease-in-out,
-    background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out,
-    box-shadow 0.15s ease-in-out
-  );
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: $secondary-color;
+  color: $primary-color-hard;
 
   &:hover {
-    color: $dark-color;
-    text-decoration: none;
-  }
-
-  &:focus,
-  &.focus {
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
+    background: white;
+    transform: translateY(-2px);
+    filter: drop-shadow(0px 4px 12px rgba(254, 255, 255, 0.4));
   }
 
   &:disabled,
@@ -91,15 +114,46 @@ body {
   }
 }
 
-.btn-primary {
-  @include button-variant($light-color, $primary-color, $primary-color);
-}
-
 .btn-secondary {
-  @include button-variant($light-color, $secondary-color, $secondary-color);
+  @include button-variant(#6c757d, #495057);
 }
 
-// Estilos de formularios
+.btn-tertiary {
+  @include button-variant(#007bff, #0056b3);
+}
+
+.btn-quartertiary {
+  @include button-variant(#25d366, #128c65);
+}
+
+input,
+select {
+  padding: 0.75rem;
+  padding-right: 3rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  font-size: $font-size-base;
+  font-family: $font-family-base;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+
+  &:-webkit-autofill {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+    box-shadow: 0 0 0px 1000px #56565626 inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+}
+
+// Form styles
 .form-control {
   display: block;
   width: 100%;
@@ -107,8 +161,8 @@ body {
   font-size: $font-size-base;
   font-weight: 400;
   line-height: $line-height-base;
-  color: $dark-color;
-  background-color: $light-color;
+  color: $secondary-color;
+  background-color: $secondary-color;
   background-clip: padding-box;
   border: $border-width solid $border-color;
   appearance: none;
@@ -119,15 +173,15 @@ body {
   );
 
   &:focus {
-    color: $dark-color;
-    background-color: $light-color;
+    color: $secondary-color;
+    background-color: $secondary-color;
     border-color: color.adjust($primary-color, $lightness: 25%);
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
   }
 }
 
-// Utilidades
+// Utilities
 .text-center {
   text-align: center;
 }
@@ -150,4 +204,34 @@ body {
 
 .mt-3 {
   margin-top: 1rem;
+}
+
+// Global scrollbar styles
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+// For Firefox
+* {
+  scrollbar-width: thin;
+  scrollbar-color: white $primary-color-hard;
+}
+
+// For old IE/Edge
+* {
+  -ms-overflow-style: -ms-autohiding-scrollbar;
 }

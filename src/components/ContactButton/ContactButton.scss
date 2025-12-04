@@ -1,0 +1,55 @@
+@import '../../styles/_variables.scss';
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.contact-button {
+  position: fixed;
+  bottom: 50px;
+  left: 50px;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: #339634;
+  font-size: 1.2rem;
+  font-family: 'Archivo Black', sans-serif;
+  color: white;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+  transition:
+    all 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease,
+    opacity 0.3s ease;
+
+  &:hover {
+    background-color: #278a27;
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 1);
+    transform: scale(1.05) translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    transform: translateX(-50%);
+    left: calc(50vw - 120px);
+    bottom: 25px;
+    background: linear-gradient(45deg, #339634, #4bea70, #339634);
+    background-size: 200% 200%;
+    animation: gradientMove 2s linear infinite alternate;
+  }
+
+  svg {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+}
