@@ -1,0 +1,43 @@
+@import '../../styles/_variables.scss';
+
+.history-container {
+  width: 100vw;
+  display: flex;
+  align-items: stretch;
+  background-color: $secondary-color;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+
+  .history-image {
+    width: 60%;
+    height: inherit;
+    object-fit: cover;
+    object-position: right;
+    clip-path: polygon(0 0, 85% 0, 100% 100%, 0 100%);
+    @media (max-width: 768px) {
+      width: 100%;
+      height: auto;
+      clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+    }
+    @media (min-width: 1000px) {
+      width: 50%;
+    }
+  }
+  .history-text {
+    padding: 50px;
+    padding-left: 10px;
+    color: $primary-color;
+    text-align: right;
+    align-self: center;
+
+    @media (max-width: 768px) {
+      padding: 30px;
+      padding-top: 15px;
+      text-align: center;
+    }
+    @media (min-width: 1000px) {
+      padding: 40px 80px;
+    }
+  }
+}

@@ -1,74 +1,453 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import api from '../api';
 
-const initialState = {
-  items: [],
-  total: 0,
-  itemCount: 0,
-};
+// ==============================
+// 1️⃣ THUNKS (acciones asincrónicas)
+// ==============================
 
+// GET - Obtener carrito activo del usuario
+export const fetchCart = createAsyncThunk(
+  'cart/fetchCart',
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await api.get('/cart');
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || 'Error al cargar carrito');
+    }
+  }
+);
+
+// POST - Agregar producto al carrito
+export const addToCart = createAsyncThunk(
+  'cart/addToCart',
+  async (itemData, { rejectWithValue }) => {
+    try {
+      const { data } = await api.post('/cart/items', itemData);
+      return data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data || 'Error al agregar producto al carrito'
+      );
+    }
+  }
+);
+
+// PATCH - Actualizar cantidad de item en carrito
+export const updateCartItem = createAsyncThunk(
+  'cart/updateCartItem',
+  async ({ cartItemId, quantity }, { dispatch, rejectWithValue }) => {
+    try {
+      const { data } = await api.patch(`/cart/items/${cartItemId}`, {
+        quantity,
+      });
+      dispatch(fetchCart());
+      return data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data || 'Error al actualizar item del carrito'
+      );
+    }
+  }
+);
+
+// DELETE - Remover item del carrito
+export const removeFromCart = createAsyncThunk(
+  'cart/removeFromCart',
+  async (cartItemId, { dispatch, rejectWithValue }) => {
+    try {
+      await api.delete(`/cart/items/${cartItemId}`);
+      dispatch(fetchCart());
+      return cartItemId;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data || 'Error al remover item del carrito'
+      );
+    }
+  }
+);
+
+// POST - Abandonar carrito
+export const abandonCart = createAsyncThunk(
+  'cart/abandonCart',
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await api.post('/cart/abandon', {});
+      return data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data || 'Error al abandonar carrito'
+      );
+    }
+  }
+);
+
+// ==============================
+// GUEST CART THUNKS
+// ==============================
+
+// POST - Crear carrito de invitado
+export const createGuestCart = createAsyncThunk(
+  'cart/createGuestCart',
+  async (guestId, { rejectWithValue }) => {
+    try {
+      const { data } = await api.post('/cart/guest', {
+        guest_id: guestId,
+      });
+      return data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data || 'Error al crear carrito de invitado'
+      );
+    }
+  }
+);
+
+// GET - Obtener carrito de invitado
+export const fetchGuestCart = createAsyncThunk(
+  'cart/fetchGuestCart',
+  async (guestId, { rejectWithValue }) => {
+    try {
+      const { data } = await api.get(`/cart/guest/${guestId}`);
+      return data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data || 'Error al cargar carrito de invitado'
+      );
+    }
+  }
+);
+
+// POST - Agregar producto al carrito de invitado
+export const addToGuestCart = createAsyncThunk(
+  'cart/addToGuestCart',
+  async ({ guestId, itemData }, { rejectWithValue }) => {
+    try {
+      const { data } = await api.post(`/cart/guest/${guestId}/items`, itemData);
+      return data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data || 'Error al agregar producto al carrito de invitado'
+      );
+    }
+  }
+);
+
+// PATCH - Actualizar cantidad de item en carrito de invitado
+export const updateGuestCartItem = createAsyncThunk(
+  'cart/updateGuestCartItem',
+  async ({ guestId, cartItemId, quantity }, { dispatch, rejectWithValue }) => {
+    try {
+      const { data } = await api.patch(
+        `/cart/guest/${guestId}/items/${cartItemId}`,
+        { quantity }
+      );
+      dispatch(fetchGuestCart(guestId));
+      return data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data || 'Error al actualizar item del carrito de invitado'
+      );
+    }
+  }
+);
+
+// DELETE - Remover item del carrito de invitado
+export const removeFromGuestCart = createAsyncThunk(
+  'cart/removeFromGuestCart',
+  async ({ guestId, cartItemId }, { dispatch, rejectWithValue }) => {
+    try {
+      await api.delete(`/cart/guest/${guestId}/items/${cartItemId}`);
+      dispatch(fetchGuestCart(guestId));
+      return cartItemId;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data || 'Error al remover item del carrito de invitado'
+      );
+    }
+  }
+);
+
+// POST - Abandonar carrito de invitado
+export const abandonGuestCart = createAsyncThunk(
+  'cart/abandonGuestCart',
+  async (guestId, { rejectWithValue }) => {
+    try {
+      const { data } = await api.post(`/cart/guest/${guestId}/abandon`, {});
+      return data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data || 'Error al abandonar carrito de invitado'
+      );
+    }
+  }
+);
+
+// ==============================
+// 2️⃣ SLICE
+// ==============================
 const cartSlice = createSlice({
   name: 'cart',
-  initialState,
+  initialState: {
+    cart: null,
+    guestCart: null,
+
+    error: null,
+    success: null,
+    isCartModalOpen: false,
+  },
   reducers: {
-    addToCart: (state, action) => {
-      const { product, quantity = 1 } = action.payload;
-      const existingItem = state.items.find(
-        (item) => item.product.id === product.id
-      );
-
-      if (existingItem) {
-        existingItem.quantity += quantity;
-      } else {
-        state.items.push({ product, quantity });
-      }
-
-      state.total = state.items.reduce(
-        (sum, item) => sum + item.product.price * item.quantity,
-        0
-      );
-      state.itemCount = state.items.reduce(
-        (sum, item) => sum + item.quantity,
-        0
-      );
-    },
-    removeFromCart: (state, action) => {
-      const productId = action.payload;
-      state.items = state.items.filter((item) => item.product.id !== productId);
-
-      state.total = state.items.reduce(
-        (sum, item) => sum + item.product.price * item.quantity,
-        0
-      );
-      state.itemCount = state.items.reduce(
-        (sum, item) => sum + item.quantity,
-        0
-      );
-    },
-    updateQuantity: (state, action) => {
-      const { productId, quantity } = action.payload;
-      const item = state.items.find((item) => item.product.id === productId);
-
-      if (item && quantity > 0) {
-        item.quantity = quantity;
-        state.total = state.items.reduce(
-          (sum, item) => sum + item.product.price * item.quantity,
-          0
-        );
-        state.itemCount = state.items.reduce(
-          (sum, item) => sum + item.quantity,
-          0
-        );
-      }
+    clearStatus: (state) => {
+      state.error = null;
+      state.success = null;
     },
     clearCart: (state) => {
-      state.items = [];
-      state.total = 0;
-      state.itemCount = 0;
+      state.cart = null;
+      state.guestCart = null;
     },
+    setGuestId: (state, action) => {
+      if (state.guestCart) {
+        state.guestCart.guest_id = action.payload;
+      }
+    },
+    openCartModal: (state) => {
+      state.isCartModalOpen = true;
+    },
+    closeCartModal: (state) => {
+      state.isCartModalOpen = false;
+    },
+  },
+
+  // ==============================
+  // 3️⃣ EXTRA REDUCERS
+  // ==============================
+  extraReducers: (builder) => {
+    // FETCH CART
+    builder
+      .addCase(fetchCart.pending, (state) => {
+
+        state.error = null;
+      })
+      .addCase(fetchCart.fulfilled, (state, action) => {
+
+        state.cart = action.payload;
+      })
+      .addCase(fetchCart.rejected, (state, action) => {
+
+        state.error = action.payload;
+      });
+
+    // ADD TO CART
+    builder
+      .addCase(addToCart.pending, (state) => {
+
+        state.error = null;
+      })
+      .addCase(addToCart.fulfilled, (state, action) => {
+
+        if (state.cart) {
+          const existingItem = state.cart.items.find(
+            (item) => item.cart_item_id === action.payload.cart_item_id
+          );
+          if (existingItem) {
+            Object.assign(existingItem, action.payload);
+          } else {
+            state.cart.items.push(action.payload);
+          }
+        }
+        state.success = 'Producto agregado al carrito';
+      })
+      .addCase(addToCart.rejected, (state, action) => {
+
+        state.error = action.payload;
+      });
+
+    // UPDATE CART ITEM
+    builder
+      .addCase(updateCartItem.pending, (state) => {
+
+        state.error = null;
+      })
+      .addCase(updateCartItem.fulfilled, (state, action) => {
+
+        if (state.cart) {
+          const index = state.cart.items.findIndex(
+            (item) => item.cart_item_id === action.payload.cart_item_id
+          );
+          if (index !== -1) {
+            state.cart.items[index] = action.payload;
+          }
+        }
+        state.success = 'Cantidad actualizada';
+      })
+      .addCase(updateCartItem.rejected, (state, action) => {
+
+        state.error = action.payload;
+      });
+
+    // REMOVE FROM CART
+    builder
+      .addCase(removeFromCart.pending, (state) => {
+
+        state.error = null;
+      })
+      .addCase(removeFromCart.fulfilled, (state, action) => {
+
+        if (state.cart) {
+          state.cart.items = state.cart.items.filter(
+            (item) => item.cart_item_id !== action.payload
+          );
+        }
+        state.success = 'Producto removido del carrito';
+      })
+      .addCase(removeFromCart.rejected, (state, action) => {
+
+        state.error = action.payload;
+      });
+
+    // ABANDON CART
+    builder
+      .addCase(abandonCart.pending, (state) => {
+
+        state.error = null;
+      })
+      .addCase(abandonCart.fulfilled, (state) => {
+
+        if (state.cart) {
+          state.cart.status = 'abandoned';
+        }
+        state.success = 'Carrito abandonado';
+      })
+      .addCase(abandonCart.rejected, (state, action) => {
+
+        state.error = action.payload;
+      });
+
+    // CREATE GUEST CART
+    builder
+      .addCase(createGuestCart.pending, (state) => {
+
+        state.error = null;
+      })
+      .addCase(createGuestCart.fulfilled, (state, action) => {
+
+        state.guestCart = action.payload.cart;
+        state.success = 'Carrito de invitado creado';
+      })
+      .addCase(createGuestCart.rejected, (state, action) => {
+
+        state.error = action.payload;
+      });
+
+    // FETCH GUEST CART
+    builder
+      .addCase(fetchGuestCart.pending, (state) => {
+
+        state.error = null;
+      })
+      .addCase(fetchGuestCart.fulfilled, (state, action) => {
+
+        state.guestCart = action.payload;
+      })
+      .addCase(fetchGuestCart.rejected, (state, action) => {
+
+        state.error = action.payload;
+      });
+
+    // ADD TO GUEST CART
+    builder
+      .addCase(addToGuestCart.pending, (state) => {
+
+        state.error = null;
+      })
+      .addCase(addToGuestCart.fulfilled, (state, action) => {
+
+        if (state.guestCart) {
+          const existingItem = state.guestCart.items.find(
+            (item) => item.cart_item_id === action.payload.cart_item_id
+          );
+          if (existingItem) {
+            Object.assign(existingItem, action.payload);
+          } else {
+            state.guestCart.items.push(action.payload);
+          }
+        }
+        state.success = 'Producto agregado al carrito de invitado';
+      })
+      .addCase(addToGuestCart.rejected, (state, action) => {
+
+        state.error = action.payload;
+      });
+
+    // UPDATE GUEST CART ITEM
+    builder
+      .addCase(updateGuestCartItem.pending, (state) => {
+
+        state.error = null;
+      })
+      .addCase(updateGuestCartItem.fulfilled, (state, action) => {
+
+        if (state.guestCart) {
+          const index = state.guestCart.items.findIndex(
+            (item) => item.cart_item_id === action.payload.cart_item_id
+          );
+          if (index !== -1) {
+            state.guestCart.items[index] = action.payload;
+          }
+        }
+        state.success = 'Cantidad actualizada en carrito de invitado';
+      })
+      .addCase(updateGuestCartItem.rejected, (state, action) => {
+
+        state.error = action.payload;
+      });
+
+    // REMOVE FROM GUEST CART
+    builder
+      .addCase(removeFromGuestCart.pending, (state) => {
+
+        state.error = null;
+      })
+      .addCase(removeFromGuestCart.fulfilled, (state, action) => {
+
+        if (state.guestCart) {
+          state.guestCart.items = state.guestCart.items.filter(
+            (item) => item.cart_item_id !== action.payload
+          );
+        }
+        state.success = 'Producto removido del carrito de invitado';
+      })
+      .addCase(removeFromGuestCart.rejected, (state, action) => {
+
+        state.error = action.payload;
+      });
+
+    // ABANDON GUEST CART
+    builder
+      .addCase(abandonGuestCart.pending, (state) => {
+
+        state.error = null;
+      })
+      .addCase(abandonGuestCart.fulfilled, (state) => {
+
+        if (state.guestCart) {
+          state.guestCart.status = 'abandoned';
+        }
+        state.success = 'Carrito de invitado abandonado';
+      })
+      .addCase(abandonGuestCart.rejected, (state, action) => {
+
+        state.error = action.payload;
+      });
   },
 });
 
-export const { addToCart, removeFromCart, updateQuantity, clearCart } =
-  cartSlice.actions;
-
+// Exportar acciones y reducer
+export const {
+  clearStatus,
+  clearCart,
+  setGuestId,
+  openCartModal,
+  closeCartModal,
+} = cartSlice.actions;
 export default cartSlice.reducer;

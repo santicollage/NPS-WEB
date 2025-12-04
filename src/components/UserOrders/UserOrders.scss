@@ -1,0 +1,139 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.user-orders {
+  margin-bottom: 2rem;
+  border-radius: 8px;
+
+  h2 {
+    margin-bottom: 1rem;
+    color: $secondary-color;
+  }
+
+  .orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    @include transparent;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    th,
+    td {
+      padding: 0.75rem;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: $primary-color;
+      color: white;
+      font-weight: bold;
+    }
+
+    tbody tr:hover {
+      background-color: $primary-color-light;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      align-items: center;
+
+      .details-button,
+      .pay-button {
+        padding: 0.6rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s;
+      }
+
+      .details-button {
+        background-color: #e0e0e0;
+        color: #333;
+
+        &:hover {
+          background-color: #d0d0d0;
+        }
+      }
+
+      .pay-button {
+        background-color: #e63946;
+        color: white;
+
+        &:hover {
+          background-color: #ff4d5a;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 767px) {
+    .orders-table {
+      background-color: transparent;
+      backdrop-filter: none;
+      thead {
+        display: none;
+      }
+
+      tbody {
+        tr {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 5px;
+          margin-bottom: 1rem;
+          border-radius: 8px;
+          padding: 1rem 2rem;
+          font-size: 1.3rem;
+          @include transparent;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        td {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          border: none;
+          padding: 0;
+          text-align: left;
+
+          &:first-child::before {
+            content: 'ID del Pedido: ';
+            font-weight: bold;
+            color: $secondary-color;
+          }
+
+          &:nth-child(2)::before {
+            content: 'Estado: ';
+            font-weight: bold;
+            color: $secondary-color;
+          }
+
+          &:nth-child(3)::before {
+            content: 'Total: ';
+            font-weight: bold;
+            color: $secondary-color;
+          }
+
+          &:nth-child(4)::before {
+            content: 'Fecha: ';
+            font-weight: bold;
+            color: $secondary-color;
+          }
+
+          &:nth-child(5) {
+            justify-content: center;
+            text-align: center;
+            margin-top: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}

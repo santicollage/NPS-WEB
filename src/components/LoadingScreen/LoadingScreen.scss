@@ -1,0 +1,158 @@
+/* === OVERLAY === */
+.mechanic-loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(20px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* === CONTAINER === */
+.gears {
+  position: absolute;
+  left: 50%;
+  display: flex;
+  align-items: center;
+}
+
+/* ==========================================================
+   🔧 ENGRANE BASE – con dientes reales usando pseudo-elementos
+   ========================================================== */
+.gear {
+  position: relative;
+  transform: translateX(58px);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    transparent 0%,
+    transparent 47%,
+    #828282 48%,
+    #f3f3f3 90%,
+    #818181 100%
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* Glow futurista */
+  animation: glowPulse 2.2s ease-in-out infinite;
+
+  /* Dientes del engrane con pseudo-elementos */
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 140%;
+    height: 140%;
+    transform: translate(-50%, -50%);
+    background: repeating-conic-gradient(
+      from 0deg,
+      #f0f0f0 0deg,
+      #bbbbbb 12deg,
+      transparent 12deg,
+      transparent 40deg
+    );
+    mask: radial-gradient(circle, transparent 46%, black 50%);
+    border-radius: 50%;
+  }
+
+  /* Segundo set de dientes para más realismo */
+  &::after {
+    transform: translate(-50%, -50%) rotate(10deg);
+    opacity: 0.7;
+  }
+
+  /* Centro brillante */
+  .center {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #00d9ff;
+    box-shadow: 0 0 10px #00eaff;
+  }
+}
+
+/* ==========================================================
+   📏 TAMAÑOS Y VELOCIDADES (movimiento mecánico real)
+   ========================================================== */
+.gear-large {
+  position: absolute;
+  top: -34px;
+  left: -111px;
+  width: 85px;
+  height: 85px;
+  margin-right: 28px;
+  animation:
+    rotateLarge 6s linear infinite,
+    glowPulse 2.2s ease-in-out infinite;
+}
+
+.gear-medium {
+  width: 60px;
+  height: 60px;
+  margin-right: 20px;
+  animation:
+    rotateMedium 4s linear infinite,
+    glowPulse 2.2s ease-in-out infinite;
+}
+
+.gear-small {
+  position: absolute;
+  top: -50px;
+  right: -15px;
+  width: 45px;
+  height: 45px;
+  animation:
+    rotateSmall 3s linear infinite,
+    glowPulse 2.2s ease-in-out infinite reverse;
+}
+
+/* ==========================================================
+   🔥 ANIMACIONES
+   ========================================================== */
+
+/* Rotaciones sincronizadas según tamaño del engrane */
+@keyframes rotateLarge {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotateMedium {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes rotateSmall {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Glow pulsante futurista */
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 80px #dbfcff;
+  }
+  50% {
+    box-shadow: 0 0 200px #dbfcff;
+  }
+  100% {
+    box-shadow: 0 0 80px #dbfcff;
+  }
+}

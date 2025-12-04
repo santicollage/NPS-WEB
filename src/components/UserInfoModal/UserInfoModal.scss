@@ -1,0 +1,103 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.user-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+
+.modal-content {
+  border-radius: 5px;
+  padding: 1rem 2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 90%;
+  @include transparent;
+
+  h3 {
+    margin-top: 0;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    margin-bottom: 1rem;
+  }
+
+  input,
+      select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        color: #ffffff;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+
+        option {
+          background-color: #2d2d2d;
+          border: none;
+        }
+
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+        }
+
+        &:focus {
+          outline: none;
+          border-color: $secondary-color;
+          box-shadow: 0 0 0 2px rgba(237, 246, 255, 0.25);
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        &[type='file'] {
+          padding: 0.5rem;
+          
+          &::file-selector-button {
+            margin-right: 1rem;
+            border: none;
+            background: $secondary-color; 
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            color: #000; 
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+
+            &:hover {
+              opacity: 0.9;
+              transform: translateY(-1px);
+            }
+          }
+        }
+      }
+
+  .buttons-group {
+    display: flex;
+    gap: 10px;
+    button {
+      flex: 1;
+    }
+  }
+}
+}

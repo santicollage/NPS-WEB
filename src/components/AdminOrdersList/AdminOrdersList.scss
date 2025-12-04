@@ -1,0 +1,145 @@
+@import '../../styles/_variables.scss';
+@import '../../styles/_mixins.scss';
+
+.admin-orders-list {
+  width: 100%;
+  @include transparent;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: $secondary-color;
+    font-size: 1.2rem;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+
+    th,
+    td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      font-weight: 600;
+      color: $secondary-color;
+    }
+
+    tr:hover {
+      background-color: #a0a0a01e;
+    }
+
+    .status-badge {
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-transform: capitalize;
+
+      &.pending {
+        background-color: #fff3cd;
+        color: #856404;
+      }
+
+      &.paid {
+        background-color: #d4edda;
+        color: #155724;
+      }
+
+      &.shipped {
+        background-color: #cce5ff;
+        color: #004085;
+      }
+
+      &.delivered {
+        background-color: #d1ecf1;
+        color: #0c5460;
+      }
+
+      &.cancelled {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+
+      select {
+        padding-right: 0.75rem;
+      }
+
+      option {
+        background-color: #2d2d2d;
+        border: none;
+      }
+
+      button {
+        padding: 0.4rem 0.8rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: opacity 0.3s;
+
+        &:hover {
+          opacity: 0.8;
+        }
+
+        &.details-btn {
+          background-color: #17a2b8;
+          color: white;
+        }
+
+        &.status-btn {
+          background-color: #6c757d;
+          color: white;
+        }
+      }
+    }
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    gap: 1rem;
+
+    button {
+      padding: 0.5rem 1rem;
+      border: 1px solid #ddd;
+      background-color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &:hover:not(:disabled) {
+        background-color: #f8f9fa;
+        border-color: #ccc;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+
+    span {
+      font-size: 0.9rem;
+      color: #666;
+    }
+  }
+}
