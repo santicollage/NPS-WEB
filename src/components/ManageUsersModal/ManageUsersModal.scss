@@ -1,0 +1,342 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.manage-users-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  .manage-users-modal {
+    @include transparent;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: modalFadeIn 0.3s ease-out;
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+
+      h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: $secondary-color;
+        font-weight: 600;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        color: $secondary-color;
+        font-size: 1.5rem;
+        padding: 0;
+
+        svg {
+          width: 40px;
+          height: 40px;
+        }
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+
+    .modal-content {
+      padding: 2rem;
+      overflow-y: auto;
+      flex: 1;
+
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        align-items: center;
+
+        .search-box {
+          flex: 2;
+          min-width: 200px;
+
+          input {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: $secondary-color;
+            font-size: 1rem;
+            transition: all 0.2s;
+
+            &:focus {
+              outline: none;
+              border-color: $primary-color;
+              background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            &::placeholder {
+              color: rgba(255, 255, 255, 0.3);
+            }
+          }
+        }
+
+        .role-filter {
+          flex: 1;
+          min-width: 150px;
+
+          select {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: $secondary-color;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            option {
+              background-color: #2d2d2d;
+            }
+
+            &:focus {
+              outline: none;
+              border-color: $primary-color;
+              background-color: rgba(255, 255, 255, 0.1);
+            }
+          }
+        }
+
+        .filter-buttons {
+          display: flex;
+          gap: 0.5rem;
+
+          button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+
+            &.clear-btn {
+              background-color: rgba(255, 255, 255, 0.05);
+              border: 1px solid rgba(255, 255, 255, 0.2);
+              color: $secondary-color;
+
+              &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                border-color: rgba(255, 255, 255, 0.4);
+              }
+            }
+          }
+        }
+      }
+
+      .success-message {
+        background-color: rgba(83, 230, 57, 0.1);
+        border: 1px solid #53e639;
+        color: #53e639;
+        padding: 0.75rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      .error-message {
+        background-color: rgba(255, 107, 107, 0.1);
+        border: 1px solid #ff6b6b;
+        color: #ff6b6b;
+        padding: 0.75rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      .loading {
+        text-align: center;
+        color: $secondary-color;
+        padding: 2rem;
+        font-size: 1.1rem;
+      }
+
+      .users-table {
+        overflow-x: auto;
+        margin-bottom: 1rem;
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+
+          thead {
+            tr {
+              background-color: rgba(255, 255, 255, 0.05);
+              border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+
+              th {
+                padding: 1rem;
+                text-align: left;
+                color: $secondary-color;
+                font-weight: 600;
+                font-size: 0.9rem;
+              }
+            }
+          }
+
+          tbody {
+            tr {
+              border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+              transition: background-color 0.2s;
+
+              &:hover {
+                background-color: rgba(255, 255, 255, 0.03);
+              }
+
+              td {
+                padding: 1rem;
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 0.9rem;
+
+                &.no-users {
+                  text-align: center;
+                  padding: 2rem;
+                  color: rgba(255, 255, 255, 0.5);
+                }
+
+                .role-badge {
+                  display: inline-block;
+                  padding: 0.25rem 0.75rem;
+                  border-radius: 12px;
+                  font-size: 0.85rem;
+                  font-weight: 500;
+
+                  &.admin {
+                    background-color: rgba(255, 107, 107, 0.2);
+                    color: #ff6b6b;
+                    border: 1px solid #ff6b6b;
+                  }
+
+                  &.customer {
+                    background-color: rgba(83, 230, 57, 0.2);
+                    color: #53e639;
+                    border: 1px solid #53e639;
+                  }
+                }
+
+                .role-actions {
+                  display: flex;
+                  gap: 0.5rem;
+
+                  .role-btn {
+                    flex: 1;
+                    padding: 0.5rem 1rem;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 6px;
+                    background-color: rgba(255, 255, 255, 0.05);
+                    color: rgba(255, 255, 255, 0.7);
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    font-size: 0.85rem;
+
+                    &:hover:not(:disabled) {
+                      background-color: rgba(255, 255, 255, 0.1);
+                      border-color: $primary-color;
+                      color: $secondary-color;
+                    }
+
+                    &.active {
+                      background-color: $primary-color;
+                      border-color: $primary-color;
+                      color: #000;
+                      font-weight: 600;
+                    }
+
+                    &:disabled {
+                      opacity: 0.5;
+                      cursor: not-allowed;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+        button {
+          padding: 0.5rem 1rem;
+          background-color: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 6px;
+          color: $secondary-color;
+          cursor: pointer;
+          transition: all 0.2s;
+
+          &:hover:not(:disabled) {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: $primary-color;
+          }
+
+          &:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+          }
+        }
+
+        span {
+          color: $secondary-color;
+          font-size: 0.9rem;
+        }
+      }
+
+      .users-count {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.85rem;
+        margin-top: 1rem;
+      }
+    }
+  }
+}
