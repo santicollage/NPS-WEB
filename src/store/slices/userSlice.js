@@ -139,6 +139,19 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
+// PUT - Change password
+export const changePassword = createAsyncThunk(
+  'user/changePassword',
+  async ({ userId, passwordData }, { rejectWithValue }) => {
+    try {
+      const { data } = await api.put('/auth/change-password', passwordData);
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || 'Error changing password');
+    }
+  }
+);
+
 // ==============================
 // 2️⃣ SLICE
 // ==============================
@@ -340,6 +353,18 @@ const userSlice = createSlice({
         state.currentUser = null;
         state.isAuthenticated = false;
         state.isAdmin = false;
+      });
+
+    // CHANGE PASSWORD
+    builder
+      .addCase(changePassword.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(changePassword.fulfilled, (state) => {
+        state.success = 'Password changed successfully';
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        state.error = action.payload;
       });
   },
 });
