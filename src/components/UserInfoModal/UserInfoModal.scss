@@ -67,6 +67,29 @@
           opacity: 0.6;
           cursor: not-allowed;
         }
+
+        &[type='file'] {
+          padding: 0.5rem;
+          
+          &::file-selector-button {
+            margin-right: 1rem;
+            border: none;
+            background: $secondary-color; 
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            color: #000; 
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+
+            &:hover {
+              opacity: 0.9;
+              transform: translateY(-1px);
+            }
+          }
+        }
       }
 
   .buttons-group {

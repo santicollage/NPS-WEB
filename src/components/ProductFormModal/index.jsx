@@ -50,7 +50,10 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
     if (!formData.stock_quantity || Number(formData.stock_quantity) < 0)
       newErrors.stock_quantity = 'El stock no puede ser negativo';
 
-    const validImages = formData.images.filter((img) => img.trim() !== '');
+    const validImages = formData.images.filter((img) => {
+      if (typeof img === 'string') return img.trim() !== '';
+      return img instanceof File;
+    });
     if (validImages.length === 0)
       newErrors.images = 'Debe agregar al menos una imagen';
 
@@ -117,10 +120,43 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
     setTouched((prev) => ({ ...prev, [name]: true }));
   };
 
-  const handleImageChange = (index, value) => {
-    const newImages = [...formData.images];
-    newImages[index] = value;
-    setFormData((prev) => ({ ...prev, images: newImages }));
+  const convertFileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      img.onload = () => {
+        const maxSize = 800; // Increased max size for product images
+        let { width, height } = img;
+        if (width > height) {
+          if (width > maxSize) {
+            height = (height * maxSize) / width;
+            width = maxSize;
+          }
+        } else {
+          if (height > maxSize) {
+            width = (width * maxSize) / height;
+            height = maxSize;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+        const base64 = canvas.toDataURL('image/jpeg', 0.8);
+        resolve(base64);
+      };
+      img.onerror = (error) => reject(error);
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
+  const handleImageChange = (index, e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const newImages = [...formData.images];
+      newImages[index] = file;
+      setFormData((prev) => ({ ...prev, images: newImages }));
+    }
   };
 
   const addImageField = () => {
@@ -166,6 +202,17 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Process images: convert files to base64, keep existing URLs
+    const processedImages = await Promise.all(
+      formData.images.map(async (img) => {
+        if (img instanceof File) {
+          return await convertFileToBase64(img);
+        }
+        return img;
+      })
+    );
+
     const payload = {
       name: formData.name,
       reference: formData.reference,
@@ -173,7 +220,7 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
       stock_quantity: Number(formData.stock_quantity),
       description: formData.description,
       category_ids: formData.category_ids.map((id) => Number(id)),
-      image_urls: formData.images.filter((img) => img.trim() !== ''),
+      image_urls: processedImages.filter((img) => img && typeof img === 'string' && img.trim() !== ''),
       size: formData.size,
       visible: formData.visible,
     };
@@ -364,7 +411,7 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
 
             <div className="images-section">
               <h3>
-                Imágenes (URLs){' '}
+                Imágenes{' '}
                 {errors.images && (
                   <span
                     className="error-text"
@@ -377,12 +424,21 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
               <div className="image-inputs">
                 {formData.images.map((img, index) => (
                   <div key={index} className="image-input-row">
-                    <input
-                      type="url"
-                      value={img}
-                      onChange={(e) => handleImageChange(index, e.target.value)}
-                      placeholder="https://ejemplo.com/imagen.jpg"
-                    />
+                    {/* If it's a string (URL) and not empty, show preview or link */}
+                    {typeof img === 'string' && img !== '' ? (
+                      <div className="image-preview-container">
+                        <img src={img} alt={`Preview ${index}`} className="image-preview-thumbnail" style={{ width: '50px', height: '50px', objectFit: 'cover', marginRight: '10px' }} />
+                        <span className="image-url-text" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px', display: 'inline-block' }}>{img}</span>
+                      </div>
+                    ) : (
+                      // If it's a File object or empty string, show file input
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleImageChange(index, e)}
+                      />
+                    )}
+                    
                     {formData.images.length > 1 && (
                       <button
                         type="button"
