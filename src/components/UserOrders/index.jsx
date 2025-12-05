@@ -19,8 +19,6 @@ const UserOrders = () => {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [orderToPay, setOrderToPay] = useState(null);
 
-  console.log(orders);
-
   useEffect(() => {
     dispatch(fetchOrders());
   }, [dispatch]);
