@@ -139,6 +139,49 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
+// PUT - Change password
+export const changePassword = createAsyncThunk(
+  'user/changePassword',
+  async ({ userId, passwordData }, { rejectWithValue }) => {
+    try {
+      const { data } = await api.put('/auth/change-password', passwordData);
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || 'Error changing password');
+    }
+  }
+);
+
+// GET - Fetch all users (admin only)
+export const fetchAllUsers = createAsyncThunk(
+  'user/fetchAllUsers',
+  async ({ page = 1, limit = 20, search = '', role = '' }, { rejectWithValue }) => {
+    try {
+      const params = { page, limit };
+      if (search) params.search = search;
+      if (role) params.role = role;
+      
+      const { data } = await api.get('/users', { params });
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || 'Error fetching users');
+    }
+  }
+);
+
+// PUT - Update user role (admin only)
+export const updateUserRole = createAsyncThunk(
+  'user/updateUserRole',
+  async ({ userId, role }, { rejectWithValue }) => {
+    try {
+      const { data } = await api.put(`/users/${userId}/role`, { role });
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || 'Error updating user role');
+    }
+  }
+);
+
 // ==============================
 // 2️⃣ SLICE
 // ==============================
@@ -148,6 +191,12 @@ const userSlice = createSlice({
     currentUser: null,
     isAuthenticated: false,
     isAdmin: false,
+
+    // Users list for admin management
+    usersList: [],
+    usersTotal: 0,
+    usersLoading: false,
+    usersError: null,
 
     error: null,
     success: null,
@@ -340,6 +389,53 @@ const userSlice = createSlice({
         state.currentUser = null;
         state.isAuthenticated = false;
         state.isAdmin = false;
+      });
+
+    // CHANGE PASSWORD
+    builder
+      .addCase(changePassword.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(changePassword.fulfilled, (state) => {
+        state.success = 'Password changed successfully';
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        state.error = action.payload;
+      });
+
+    // FETCH ALL USERS
+    builder
+      .addCase(fetchAllUsers.pending, (state) => {
+        state.usersLoading = true;
+        state.usersError = null;
+      })
+      .addCase(fetchAllUsers.fulfilled, (state, action) => {
+        state.usersLoading = false;
+        state.usersList = action.payload.users;
+        state.usersTotal = action.payload.total;
+      })
+      .addCase(fetchAllUsers.rejected, (state, action) => {
+        state.usersLoading = false;
+        state.usersError = action.payload;
+      });
+
+    // UPDATE USER ROLE
+    builder
+      .addCase(updateUserRole.pending, (state) => {
+        state.error = null;
+      })
+      .addCase(updateUserRole.fulfilled, (state, action) => {
+        state.success = 'User role updated successfully';
+        // Update the user in the list if it exists
+        const index = state.usersList.findIndex(
+          (user) => user.user_id === action.payload.user_id
+        );
+        if (index !== -1) {
+          state.usersList[index] = action.payload;
+        }
+      })
+      .addCase(updateUserRole.rejected, (state, action) => {
+        state.error = action.payload;
       });
   },
 });

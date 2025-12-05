@@ -51,8 +51,6 @@ const AdminOrdersList = () => {
   if (!orders) return <p>Cargando órdenes...</p>;
   if (orders.length === 0) return <p>No se encontraron órdenes.</p>;
 
-  console.log(orders);
-
   return (
     <>
       <div className="admin-orders-list">
