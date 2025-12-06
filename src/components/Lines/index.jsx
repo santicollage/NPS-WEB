@@ -1,8 +1,8 @@
 import './Lines.scss';
-import chevrolet from '../../assets/Images/Slider/chevrolet.png';
-import hino from '../../assets/Images/Slider/hino.png';
-import mercedes from '../../assets/Images/Slider/mercedes.png';
-import foton from '../../assets/Images/Slider/foton.png';
+import chevrolet from '../../assets/images/Slider/chevrolet.png';
+import hino from '../../assets/images/Slider/hino.png';
+import mercedes from '../../assets/images/Slider/mercedes.png';
+import foton from '../../assets/images/Slider/foton.png';
 
 function Lines() {
   const lines = [
