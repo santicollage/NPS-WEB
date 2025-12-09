@@ -12,8 +12,7 @@ import EyeIcon from '../../assets/icons/EyeIcon';
 import EyeOffIcon from '../../assets/icons/EyeOffIcon';
 import './Login.scss';
 import SEO from '../../components/SEO/SEO';
-import LoginImage from '../../assets/images/login/login.png';
-import RegisterImage from '../../assets/images/login/register.png';
+
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -205,7 +204,7 @@ const Login = () => {
                 </p>
               </div>
               <div className="image-section">
-                <img src={LoginImage} alt="Login" />
+                <img src="/images/login/login.avif" alt="Login" loading="lazy" />
               </div>
             </div>
           </div>
@@ -304,8 +303,9 @@ const Login = () => {
               </div>
               <div className="image-section">
                 <img
-                  src={RegisterImage}
+                  src="/images/login/register.avif"
                   alt="Register"
+                  loading="lazy"
                 />
               </div>
             </div>

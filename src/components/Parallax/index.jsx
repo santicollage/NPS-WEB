@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Parallax.scss';
-import Sky from '../../assets/images/parallax/sky.png';
-import Road from '../../assets/images/parallax/road.png';
-import Truck from '../../assets/images/parallax/truck.png';
-import Logo from '../../assets/images/logo-nps.png';
+
 import LineGlow from '../LineGlow';
 import { useWindowWidth } from '../../hooks/useWindowWidth';
 import Benefits1Icon from '../../assets/icons/Benefits1Icon';
@@ -31,24 +28,27 @@ function Parallax() {
     <>
       <div className="parallax" onClick={scrollDown}>
         <img
-          src={Sky}
+          src="/images/parallax/sky.avif"
           alt="Cielo"
           className="layer sky"
           style={{ transform: `translateY(${offsetY * 0.2}px)` }}
+          loading="lazy"
         />
         <img
-          src={Road}
+          src="/images/parallax/road.avif"
           alt="Carretera"
           className="layer road"
           style={{ transform: `translateY(${offsetY * 0.5}px)` }}
+          loading="lazy"
         />
         <img
-          src={Truck}
+          src="/images/parallax/truck.avif"
           alt="Camión"
           className="layer truck"
           style={{
             transform: `translateY(${offsetY * 0.3}px) translateX(-50%)`,
           }}
+          loading="lazy"
         />
         <div
           className="text"
@@ -57,12 +57,13 @@ function Parallax() {
           }}
         >
           <img
-            src={Logo}
+            src="/images/logo-nps.avif"
             alt="NPS Diesel"
             className="logo"
             style={{
               transform: `translateX(${offsetY * -0.3}px)`,
             }}
+            loading="lazy"
           />
           <div
             className="phrase-container"

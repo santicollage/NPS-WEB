@@ -1,11 +1,11 @@
-import camion from '../../assets/images/about/truck-mountain.png';
+
 import './History.scss';
 
 function History() {
   return (
     <>
       <div className="history-container">
-        <img className="history-image" src={camion} alt="camion" />
+        <img className="history-image" src="/images/about/truck-mountain.avif" alt="camion" loading="lazy" />
         <p className="history-text">
           A lo largo de nuestra trayectoria en el mercado, hemos consolidado un
           servicio ágil, eficiente y competitivo, respaldado por nuestra
