@@ -12,6 +12,8 @@ import EyeIcon from '../../assets/icons/EyeIcon';
 import EyeOffIcon from '../../assets/icons/EyeOffIcon';
 import './Login.scss';
 import SEO from '../../components/SEO/SEO';
+import LoginImage from '../../assets/images/login/login.png';
+import RegisterImage from '../../assets/images/login/register.png';
 
 const Login = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -203,7 +205,7 @@ const Login = () => {
                 </p>
               </div>
               <div className="image-section">
-                <img src="/src/assets/images/login/Login.png" alt="Login" />
+                <img src={LoginImage} alt="Login" />
               </div>
             </div>
           </div>
@@ -302,7 +304,7 @@ const Login = () => {
               </div>
               <div className="image-section">
                 <img
-                  src="/src/assets/images/login/register.png"
+                  src={RegisterImage}
                   alt="Register"
                 />
               </div>
