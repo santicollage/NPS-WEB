@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import './Home.scss';
 import Slider from '../../components/Slider';
 import LineGlow from '../../components/LineGlow';
 import Benefits from '../../components/Benefits';
-import MapNps from '../../components/MapNps';
 import Parallax from '../../components/Parallax';
 import SEO from '../../components/SEO/SEO';
+
+// Lazy load Google Maps component to improve initial load performance
+const MapNps = lazy(() => import('../../components/MapNps'));
 
 const Home = () => {
   return (
@@ -26,7 +28,9 @@ const Home = () => {
         <Benefits />
       </section>
       <section>
-        <MapNps />
+        <Suspense fallback={<div style={{ height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Cargando mapa...</div>}>
+          <MapNps />
+        </Suspense>
       </section>
     </>
   );
