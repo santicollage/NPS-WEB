@@ -1,4 +1,7 @@
-export const selectProducts = (state) => state.products.items;
+export const selectProducts = (state) => {
+  const items = state.products?.items;
+  return Array.isArray(items) ? items : [];
+};
 export const selectCurrentProduct = (state) => state.products.currentProduct;
 export const selectProductsError = (state) => state.products.error;
 export const selectProductsSuccess = (state) => state.products.success;
