@@ -48,7 +48,7 @@ function Parallax() {
           style={{
             transform: `translateY(${offsetY * 0.3}px) translateX(-50%)`,
           }}
-          loading="lazy"
+          fetchpriority="high"
         />
         <div
           className="text"
