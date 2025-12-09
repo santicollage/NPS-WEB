@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectIsAuthenticated, selectIsAdmin } from '../../store/slices/userSelectors';
 import { selectTotalItems } from '../../store/slices/cartSelectors';
 import { openCartModal } from '../../store/slices/cartSlice';
-import logo from '../../assets/images/logo-nps.png';
+
 import LoginIcon from '../../assets/icons/LoginIcon';
 import ProfileIcon from '../../assets/icons/ProfileIcon';
 import CartIcon from '../../assets/icons/CartIcon';
@@ -62,7 +62,7 @@ const Navbar = () => {
     <>
       <nav className="navbar" style={navbarStyle}>
         <Link to="/">
-          <img src={logo} alt="logo NPS" className="logo" />
+          <img src="/images/logo-nps.avif" alt="logo NPS" className="logo" loading="lazy" />
         </Link>
         <button
           className="hamburger-menu"

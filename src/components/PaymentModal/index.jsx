@@ -9,10 +9,7 @@ import { selectGuestCart } from '../../store/slices/cartSelectors';
 import './PaymentModal.scss';
 
 import payuLogo from '../../assets/images/checkout/payu.avif';
-import nequiLogo from '../../assets/images/checkout/nequi.png';
-import pseLogo from '../../assets/images/checkout/pse.png';
-import visaLogo from '../../assets/images/checkout/visa.png';
-import bancolombiaLogo from '../../assets/images/checkout/bancolombia.png';
+
 
 const PaymentModal = ({ isOpen, onClose, order }) => {
   const dispatch = useDispatch();
@@ -75,10 +72,10 @@ const PaymentModal = ({ isOpen, onClose, order }) => {
             <img src={payuLogo} alt="PayU" />
           </p>
           <div className="payment-methods">
-            <img className="nequi" src={nequiLogo} alt="Nequi" />
-            <img className="pse" src={pseLogo} alt="PSE" />
-            <img className="visa" src={visaLogo} alt="Visa" />
-            <img className="bancolombia" src={bancolombiaLogo} alt="Bancolombia" />
+            <img className="nequi" src="/images/checkout/nequi.avif" alt="Nequi" loading="lazy" />
+            <img className="pse" src="/images/checkout/pse.avif" alt="PSE" loading="lazy" />
+            <img className="visa" src="/images/checkout/visa.avif" alt="Visa" loading="lazy" />
+            <img className="bancolombia" src="/images/checkout/bancolombia.avif" alt="Bancolombia" loading="lazy" />
           </div>
         </div>
         <div className="modal-actions">

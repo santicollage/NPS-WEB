@@ -1,29 +1,26 @@
 import './Lines.scss';
-import chevrolet from '../../assets/images/Slider/chevrolet.png';
-import hino from '../../assets/images/Slider/hino.png';
-import mercedes from '../../assets/images/Slider/mercedes.png';
-import foton from '../../assets/images/Slider/foton.png';
+
 
 function Lines() {
   const lines = [
     {
       id: 1,
-      logo: chevrolet,
+      logo: '/images/slider/chevrolet.avif',
       text: 'Chevrolet (FTR, FRR, FVR, NPR, NQR, NKR, NHR, FVZ, LUV Dimax)',
     },
     {
       id: 2,
-      logo: hino,
+      logo: '/images/slider/hino.avif',
       text: 'Hino (300, 500)',
     },
     {
       id: 3,
-      logo: mercedes,
+      logo: '/images/slider/mercedes.avif',
       text: 'Mercedes Benz (1726, 1016, LO915, 813, OF 917, 1725, 1730)',
     },
     {
       id: 4,
-      logo: foton,
+      logo: '/images/slider/foton.avif',
       text: 'Foton (ISF 2.8 - 3.8)',
     },
   ];
@@ -35,7 +32,7 @@ function Lines() {
         <div className="lines">
           {lines.map((line) => (
             <div key={line.id} className="line">
-              <img className="logo" src={line.logo} alt="logo" />
+              <img className="logo" src={line.logo} alt="logo" loading="lazy" />
               <p className="line-text">{line.text}</p>
             </div>
           ))}

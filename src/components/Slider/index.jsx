@@ -2,13 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Lines from '../Lines';
 import './Slider.scss';
-import velocimetro1 from '../../assets/images/Slider/velocimetro1.svg';
-import velocimetro2 from '../../assets/images/Slider/velocimetro2.svg';
-import piston1 from '../../assets/images/Slider/pistons1.svg';
-import piston2 from '../../assets/images/Slider/pistons2.svg';
-import piston3 from '../../assets/images/Slider/pistons3.svg';
-import caja from '../../assets/images/Slider/caja.png';
-import suspension from '../../assets/images/Slider/suspension.png';
+
+
 import ArrowIcon from '../../assets/icons/ArrowIcon';
 import LineGlow from '../../components/LineGlow';
 
@@ -75,12 +70,12 @@ function Slider() {
           <div className="slider-image">
             <img
               className="image speedometer"
-              src={velocimetro1}
+              src="/images/slider/velocimetro1.svg"
               alt="velocimetro"
             />
             <img
               className="image speedometer needle"
-              src={velocimetro2}
+              src="/images/slider/velocimetro2.svg"
               alt="velocimetro"
             />
           </div>
@@ -114,15 +109,15 @@ function Slider() {
             </button>
           </div>
           <div className="slider-image">
-            <img className="image pistons" src={piston1} alt="piston" />
+            <img className="image pistons" src="/images/slider/pistons1.svg" alt="piston" />
             <img
               className="image pistons pistons1"
-              src={piston2}
+              src="/images/slider/pistons2.svg"
               alt="piston"
             />
             <img
               className="image pistons pistons2"
-              src={piston3}
+              src="/images/slider/pistons3.svg"
               alt="piston"
             />
             <div className="shadow"></div>
@@ -137,7 +132,7 @@ function Slider() {
           }}
         >
           <div className="slider-image">
-            <img className="image" src={caja} alt="caja" />
+            <img className="image" src="/images/slider/caja.avif" alt="caja" loading="lazy" />
             <div className="shadow"></div>
           </div>
           <div className="slider-text">
@@ -172,7 +167,7 @@ function Slider() {
             </button>
           </div>
           <div className="slider-image">
-            <img className="image" src={suspension} alt="suspension" />
+            <img className="image" src="/images/slider/suspension.avif" alt="suspension" loading="lazy" />
             <div className="shadow"></div>
           </div>
         </div>
