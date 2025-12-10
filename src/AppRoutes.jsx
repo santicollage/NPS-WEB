@@ -1,28 +1,32 @@
+import { lazy, Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
-import Home from './pages/Home';
-import About from './pages/About';
-import Products from './pages/Products';
-import ProductDetail from './pages/ProductDetail';
-import Checkout from './pages/Checkout';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Profile from './pages/Profile';
-import AdminDashboard from './pages/AdminDashboard';
-import AdminProducts from './pages/AdminProducts';
-import AdminProductDetail from './pages/AdminProductDetail';
-import AdminOrders from './pages/AdminOrders';
-import AdminOrderDetail from './pages/AdminOrderDetail';
-import Unauthorized from './pages/Unauthorized';
-import NotFound from './pages/NotFound';
+import LoadingScreen from './components/LoadingScreen';
+
+// Lazy load all page components for code splitting
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Products = lazy(() => import('./pages/Products'));
+const ProductDetail = lazy(() => import('./pages/ProductDetail'));
+const Checkout = lazy(() => import('./pages/Checkout'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const Profile = lazy(() => import('./pages/Profile'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const AdminProducts = lazy(() => import('./pages/AdminProducts'));
+const AdminProductDetail = lazy(() => import('./pages/AdminProductDetail'));
+const AdminOrders = lazy(() => import('./pages/AdminOrders'));
+const AdminOrderDetail = lazy(() => import('./pages/AdminOrderDetail'));
+const Unauthorized = lazy(() => import('./pages/Unauthorized'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 const AppRoutes = () => {
   const location = useLocation();
   const state = location.state;
 
   return (
-    <>
+    <Suspense fallback={<LoadingScreen />}>
       {/* Main Routes */}
       <Routes location={state?.backgroundLocation || location}>
         {/* Public Routes - Accessible to everyone */}
@@ -133,7 +137,7 @@ const AppRoutes = () => {
           </Routes>
         </>
       )}
-    </>
+    </Suspense>
   );
 };
 
