@@ -1,5 +1,5 @@
-@import '../../styles/_variables.scss';
-@import '../../styles/_mixins.scss';
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
 .lines-container {
   position: relative;
@@ -47,7 +47,7 @@
     width: 80px;
     height: 80px;
     border-radius: 5px;
-    background-image: url('../../assets/Icons/Icons-UI/glow.png');
+    background-image: url('/images/glow.avif');
     background-size: cover;
     background-position: center;
   }

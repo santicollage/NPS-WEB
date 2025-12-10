@@ -1,6 +1,7 @@
 @use 'sass:map';
 @use 'sass:list';
 @use 'sass:color';
+@use 'variables' as *;
 
 @mixin flex-center {
   display: flex;
@@ -96,7 +97,7 @@
   &:hover {
     background: $hover-color;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px transparentize($hover-color, 0.4);
+    box-shadow: 0 4px 12px rgba($hover-color, 0.4);
   }
 }
 
