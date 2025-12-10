@@ -8,8 +8,6 @@ import { selectIsAuthenticated, selectCurrentUser } from '../../store/slices/use
 import { selectGuestCart } from '../../store/slices/cartSelectors';
 import './PaymentModal.scss';
 
-import payuLogo from '../../assets/images/checkout/payu.avif';
-
 
 const PaymentModal = ({ isOpen, onClose, order }) => {
   const dispatch = useDispatch();
@@ -69,7 +67,7 @@ const PaymentModal = ({ isOpen, onClose, order }) => {
           </div>
           <p>
             ¿Desea proceder al pago por medio de PayU?
-            <img src={payuLogo} alt="PayU" />
+            <img src="/images/checkout/payu1.avif" alt="PayU" loading="lazy"/>
           </p>
           <div className="payment-methods">
             <img className="nequi" src="/images/checkout/nequi.avif" alt="Nequi" loading="lazy" />

@@ -1,5 +1,5 @@
-@import '../../styles/_variables.scss';
-@import '../../styles/_mixins.scss';
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
 .benefits-container {
   color: white;

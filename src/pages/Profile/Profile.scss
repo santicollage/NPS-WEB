@@ -1,6 +1,6 @@
 // Profile page styles
-@import '../../styles/variables';
-@import '../../styles/mixins';
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
 
 .profile-page {
   margin-top: 7rem;
