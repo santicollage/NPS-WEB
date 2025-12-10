@@ -13,31 +13,29 @@ export default defineConfig({
         manualChunks: (id) => {
           // Vendor chunks - separate by library type for better caching
           if (id.includes('node_modules')) {
-            // React ecosystem
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'vendor-react';
+            // Consolidate core libraries to ensure correct loading order and prevent implicit dependency issues
+            if (
+              id.includes('react') ||
+              id.includes('react-dom') ||
+              id.includes('react-router') ||
+              id.includes('redux') ||
+              id.includes('@reduxjs') ||
+              id.includes('framer-motion') ||
+              id.includes('react-helmet')
+            ) {
+              return 'vendor-core';
             }
-            
-            // Redux ecosystem
-            if (id.includes('redux') || id.includes('@reduxjs')) {
-              return 'vendor-redux';
-            }
-            
-            // UI libraries
-            if (id.includes('framer-motion') || id.includes('react-helmet')) {
-              return 'vendor-ui';
-            }
-            
-            // Google Maps
+
+            // Google Maps (large independent dependency)
             if (id.includes('@vis.gl') || id.includes('google-maps')) {
               return 'vendor-maps';
             }
-            
-            // OAuth
+
+            // OAuth (independent dependency)
             if (id.includes('@react-oauth')) {
               return 'vendor-oauth';
             }
-            
+
             // Other vendor code
             return 'vendor-other';
           }
