@@ -306,6 +306,7 @@ const Cart = () => {
                 </div>
                 <button 
                   className="checkout-button"
+                  disabled={true}
                   onClick={() => {
                     dispatch(closeCartModal());
                     navigate('/checkout');
