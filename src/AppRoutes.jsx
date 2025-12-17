@@ -18,6 +18,7 @@ const AdminProducts = lazy(() => import('./pages/AdminProducts'));
 const AdminProductDetail = lazy(() => import('./pages/AdminProductDetail'));
 const AdminOrders = lazy(() => import('./pages/AdminOrders'));
 const AdminOrderDetail = lazy(() => import('./pages/AdminOrderDetail'));
+const AdminStats = lazy(() => import('./pages/AdminStats'));
 const Unauthorized = lazy(() => import('./pages/Unauthorized'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
@@ -111,6 +112,14 @@ const AppRoutes = () => {
           element={
             <ProtectedRoute requireAuth requireAdmin>
               <AdminOrderDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/stats"
+          element={
+            <ProtectedRoute requireAuth requireAdmin>
+              <AdminStats />
             </ProtectedRoute>
           }
         />

@@ -72,16 +72,7 @@ const ResetPassword = () => {
           <button 
               type="button" 
               onClick={() => navigate('/login')}
-              style={{
-                  marginTop: '1rem',
-                  padding: '0.8rem',
-                  width: '100%',
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  border: 'none',
-                  borderRadius: '12px',
-                  color: 'white',
-                  cursor: 'pointer'
-              }}
+              style={{ width: '100%'}}
           >
               Volver al Login
           </button>
