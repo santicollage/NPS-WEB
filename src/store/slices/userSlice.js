@@ -182,6 +182,32 @@ export const updateUserRole = createAsyncThunk(
   }
 );
 
+// POST - Forgot password (request email)
+export const forgotPassword = createAsyncThunk(
+  'user/forgotPassword',
+  async ({ email }, { rejectWithValue }) => {
+    try {
+      const { data } = await api.post('/auth/forgot-password', { email });
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || 'Error requesting password reset');
+    }
+  }
+);
+
+// POST - Reset password (with token)
+export const resetPassword = createAsyncThunk(
+  'user/resetPassword',
+  async ({ token, newPassword }, { rejectWithValue }) => {
+    try {
+      const { data } = await api.post('/auth/reset-password', { token, newPassword });
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || 'Error resetting password');
+    }
+  }
+);
+
 // ==============================
 // 2️⃣ SLICE
 // ==============================
@@ -433,8 +459,37 @@ const userSlice = createSlice({
         if (index !== -1) {
           state.usersList[index] = action.payload;
         }
+        if (index !== -1) {
+          state.usersList[index] = action.payload;
+        }
       })
       .addCase(updateUserRole.rejected, (state, action) => {
+        state.error = action.payload;
+      });
+
+    // FORGOT PASSWORD
+    builder
+      .addCase(forgotPassword.pending, (state) => {
+        state.error = null;
+        state.success = null;
+      })
+      .addCase(forgotPassword.fulfilled, (state, action) => {
+        state.success = action.payload.message || 'Password reset email sent';
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.error = action.payload;
+      });
+
+    // RESET PASSWORD
+    builder
+      .addCase(resetPassword.pending, (state) => {
+        state.error = null;
+        state.success = null;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.success = action.payload.message || 'Password reset successfully';
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
         state.error = action.payload;
       });
   },

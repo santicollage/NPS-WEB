@@ -20,6 +20,7 @@ const AdminOrders = lazy(() => import('./pages/AdminOrders'));
 const AdminOrderDetail = lazy(() => import('./pages/AdminOrderDetail'));
 const Unauthorized = lazy(() => import('./pages/Unauthorized'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -50,6 +51,14 @@ const AppRoutes = () => {
           element={
             <PublicRoute>
               <Register />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/reset-password"
+          element={
+            <PublicRoute>
+              <ResetPassword />
             </PublicRoute>
           }
         />
