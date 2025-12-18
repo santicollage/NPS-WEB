@@ -139,14 +139,16 @@
 /* Chart Containers */
 .chart-container {
   @include transparent;
+  width: 100%;
   max-width: 100%;
-  min-width: 500px;
+  min-width: 0;
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 
   @media (max-width: 768px) {
     min-width: 100%;
+    padding: 1.5rem 1rem;
   }
 
   .chart-header {
@@ -184,6 +186,7 @@
 
   .chart-wrapper {
     width: 100%;
+    min-width: 0;
     height: 300px;
   }
 }
