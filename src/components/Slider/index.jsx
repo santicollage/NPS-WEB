@@ -132,7 +132,99 @@ function Slider() {
           }}
         >
           <div className="slider-image">
-            <img className="image" src="/images/slider/caja.avif" alt="caja" loading="lazy" />
+            <div className='box-container'>
+              <div className='tubes-container'>
+                <div className='tubes tubes1'></div>
+                <div className='tubes tubes2'></div>
+                <div className='tubes tubes3'></div>
+              </div>
+              <div className='teeth-container'>
+                <div className='teeth teeth1'>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                </div>
+                <div className='teeth teeth2'>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                </div>
+                <div className='teeth teeth3'>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                </div>
+                <div className='teeth teeth4'>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                </div>
+                <div className='teeth teeth5'>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                </div>
+                <div className='teeth teeth6'>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                  <div className='tooth'></div>
+                </div>
+              </div>
+            </div>
             <div className="shadow"></div>
           </div>
           <div className="slider-text">
@@ -166,9 +258,30 @@ function Slider() {
               <div className="glow"></div>VER MÁS
             </button>
           </div>
-          <div className="slider-image">
-            <img className="image" src="/images/slider/suspension.avif" alt="suspension" loading="lazy" />
-            <div className="shadow"></div>
+          <div className="slider-image suspension-layout">
+            <div className="animation-unit">
+              <img className="image suspension suspension1" src="/images/slider/suspension1.svg" alt="suspension" loading="lazy" />
+              <img className="image suspension suspension2" src="/images/slider/suspension2.svg" alt="suspension" loading="lazy" />
+              <div className="spring-container">
+                <div className="spring spring1"></div>
+                <div className="spring spring2"></div>
+                <div className="spring spring3"></div>
+                <div className="spring spring4"></div>
+                <div className="spring spring5"></div>
+              </div>
+            </div>
+            <div className="animation-unit unit-right">
+              <img className="image suspension suspension1" src="/images/slider/suspension1.svg" alt="suspension" loading="lazy" />
+              <img className="image suspension suspension2" src="/images/slider/suspension2.svg" alt="suspension" loading="lazy" />
+              <div className="spring-container">
+                <div className="spring spring1"></div>
+                <div className="spring spring2"></div>
+                <div className="spring spring3"></div>
+                <div className="spring spring4"></div>
+                <div className="spring spring5"></div>
+              </div>
+            </div>
+              <div className="shadow"></div>
           </div>
         </div>
       </div>
