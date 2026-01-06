@@ -59,9 +59,9 @@ export const loginWithGoogle = createAsyncThunk(
 // GET - Get authenticated user data
 export const fetchCurrentUser = createAsyncThunk(
   'user/fetchCurrentUser',
-  async (_, { rejectWithValue }) => {
+  async (config = {}, { rejectWithValue }) => {
     try {
-      const { data } = await api.get('/auth/me');
+      const { data } = await api.get('/auth/me', config);
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error fetching user data');
@@ -111,9 +111,9 @@ export const deleteUser = createAsyncThunk(
 // POST - Refresh session
 export const refreshSession = createAsyncThunk(
   'user/refreshSession',
-  async (_, { rejectWithValue }) => {
+  async (config = {}, { rejectWithValue }) => {
     try {
-      const { data } = await api.post('/auth/refresh');
+      const { data } = await api.post('/auth/refresh', {}, config);
       // Save new token to localStorage
       localStorage.setItem('token', data.token);
       return data;
