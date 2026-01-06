@@ -35,7 +35,7 @@ const Navbar = () => {
 
       if (location.pathname === '/') {
         newStyle =
-          scrollY >= windowHeight
+          scrollY >= windowHeight - 200
             ? { opacity: 1, transform: 'translateY(0)' }
             : { opacity: 0, transform: 'translateY(-100%)' };
       } else {
