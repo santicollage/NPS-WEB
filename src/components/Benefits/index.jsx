@@ -10,7 +10,7 @@ function Benefits() {
     {
       id: 1,
       icon: Benefits1Icon,
-      image: '/images/benefits/benefits-1.avif',
+      image: 'https://d12am8vlsj3icm.cloudfront.net/avif/benefits-1.avif',
       title: 'Trayectoria y confianza',
       description:
         'Amplia experiencia en la distribución de repuestos originales y homologados de alta calidad, respaldada por alianzas con empresas de transporte público a nivel urbano y nacional.',
@@ -18,7 +18,7 @@ function Benefits() {
     {
       id: 2,
       icon: Benefits2Icon,
-      image: '/images/benefits/benefits-2.avif',
+      image: 'https://d12am8vlsj3icm.cloudfront.net/avif/benefits-2.avif',
       title: 'Variedad y calidad',
       description:
         'Extenso catálogo de repuestos que se adaptan a diferentes necesidades y presupuestos, siempre garantizando estándares de excelencia.',
@@ -26,7 +26,7 @@ function Benefits() {
     {
       id: 3,
       icon: Benefits3Icon,
-      image: '/images/benefits/benefits-3.avif',
+      image: 'https://d12am8vlsj3icm.cloudfront.net/avif/benefits-3.avif',
       title: 'Cobertura nacional',
       description:
         'Ofrecemos envíos rápidos y seguros a nivel urbano y nacional, garantizando que los productos lleguen en el menor tiempo posible.',
@@ -34,7 +34,7 @@ function Benefits() {
     {
       id: 4,
       icon: Benefits4Icon,
-      image: '/images/benefits/benefits-4.avif',
+      image: 'https://d12am8vlsj3icm.cloudfront.net/avif/benefits-4.avif',
       title: 'Servicio profesional',
       description:
         'Un equipo altamente calificado que brinda soluciones rápidas y eficaces a las necesidades de nuestros clientes.',

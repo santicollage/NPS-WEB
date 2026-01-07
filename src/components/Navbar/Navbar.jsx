@@ -11,6 +11,7 @@ import CartIcon from '../../assets/icons/CartIcon';
 import OrdersIcon from '../../assets/icons/OrdersIcon';
 import HamburgerMenuIcon from '../../assets/icons/HamburgerMenuIcon';
 import Cart from '../Cart/Cart';
+import { BarChart2 } from 'lucide-react';
 import './Navbar.scss';
 
 const Navbar = () => {
@@ -34,7 +35,7 @@ const Navbar = () => {
 
       if (location.pathname === '/') {
         newStyle =
-          scrollY >= windowHeight
+          scrollY >= windowHeight - 200
             ? { opacity: 1, transform: 'translateY(0)' }
             : { opacity: 0, transform: 'translateY(-100%)' };
       } else {
@@ -62,7 +63,7 @@ const Navbar = () => {
     <>
       <nav className="navbar" style={navbarStyle}>
         <Link to="/">
-          <img src="/images/logo-nps.avif" alt="logo NPS" className="logo" loading="lazy" />
+          <img src="https://d12am8vlsj3icm.cloudfront.net/avif/logo-nps.avif" alt="logo NPS" className="logo" loading="lazy" />
         </Link>
         <button
           className="hamburger-menu"
@@ -108,13 +109,23 @@ const Navbar = () => {
               {isAuthenticated ? <ProfileIcon /> : <LoginIcon />}
             </Link>
             {isAdmin ? (
-              <Link
-                to="/admin/orders"
-                className="icon-link"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <OrdersIcon />
-              </Link>
+              <>
+                <Link
+                  to="/admin/stats"
+                  className="icon-link"
+                  onClick={() => setIsMenuOpen(false)}
+                  title="Estadísticas"
+                >
+                  <BarChart2 size={24} />
+                </Link>
+                <Link
+                  to="/admin/orders"
+                  className="icon-link"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <OrdersIcon />
+                </Link>
+              </>
             ) : (
               <button
                 className="icon-link"

@@ -4,18 +4,18 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('/images/background/background-2000px.avif');
+  background-image: url('https://d12am8vlsj3icm.cloudfront.net/avif/background-2000px.avif');
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat;
   z-index: -1;
 
   @media (max-width: 1440px) {
-    background-image: url('/images/background/background-1440px.avif');
+    background-image: url('https://d12am8vlsj3icm.cloudfront.net/avif/background-1440px.avif');
   }
 
   @media (max-width: 500px) {
     height: 120vh;
-    background-image: url('/images/background/background-500px.avif');
+    background-image: url('https://d12am8vlsj3icm.cloudfront.net/avif/background-500px.avif');
   }
 }

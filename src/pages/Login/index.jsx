@@ -11,6 +11,7 @@ import {
 import EyeIcon from '../../assets/icons/EyeIcon';
 import EyeOffIcon from '../../assets/icons/EyeOffIcon';
 import './Login.scss';
+import ForgotPasswordModal from '../../components/ForgotPasswordModal';
 import SEO from '../../components/SEO/SEO';
 
 
@@ -27,6 +28,7 @@ const Login = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
   const dispatch = useDispatch();
   const { loading, error, success } = useSelector((state) => state.user);
 
@@ -202,9 +204,14 @@ const Login = () => {
                     Regístrate aquí
                   </a>
                 </p>
+                <p className="forgot-password-link">
+                  <a href="#" onClick={(e) => { e.preventDefault(); setIsForgotModalOpen(true); }}>
+                    ¿Olvidaste tu contraseña?
+                  </a>
+                </p>
               </div>
               <div className="image-section">
-                <img src="/images/login/login.avif" alt="Login" loading="lazy" />
+                <img src="https://d12am8vlsj3icm.cloudfront.net/avif/Login.avif" alt="Login" loading="lazy" />
               </div>
             </div>
           </div>
@@ -303,7 +310,7 @@ const Login = () => {
               </div>
               <div className="image-section">
                 <img
-                  src="/images/login/register.avif"
+                  src="https://d12am8vlsj3icm.cloudfront.net/avif/register.avif"
                   alt="Register"
                   loading="lazy"
                 />
@@ -319,6 +326,10 @@ const Login = () => {
           </div>
         )}
       </div>
+      <ForgotPasswordModal 
+        isOpen={isForgotModalOpen} 
+        onClose={() => setIsForgotModalOpen(false)} 
+      />
     </div>
   );
 };
