@@ -70,12 +70,12 @@ function Slider() {
           <div className="slider-image">
             <img
               className="image speedometer"
-              src="/images/slider/velocimetro1.svg"
+              src="https://d12am8vlsj3icm.cloudfront.net/avif/velocimetro1.svg"
               alt="velocimetro"
             />
             <img
               className="image speedometer needle"
-              src="/images/slider/velocimetro2.svg"
+              src="https://d12am8vlsj3icm.cloudfront.net/avif/velocimetro2.avif"
               alt="velocimetro"
             />
           </div>
@@ -109,15 +109,15 @@ function Slider() {
             </button>
           </div>
           <div className="slider-image">
-            <img className="image pistons" src="/images/slider/pistons1.svg" alt="piston" />
+            <img className="image pistons" src="https://d12am8vlsj3icm.cloudfront.net/avif/pistons1.avif" alt="piston" />
             <img
               className="image pistons pistons1"
-              src="/images/slider/pistons2.svg"
+              src="https://d12am8vlsj3icm.cloudfront.net/avif/pistons2.avif"
               alt="piston"
             />
             <img
               className="image pistons pistons2"
-              src="/images/slider/pistons3.svg"
+              src="https://d12am8vlsj3icm.cloudfront.net/avif/pistons3.avif"
               alt="piston"
             />
             <div className="shadow"></div>
@@ -260,8 +260,8 @@ function Slider() {
           </div>
           <div className="slider-image suspension-layout">
             <div className="animation-unit">
-              <img className="image suspension suspension1" src="/images/slider/suspension1.svg" alt="suspension" loading="lazy" />
-              <img className="image suspension suspension2" src="/images/slider/suspension2.svg" alt="suspension" loading="lazy" />
+              <img className="image suspension suspension1" src="https://d12am8vlsj3icm.cloudfront.net/avif/suspension1.avif" alt="suspension" loading="lazy" />
+              <img className="image suspension suspension2" src="https://d12am8vlsj3icm.cloudfront.net/avif/suspension2.avif" alt="suspension" loading="lazy" />
               <div className="spring-container">
                 <div className="spring spring1"></div>
                 <div className="spring spring2"></div>
@@ -271,8 +271,8 @@ function Slider() {
               </div>
             </div>
             <div className="animation-unit unit-right">
-              <img className="image suspension suspension1" src="/images/slider/suspension1.svg" alt="suspension" loading="lazy" />
-              <img className="image suspension suspension2" src="/images/slider/suspension2.svg" alt="suspension" loading="lazy" />
+              <img className="image suspension suspension1" src="https://d12am8vlsj3icm.cloudfront.net/avif/suspension1.avif" alt="suspension" loading="lazy" />
+              <img className="image suspension suspension2" src="https://d12am8vlsj3icm.cloudfront.net/avif/suspension2.avif" alt="suspension" loading="lazy" />
               <div className="spring-container">
                 <div className="spring spring1"></div>
                 <div className="spring spring2"></div>

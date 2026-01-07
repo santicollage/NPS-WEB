@@ -211,7 +211,7 @@ const Login = () => {
                 </p>
               </div>
               <div className="image-section">
-                <img src="/images/login/login.avif" alt="Login" loading="lazy" />
+                <img src="https://d12am8vlsj3icm.cloudfront.net/avif/Login.avif" alt="Login" loading="lazy" />
               </div>
             </div>
           </div>
@@ -310,7 +310,7 @@ const Login = () => {
               </div>
               <div className="image-section">
                 <img
-                  src="/images/login/register.avif"
+                  src="https://d12am8vlsj3icm.cloudfront.net/avif/register.avif"
                   alt="Register"
                   loading="lazy"
                 />

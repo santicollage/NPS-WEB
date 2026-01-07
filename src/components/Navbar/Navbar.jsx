@@ -63,7 +63,7 @@ const Navbar = () => {
     <>
       <nav className="navbar" style={navbarStyle}>
         <Link to="/">
-          <img src="/images/logo-nps.avif" alt="logo NPS" className="logo" loading="lazy" />
+          <img src="https://d12am8vlsj3icm.cloudfront.net/avif/logo-nps.avif" alt="logo NPS" className="logo" loading="lazy" />
         </Link>
         <button
           className="hamburger-menu"

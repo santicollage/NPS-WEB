@@ -67,13 +67,13 @@ const PaymentModal = ({ isOpen, onClose, order }) => {
           </div>
           <p>
             ¿Desea proceder al pago por medio de PayU?
-            <img src="/images/checkout/payu1.avif" alt="PayU" loading="lazy"/>
+            <img src="https://d12am8vlsj3icm.cloudfront.net/avif/payu.avif" alt="PayU" loading="lazy"/>
           </p>
           <div className="payment-methods">
-            <img className="nequi" src="/images/checkout/nequi.avif" alt="Nequi" loading="lazy" />
-            <img className="pse" src="/images/checkout/pse.avif" alt="PSE" loading="lazy" />
-            <img className="visa" src="/images/checkout/visa.avif" alt="Visa" loading="lazy" />
-            <img className="bancolombia" src="/images/checkout/bancolombia.avif" alt="Bancolombia" loading="lazy" />
+            <img className="nequi" src="https://d12am8vlsj3icm.cloudfront.net/avif/nequi.avif" alt="Nequi" loading="lazy" />
+            <img className="pse" src="https://d12am8vlsj3icm.cloudfront.net/avif/pse.avif" alt="PSE" loading="lazy" />
+            <img className="visa" src="https://d12am8vlsj3icm.cloudfront.net/avif/visa.avif" alt="Visa" loading="lazy" />
+            <img className="bancolombia" src="https://d12am8vlsj3icm.cloudfront.net/avif/bancolombia.avif" alt="Bancolombia" loading="lazy" />
           </div>
         </div>
         <div className="modal-actions">
