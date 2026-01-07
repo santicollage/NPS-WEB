@@ -36,7 +36,7 @@ api.interceptors.request.use(
     }
     // Start loading for API requests
     const store = window.__REDUX_STORE__;
-    if (store) {
+    if (store && !config.skipLoading) {
       store.dispatch(startLoading());
     }
     return config;
@@ -44,7 +44,7 @@ api.interceptors.request.use(
   (error) => {
     // Stop loading on request error
     const store = window.__REDUX_STORE__;
-    if (store) {
+    if (store && !error.config?.skipLoading) {
       store.dispatch(stopLoading());
     }
     return Promise.reject(error);
@@ -56,7 +56,7 @@ api.interceptors.response.use(
   (response) => {
     // Stop loading on successful response
     const store = window.__REDUX_STORE__;
-    if (store) {
+    if (store && !response.config?.skipLoading) {
       store.dispatch(stopLoading());
     }
     return response;
@@ -64,7 +64,7 @@ api.interceptors.response.use(
   (error) => {
     // Stop loading on error response
     const store = window.__REDUX_STORE__;
-    if (store) {
+    if (store && !error.config?.skipLoading) {
       store.dispatch(stopLoading());
     }
     const originalRequest = error.config;

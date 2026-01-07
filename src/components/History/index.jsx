@@ -5,7 +5,7 @@ function History() {
   return (
     <>
       <div className="history-container">
-        <img className="history-image" src="/images/about/truck-mountain.avif" alt="camion" loading="lazy" />
+        <img className="history-image" src="https://d12am8vlsj3icm.cloudfront.net/avif/truck-mountain.avif" alt="camion" loading="lazy" />
         <p className="history-text">
           A lo largo de nuestra trayectoria en el mercado, hemos consolidado un
           servicio ágil, eficiente y competitivo, respaldado por nuestra

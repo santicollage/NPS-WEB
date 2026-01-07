@@ -8,9 +8,9 @@ import api from '../api';
 // GET - Obtener carrito activo del usuario
 export const fetchCart = createAsyncThunk(
   'cart/fetchCart',
-  async (_, { rejectWithValue }) => {
+  async (config = {}, { rejectWithValue }) => {
     try {
-      const { data } = await api.get('/cart');
+      const { data } = await api.get('/cart', config);
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error al cargar carrito');

@@ -11,6 +11,7 @@ import CloseIcon from '../../assets/icons/CloseIcon';
 import CategoryFormModal from '../CategoryFormModal';
 import AddIcon from '../../assets/icons/AddProductIcon';
 import RemoveIcon from '../../assets/icons/RemoveIcon';
+import uploadService from '../../services/upload.service';
 
 const sizeSpecs = {
   extra_small: { width: 5, height: 5, length: 5, weight: 0.2 },
@@ -26,8 +27,9 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [touched, setTouched] = useState({});
-  const [serverError, setServerError] = useState(null);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [serverError, setServerError] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -120,35 +122,6 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
     setTouched((prev) => ({ ...prev, [name]: true }));
   };
 
-  const convertFileToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      const img = new Image();
-      img.onload = () => {
-        const maxSize = 800; // Increased max size for product images
-        let { width, height } = img;
-        if (width > height) {
-          if (width > maxSize) {
-            height = (height * maxSize) / width;
-            width = maxSize;
-          }
-        } else {
-          if (height > maxSize) {
-            width = (width * maxSize) / height;
-            height = maxSize;
-          }
-        }
-        canvas.width = width;
-        canvas.height = height;
-        ctx.drawImage(img, 0, 0, width, height);
-        const base64 = canvas.toDataURL('image/jpeg', 0.8);
-        resolve(base64);
-      };
-      img.onerror = (error) => reject(error);
-      img.src = URL.createObjectURL(file);
-    });
-  };
 
   const handleImageChange = (index, e) => {
     const file = e.target.files[0];
@@ -202,16 +175,57 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsUploading(true);
 
-    // Process images: convert files to base64, keep existing URLs
-    const processedImages = await Promise.all(
-      formData.images.map(async (img) => {
-        if (img instanceof File) {
-          return await convertFileToBase64(img);
-        }
-        return img;
-      })
-    );
+    // Process images: upload files to S3, keep existing URLs
+    let processedImages = [];
+    try {
+      processedImages = await Promise.all(
+        formData.images.map(async (img) => {
+          if (img instanceof File) {
+            // 1. Get presigned URL
+            const { url } = await uploadService.generatePresignedUrl(
+               img.name, 
+               img.type
+            );
+            // 2. Upload to S3
+            await uploadService.uploadFileToS3(url, img);
+            
+            // 3. Construct CloudFront URL
+            const s3Url = url.split('?')[0];
+            const cloudFrontUrl = import.meta.env.VITE_CLOUDFRONT_URL;
+            
+            if (cloudFrontUrl) {
+              // Extract the path from the S3 URL (everything after the domain)
+              // S3 URL format: https://bucket-name.s3.region.amazonaws.com/filename
+              const urlParts = s3Url.split('.com/');
+              if (urlParts.length > 1) {
+                 // Ensure CloudFront URL doesn't have trailing slash
+                 const baseUrl = cloudFrontUrl.endsWith('/') ? cloudFrontUrl.slice(0, -1) : cloudFrontUrl;
+                 // Ensure path doesn't have leading slash if we join them
+                 const path = urlParts[1];
+                 
+                 // Replace extension with .avif since backend converts it
+                 const pathWithAvif = path.replace(/\.[^/.]+$/, ".avif");
+                 return `${baseUrl}/avif/${pathWithAvif}`;
+              }
+            }
+            
+            // Should also replace for non-CF URLs if that case happens? 
+            // Assuming CF is always used now.
+            // If we are strictly using the new structure, even fallback might need 'avif/' prefix if it's in the same bucket.
+            // But let's stick to the main path.
+            return s3Url.replace(/\.[^/.]+$/, ".avif");
+          }
+          return img;
+        })
+      );
+    } catch (error) {
+       console.error("Error uploading images", error);
+       setServerError("Error al subir las imágenes. Intente de nuevo.");
+       setIsUploading(false);
+       return;
+    }
 
     const payload = {
       name: formData.name,
@@ -245,6 +259,8 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
         error?.message ||
         'Error al guardar el producto';
       setServerError(errorMessage);
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -473,13 +489,13 @@ const ProductFormModal = ({ isOpen, onClose, productToEdit = null }) => {
             type="submit"
             className="submit-btn"
             onClick={handleSubmit}
-            disabled={!isFormValid}
+            disabled={!isFormValid || isUploading}
             style={{
-              opacity: !isFormValid ? 0.5 : 1,
-              cursor: !isFormValid ? 'not-allowed' : 'pointer',
+              opacity: (!isFormValid || isUploading) ? 0.5 : 1,
+              cursor: (!isFormValid || isUploading) ? 'not-allowed' : 'pointer',
             }}
           >
-            {productToEdit ? 'Guardar Cambios' : 'Crear Producto'}
+            {isUploading ? 'Subiendo...' : (productToEdit ? 'Guardar Cambios' : 'Crear Producto')}
           </button>
         </div>
       </div>

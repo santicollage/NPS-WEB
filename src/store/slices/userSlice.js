@@ -59,9 +59,9 @@ export const loginWithGoogle = createAsyncThunk(
 // GET - Get authenticated user data
 export const fetchCurrentUser = createAsyncThunk(
   'user/fetchCurrentUser',
-  async (_, { rejectWithValue }) => {
+  async (config = {}, { rejectWithValue }) => {
     try {
-      const { data } = await api.get('/auth/me');
+      const { data } = await api.get('/auth/me', config);
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error fetching user data');
@@ -111,9 +111,9 @@ export const deleteUser = createAsyncThunk(
 // POST - Refresh session
 export const refreshSession = createAsyncThunk(
   'user/refreshSession',
-  async (_, { rejectWithValue }) => {
+  async (config = {}, { rejectWithValue }) => {
     try {
-      const { data } = await api.post('/auth/refresh');
+      const { data } = await api.post('/auth/refresh', {}, config);
       // Save new token to localStorage
       localStorage.setItem('token', data.token);
       return data;
@@ -178,6 +178,32 @@ export const updateUserRole = createAsyncThunk(
       return data;
     } catch (err) {
       return rejectWithValue(err.response?.data || 'Error updating user role');
+    }
+  }
+);
+
+// POST - Forgot password (request email)
+export const forgotPassword = createAsyncThunk(
+  'user/forgotPassword',
+  async ({ email }, { rejectWithValue }) => {
+    try {
+      const { data } = await api.post('/auth/forgot-password', { email });
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || 'Error requesting password reset');
+    }
+  }
+);
+
+// POST - Reset password (with token)
+export const resetPassword = createAsyncThunk(
+  'user/resetPassword',
+  async ({ token, newPassword }, { rejectWithValue }) => {
+    try {
+      const { data } = await api.post('/auth/reset-password', { token, newPassword });
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || 'Error resetting password');
     }
   }
 );
@@ -433,8 +459,37 @@ const userSlice = createSlice({
         if (index !== -1) {
           state.usersList[index] = action.payload;
         }
+        if (index !== -1) {
+          state.usersList[index] = action.payload;
+        }
       })
       .addCase(updateUserRole.rejected, (state, action) => {
+        state.error = action.payload;
+      });
+
+    // FORGOT PASSWORD
+    builder
+      .addCase(forgotPassword.pending, (state) => {
+        state.error = null;
+        state.success = null;
+      })
+      .addCase(forgotPassword.fulfilled, (state, action) => {
+        state.success = action.payload.message || 'Password reset email sent';
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.error = action.payload;
+      });
+
+    // RESET PASSWORD
+    builder
+      .addCase(resetPassword.pending, (state) => {
+        state.error = null;
+        state.success = null;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.success = action.payload.message || 'Password reset successfully';
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
         state.error = action.payload;
       });
   },

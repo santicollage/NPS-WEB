@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './UserInfoModal.scss';
 import colombiaData from '../../data/colombia.json';
+import uploadService from '../../services/upload.service';
 
 const UserInfoModal = ({ isOpen, onClose, user, onUpdateUser }) => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const UserInfoModal = ({ isOpen, onClose, user, onUpdateUser }) => {
     postal_code: user?.postal_code || '',
   });
   const [selectedFile, setSelectedFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     if (isOpen && user) {
@@ -30,48 +32,56 @@ const UserInfoModal = ({ isOpen, onClose, user, onUpdateUser }) => {
     setSelectedFile(e.target.files[0]);
   };
 
-  const convertFileToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      const img = new Image();
-      img.onload = () => {
-        const maxSize = 200;
-        let { width, height } = img;
-        if (width > height) {
-          if (width > maxSize) {
-            height = (height * maxSize) / width;
-            width = maxSize;
-          }
-        } else {
-          if (height > maxSize) {
-            width = (width * maxSize) / height;
-            height = maxSize;
-          }
-        }
-        canvas.width = width;
-        canvas.height = height;
-        ctx.drawImage(img, 0, 0, width, height);
-        const base64 = canvas.toDataURL('image/jpeg', 0.8);
-        resolve(base64);
-      };
-      img.onerror = (error) => reject(error);
-      img.src = URL.createObjectURL(file);
-    });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     let updateData = { ...formData };
+    
     if (selectedFile) {
+      if (!selectedFile.type.startsWith('image/')) {
+         alert('Por favor selecciona un archivo de imagen válido');
+         return;
+      }
+
+      setIsUploading(true);
       try {
-        const base64Image = await convertFileToBase64(selectedFile);
-        updateData.image_url = base64Image;
+        // 1. Get presigned URL
+        const { url, key } = await uploadService.generatePresignedUrl(
+          selectedFile.name,
+          selectedFile.type
+        );
+        
+        // 2. Upload to S3
+        await uploadService.uploadFileToS3(url, selectedFile);
+
+        // 3. Construct CloudFront URL
+        const s3Url = url.split('?')[0];
+        const cloudFrontUrl = import.meta.env.VITE_CLOUDFRONT_URL;
+        
+        let finalUrl = s3Url;
+
+        if (cloudFrontUrl) {
+          // Extract the path from the S3 URL
+          const urlParts = s3Url.split('.com/');
+          if (urlParts.length > 1) {
+             const baseUrl = cloudFrontUrl.endsWith('/') ? cloudFrontUrl.slice(0, -1) : cloudFrontUrl;
+             const path = urlParts[1];
+             // Add 'avif/' path and change extension
+             const pathWithAvif = path.replace(/\.[^/.]+$/, ".avif");
+             finalUrl = `${baseUrl}/avif/${pathWithAvif}`;
+          }
+        }
+
+        updateData.image_url = finalUrl;
       } catch (error) {
-        console.error('Error convirtiendo imagen a base64:', error);
+        console.error('Error subiendo imagen:', error);
+        alert('Error al subir la imagen. Por favor intenta de nuevo.');
+        setIsUploading(false);
         return;
       }
+      setIsUploading(false);
     }
+    
     onUpdateUser(updateData);
     onClose();
     setSelectedFile(null);
@@ -167,8 +177,8 @@ const UserInfoModal = ({ isOpen, onClose, user, onUpdateUser }) => {
             <input type="file" accept="image/*" onChange={handleFileChange} />
           </label>
           <div className="buttons-group">
-            <button className="btn-quartertiary" type="submit">
-              Guardar
+            <button className="btn-quartertiary" type="submit" disabled={isUploading}>
+              {isUploading ? 'Subiendo...' : 'Guardar'}
             </button>
             <button className="btn-secondary" type="button" onClick={onClose}>
               Cancelar

@@ -5,3 +5,4 @@
 [build.environment]
   NODE_VERSION = "22.18.0"
   NPM_FLAGS = "--legacy-peer-deps"
+  SECRETS_SCAN_OMIT_KEYS = "VITE_GOOGLE_CLIENT_ID,VITE_API_GOOGLE_MAPS_KEY"

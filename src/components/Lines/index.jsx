@@ -5,22 +5,22 @@ function Lines() {
   const lines = [
     {
       id: 1,
-      logo: '/images/slider/chevrolet.avif',
+      logo: 'https://d12am8vlsj3icm.cloudfront.net/avif/chevrolet.avif',
       text: 'Chevrolet (FTR, FRR, FVR, NPR, NQR, NKR, NHR, FVZ, LUV Dimax)',
     },
     {
       id: 2,
-      logo: '/images/slider/hino.avif',
+      logo: 'https://d12am8vlsj3icm.cloudfront.net/avif/hino.avif',
       text: 'Hino (300, 500)',
     },
     {
       id: 3,
-      logo: '/images/slider/mercedes.avif',
+      logo: 'https://d12am8vlsj3icm.cloudfront.net/avif/mercedes.avif',
       text: 'Mercedes Benz (1726, 1016, LO915, 813, OF 917, 1725, 1730)',
     },
     {
       id: 4,
-      logo: '/images/slider/foton.avif',
+      logo: 'https://d12am8vlsj3icm.cloudfront.net/avif/foton.avif',
       text: 'Foton (ISF 2.8 - 3.8)',
     },
   ];

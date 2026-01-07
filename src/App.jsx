@@ -34,15 +34,12 @@ function AppContent() {
 
   useEffect(() => {
     const initializeAuth = async () => {
-      dispatch(startLoading());
       try {
-        await dispatch(refreshSession()).unwrap();
-        await dispatch(fetchCurrentUser()).unwrap();
-        await dispatch(fetchCart()).unwrap();
+        await dispatch(refreshSession({ skipLoading: true })).unwrap();
+        await dispatch(fetchCurrentUser({ skipLoading: true })).unwrap();
+        await dispatch(fetchCart({ skipLoading: true })).unwrap();
       } catch {
         console.log('No hay sesión activa');
-      } finally {
-        dispatch(stopLoading());
       }
     };
 
