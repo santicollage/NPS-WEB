@@ -28,21 +28,21 @@ function Parallax() {
     <>
       <div className="parallax" onClick={scrollDown}>
         <img
-          src="https://d12am8vlsj3icm.cloudfront.net/avif/sky.avif"
+          src="/images/parallax/sky.avif"
           alt="Cielo"
           className="layer sky"
           style={{ transform: `translateY(${offsetY * 0.2}px)` }}
           loading="lazy"
         />
         <img
-          src="https://d12am8vlsj3icm.cloudfront.net/avif/road.avif"
+          src="/images/parallax/road.avif"
           alt="Carretera"
           className="layer road"
           style={{ transform: `translateY(${offsetY * 0.5}px)` }}
           loading="lazy"
         />
         <img
-          src="https://d12am8vlsj3icm.cloudfront.net/avif/truck.avif"
+          src="/images/parallax/truck.avif"
           alt="Camión"
           className="layer truck"
           style={{
@@ -57,7 +57,7 @@ function Parallax() {
           }}
         >
           <img
-            src="https://d12am8vlsj3icm.cloudfront.net/avif/logo-nps.avif"
+            src="/images/logo-nps.avif"
             alt="NPS Diesel"
             className="logo"
             style={{
