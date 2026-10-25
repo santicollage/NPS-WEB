@@ -67,7 +67,7 @@ const PaymentModal = ({ isOpen, onClose, order }) => {
           </div>
           <p>
             ¿Desea proceder al pago por medio de PayU?
-            <img src="/images/checkout/payu1.avif" alt="PayU" loading="lazy"/>
+            <img src="/images/checkout/payu.avif" alt="PayU" loading="lazy"/>
           </p>
           <div className="payment-methods">
             <img className="nequi" src="/images/checkout/nequi.avif" alt="Nequi" loading="lazy" />
